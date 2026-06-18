@@ -23,6 +23,14 @@ const STATUS_ICONS = {
   dead: "CircleX"
 };
 
+const MARK_ACTIONS = [
+  { key: "dead", label: "Выбыл", icon: STATUS_ICONS.dead },
+  { key: "shield", label: "Щит", icon: STATUS_ICONS.shield },
+  { key: "bomb", label: "Бомба", icon: STATUS_ICONS.bomb },
+  { key: "heal", label: "Лечение", icon: STATUS_ICONS.heal },
+  { key: "alibi", label: "Алиби", icon: STATUS_ICONS.alibi }
+];
+
 const ACTIONS = [
   { key: "mafia", name: "Выстрел мафии" },
   { key: "don", name: "Дон" },
@@ -52,11 +60,12 @@ const NIGHT_PENDING_TEXT = {
 const NIGHT_ORDER = ["shield", "mafia", "don", "sheriff", "doctor", "lawyer", "lovers", "bomb", "maniac", "kamikaze"];
 
 const DEFAULT_PLAYER_COUNT = 20;
+const MIN_PLAYERS = 6;
 const MAX_PLAYERS = 24;
 const STORAGE_KEY = "mafia-host-react-state-v1";
 
 function clampPlayerCount(value) {
-  return Math.max(1, Math.min(MAX_PLAYERS, Number(value) || DEFAULT_PLAYER_COUNT));
+  return Math.max(MIN_PLAYERS, Math.min(MAX_PLAYERS, Number(value) || DEFAULT_PLAYER_COUNT));
 }
 
 function getRoleSlotCount(role, playerCount) {
@@ -125,10 +134,12 @@ function makeBlankState(playerCount = DEFAULT_PLAYER_COUNT) {
     winner: null,
     nominations: [],
     votes: {},
+    foulVotes: {},
     abstained: {},
     speechesDone: {},
     lastWordsDone: {},
     publicNightSummary: [],
+    nightResultDeaths: [],
     dayResult: null,
     sheriffMafiaFound: [],
     donSheriffFound: [],
@@ -183,7 +194,7 @@ function loadState() {
         : ["introNight", "discussion", "speeches", "voteResults", "night", "gameOver"].includes(saved.phase)
           ? saved.phase
           : blank.phase;
-      return {
+      const loaded = {
         ...blank,
         ...saved,
         phase,
@@ -208,10 +219,12 @@ function loadState() {
         winner: saved.winner || null,
         nominations: Array.isArray(saved.nominations) ? saved.nominations : [],
         votes: saved.votes && typeof saved.votes === "object" ? saved.votes : {},
+        foulVotes: saved.foulVotes && typeof saved.foulVotes === "object" ? saved.foulVotes : {},
         abstained: saved.abstained && typeof saved.abstained === "object" ? saved.abstained : {},
         speechesDone: saved.speechesDone && typeof saved.speechesDone === "object" ? saved.speechesDone : {},
         lastWordsDone: saved.lastWordsDone && typeof saved.lastWordsDone === "object" ? saved.lastWordsDone : {},
         publicNightSummary: sanitizePublicSummary(saved.publicNightSummary),
+        nightResultDeaths: Array.isArray(saved.nightResultDeaths) ? saved.nightResultDeaths : [],
         dayResult: saved.dayResult && typeof saved.dayResult === "object" ? saved.dayResult : null,
         sheriffMafiaFound: Array.isArray(saved.sheriffMafiaFound) ? saved.sheriffMafiaFound : [],
         donSheriffFound: Array.isArray(saved.donSheriffFound) ? saved.donSheriffFound : [],
@@ -225,8 +238,10 @@ function loadState() {
           turnOrder: Array.isArray(saved.shootout?.turnOrder) ? saved.shootout.turnOrder : [],
           currentPlayer: saved.shootout?.currentPlayer || saved.shootout?.tied?.[0] || null
         },
+        activeMark: MARK_ACTIONS.some((mark) => mark.key === saved.activeMark) ? saved.activeMark : null,
         log: Array.isArray(saved.log) ? saved.log : []
       };
+      return normalizeLoadedGameOver(loaded);
     }
   } catch {
     localStorage.removeItem(STORAGE_KEY);
@@ -241,6 +256,20 @@ function roleSlotsFromRoles(roles, playerCount = DEFAULT_PLAYER_COUNT) {
       Array.from({ length: getRoleSlotCount(role, playerCount) }, (_, index) => String(roles[role.key]?.[index] || ""))
     ])
   );
+}
+
+function normalizeLoadedGameOver(state) {
+  if (state.phase !== "gameOver") return state;
+  const winner = detectWinner(state);
+  if (winner) {
+    state.winner = winner;
+    return state;
+  }
+  state.winner = null;
+  state.phase = state.dayResult ? "voteResults" : state.publicNightSummary.length || state.nightResultDeaths.length ? "discussion" : "speeches";
+  state.timer.running = false;
+  state.log = [`${phaseName(state)}: партия восстановлена после обновления условий победы`, ...state.log].slice(0, 80);
+  return state;
 }
 
 function sanitizeDigits(value) {
@@ -492,15 +521,21 @@ function finalSpeechRequiredIds(state) {
   return uniqueNumbers(state.dayResult?.lastWordsRequired || []).filter((id) => !state.lastWordsDone?.[id]);
 }
 
-function makeDeathDetails(state, beforeAliveIds, afterAliveIds) {
+function makeDeathDetails(state, beforeAliveIds, afterAliveIds, sourceMap = {}) {
   return [...beforeAliveIds]
     .filter((id) => !afterAliveIds.has(id))
     .map((id) => {
       const player = state.players.find((item) => item.id === id);
+      const reason = player?.deathReason || "выбыл";
       return {
         id,
         role: roleSummaryForPlayer(state, id),
-        reason: player?.deathReason || "выбыл",
+        reason,
+        source: reason === "ночь"
+          ? sourceMap[id] || deathReasonSource(reason)
+          : sourceMap[id]
+            ? `${deathReasonSource(reason)} Также по этому игроку было ночное действие: ${sourceMap[id]}`
+            : deathReasonSource(reason),
         finalSpeech: !hasNoFinalSpeech(state, id)
       };
     });
@@ -511,25 +546,73 @@ function formatDeathDetails(deaths) {
   return deaths.map((death) => `игрок ${death.id} (${death.role}, ${death.reason})`).join("; ");
 }
 
+function deathReasonLabel(reason) {
+  const labels = {
+    голосование: "Решение стола",
+    перестрелка: "Перестрелка",
+    ночь: "Ночная атака",
+    бомба: "Взрыв Бомбочки",
+    любовники: "Одно сердце Любовников",
+    дон: "Последний ход Дона",
+    "ручная отметка": "Отметка ведущего"
+  };
+  return labels[reason] || reason || "Выбыл";
+}
+
+function deathReasonSource(reason) {
+  const sources = {
+    голосование: "Игрок выбыл по решению дневного голосования.",
+    перестрелка: "Игрок выбыл после перестрелки.",
+    ночь: "Игрок умер от прямого ночного действия.",
+    бомба: "Игрок был заминирован и умер после смерти Бомбочки.",
+    любовники: "Игрок умер вслед за вторым Любовником.",
+    дон: "Дон ранее нашёл Шерифа и забрал его с собой.",
+    "ручная отметка": "Игрок был отмечен ведущим вручную."
+  };
+  return sources[reason] || "Причина выбытия зафиксирована ведущим.";
+}
+
+function deathReasonIcon(reason) {
+  if (reason === "бомба") return "Bomb";
+  if (reason === "любовники") return "Heart";
+  if (reason === "дон") return "Crown";
+  if (reason === "перестрелка") return "Target";
+  if (reason === "голосование") return "Vote";
+  return "CircleX";
+}
+
 function detectWinner(state) {
   const alive = state.players.filter((player) => player.alive);
   const aliveIds = alive.map((player) => player.id);
   const aliveManiacs = (state.roles.maniac || []).filter((id) => aliveIds.includes(id));
-  if (alive.length === 2 && aliveManiacs.length === 1) return "Маньяк";
   const blackIds = [...(state.roles.don || []), ...(state.roles.mafia || []), ...(state.roles.shield || [])];
   const blackAlive = blackIds.filter((id) => aliveIds.includes(id)).length;
   const maniacAlive = aliveManiacs.length;
+  const nonBlackAlive = alive.length - blackAlive;
+  if (blackAlive > 0 && blackAlive >= nonBlackAlive) return "Мафия";
   if (blackAlive === 0 && maniacAlive === 0) return "Мирные";
-  const civilianAlive = alive.length - blackAlive - maniacAlive;
-  if (blackAlive > 0 && blackAlive === civilianAlive) return "Мафия";
+  if (blackAlive === 0 && maniacAlive > 0 && alive.length <= 2) return "Маньяк";
   return null;
 }
 
-function voteLeaders(votes) {
+function voteTally(votes, foulVotes = {}, isValidTarget = () => true) {
   const tally = {};
   Object.values(votes || {}).forEach((targetId) => {
-    tally[targetId] = (tally[targetId] || 0) + 1;
+    const id = Number(targetId);
+    if (!isValidTarget(id)) return;
+    tally[id] = (tally[id] || 0) + 1;
   });
+  Object.entries(foulVotes || {}).forEach(([targetId, count]) => {
+    const id = Number(targetId);
+    const value = Math.max(0, Number(count) || 0);
+    if (!value || !isValidTarget(id)) return;
+    tally[id] = (tally[id] || 0) + value;
+  });
+  return tally;
+}
+
+function voteLeaders(votes, foulVotes = {}, isValidTarget = () => true) {
+  const tally = voteTally(votes, foulVotes, isValidTarget);
   const entries = Object.entries(tally);
   if (!entries.length) return [];
   const maxVotes = Math.max(...entries.map(([, count]) => count));
@@ -659,10 +742,9 @@ function App() {
   const isMafiaVisible = (playerId) => state.roles.don.includes(playerId) || state.roles.mafia.includes(playerId);
   const isSheriffBlack = (draft, playerId) => {
     const aliveIds = draft.players.filter((player) => player.alive).map((player) => player.id);
-    const mafiaIds = [...draft.roles.don, ...draft.roles.mafia];
-    const aliveMafia = mafiaIds.some((id) => aliveIds.includes(id));
-    const aliveShield = (draft.roles.shield || []).some((id) => aliveIds.includes(id));
-    return mafiaIds.includes(playerId) || ((draft.roles.shield || []).includes(playerId) && !aliveMafia) || (draft.roles.maniac.includes(playerId) && !aliveMafia && !aliveShield);
+    const blackIds = [...draft.roles.don, ...draft.roles.mafia, ...(draft.roles.shield || [])];
+    const aliveBlack = blackIds.some((id) => aliveIds.includes(id));
+    return blackIds.includes(playerId) || (draft.roles.maniac.includes(playerId) && !aliveBlack);
   };
 
   const saveRoles = () => {
@@ -714,15 +796,72 @@ function App() {
     });
   };
 
+  const setHealedIds = (draft, ids) => {
+    const nextIds = uniqueNumbers(ids).filter((id) => getPlayer(draft, id)?.alive);
+    draft.players.forEach((player) => {
+      player.healed = nextIds.includes(player.id);
+    });
+    draft.night.healed = nextIds.length > 1 ? nextIds : nextIds[0] || null;
+  };
+
+  const setManualShield = (draft, targetId, enabled) => {
+    if (!enabled) {
+      draft.night.shielded = null;
+      draft.night.blockedActions = {};
+      draft.players.forEach((item) => {
+        item.shielded = false;
+      });
+      return;
+    }
+    setExclusive(draft, "shielded", targetId);
+    if (draft.phase === "night") {
+      draft.night.shielded = targetId;
+      draft.night.blockedActions = {};
+      NIGHT_ORDER.filter((key) => key !== "shield" && key !== "kamikaze" && isActionBlockedByShield(draft, key)).forEach((key) => {
+        clearNightActionEffect(draft, key);
+        draft.night.blockedActions[key] = targetId;
+      });
+    }
+  };
+
+  const setManualAlibi = (draft, targetId, enabled) => {
+    draft.players.forEach((item) => {
+      item.alibi = enabled && item.id === targetId;
+    });
+    if (draft.phase === "night") {
+      draft.night.alibi = enabled ? targetId : null;
+    }
+  };
+
   const setNightCheck = (draft, by, target, result) => {
     draft.night.checks = draft.night.checks.filter((check) => check.by !== by);
     draft.night.checks.push({ by, target, result });
   };
 
+  const clearKamikazeRedirectAction = (draft, actionKey) => {
+    const redirect = draft.night.kamikazeRedirect;
+    if (!redirect?.actions?.includes(actionKey)) return;
+    const actions = redirect.actions.filter((key) => key !== actionKey);
+    if (actions.length) {
+      draft.night.kamikazeRedirect = { ...redirect, actions };
+    } else {
+      draft.night.kamikazeRedirect = null;
+    }
+  };
+
   const clearNightActionEffect = (draft, actionKey) => {
-    if (actionKey === "mafia") draft.night.mafiaTarget = null;
-    if (actionKey === "lovers") draft.night.loversTarget = null;
-    if (actionKey === "maniac") draft.night.maniacTarget = null;
+    if (actionKey === "mafia") {
+      draft.night.mafiaTarget = null;
+      clearKamikazeRedirectAction(draft, actionKey);
+    }
+    if (actionKey === "lovers") {
+      draft.night.loversTarget = null;
+      clearKamikazeRedirectAction(draft, actionKey);
+    }
+    if (actionKey === "maniac") {
+      draft.night.maniacTarget = null;
+      clearKamikazeRedirectAction(draft, actionKey);
+    }
     if (actionKey === "doctor") {
       draft.night.healed = null;
       draft.players.forEach((player) => {
@@ -863,6 +1002,7 @@ function App() {
       }
 
       if (draft.roles.kamikaze.includes(targetId) && ["mafia", "lovers", "maniac"].includes(action)) {
+        clearKamikazeRedirectAction(draft, action);
         draft.night[`${action}Target`] = targetId;
         if (draft.night.kamikazeRedirect) {
           if (!draft.night.kamikazeRedirect.actions.includes(action)) draft.night.kamikazeRedirect.actions.push(action);
@@ -875,9 +1015,18 @@ function App() {
         return;
       }
 
-      if (action === "mafia") draft.night.mafiaTarget = targetId;
-      if (action === "lovers") draft.night.loversTarget = targetId;
-      if (action === "maniac") draft.night.maniacTarget = targetId;
+      if (action === "mafia") {
+        clearKamikazeRedirectAction(draft, action);
+        draft.night.mafiaTarget = targetId;
+      }
+      if (action === "lovers") {
+        clearKamikazeRedirectAction(draft, action);
+        draft.night.loversTarget = targetId;
+      }
+      if (action === "maniac") {
+        clearKamikazeRedirectAction(draft, action);
+        draft.night.maniacTarget = targetId;
+      }
       if (action === "doctor") {
         const previousHeals = lastHealedIds(draft);
         const currentHeals = healedIds(draft);
@@ -967,16 +1116,30 @@ function App() {
 
   const applyMark = (playerId) => {
     updateState((draft) => {
+      if (draft.phase === "gameOver") return;
       const player = getPlayer(draft, playerId);
       if (!player || !draft.activeMark) return;
+      if (draft.activeMark === "dead" && draft.shootout?.active) {
+        addLog(draft, "завершите перестрелку перед ручным выбытием");
+        return;
+      }
       if (draft.activeMark === "dead") killPlayer(draft, player.id, "ручная отметка");
-      if (draft.activeMark === "shield") player.shielded = !player.shielded;
+      if (draft.activeMark === "shield") setManualShield(draft, player.id, !player.shielded);
       if (draft.activeMark === "bomb") player.bombed = !player.bombed;
-      if (draft.activeMark === "heal") player.healed = !player.healed;
-      if (draft.activeMark === "alibi") player.alibi = !player.alibi;
+      if (draft.activeMark === "heal") {
+        if (draft.phase === "night") {
+          const currentHeals = healedIds(draft);
+          setHealedIds(draft, player.healed ? currentHeals.filter((id) => id !== player.id) : [...currentHeals, player.id]);
+        } else {
+          player.healed = !player.healed;
+        }
+      }
+      if (draft.activeMark === "alibi") setManualAlibi(draft, player.id, !player.alibi);
       const labels = { dead: "выбыл", shield: "щит", bomb: "бомба", heal: "лечение", alibi: "алиби" };
       addLog(draft, `игрок ${player.id}: ${labels[draft.activeMark]}`);
-      if (draft.activeMark === "dead") applyWinCondition(draft);
+      if (draft.activeMark === "dead" && applyWinCondition(draft)) {
+        draft.activeMark = null;
+      }
     });
   };
 
@@ -1025,6 +1188,7 @@ function App() {
             addLog(draft, "Сначала завершите перестрелку.");
             return;
           }
+          const isAliveTarget = (targetId) => Boolean(getPlayer(draft, targetId)?.alive);
           const activeVotes = Object.fromEntries(
             Object.entries(draft.votes).filter(([voterId, targetId]) => {
               const voter = getPlayer(draft, voterId);
@@ -1032,7 +1196,7 @@ function App() {
               return voter?.alive && target?.alive;
             })
           );
-          const leaders = voteLeaders(activeVotes);
+          const leaders = voteLeaders(activeVotes, draft.foulVotes, isAliveTarget);
           if (leaders.length > 1) {
             draft.shootout = {
               active: true,
@@ -1129,6 +1293,15 @@ function App() {
           addLog(draft, `Ночные действия ещё не завершены: ${missing.map(([key, label]) => NIGHT_PENDING_TEXT[key] || label).join(" ")}`);
           return;
         }
+        const nightSourceMap = {};
+        const addNightSource = (targetId, label) => {
+          if (!targetId) return;
+          nightSourceMap[targetId] = nightSourceMap[targetId] ? `${nightSourceMap[targetId]} ${label}` : label;
+        };
+        addNightSource(draft.night.mafiaTarget, "Мафия выбрала этого игрока для выстрела.");
+        addNightSource(draft.night.loversTarget, "Любовники выбрали этого игрока для выстрела.");
+        addNightSource(draft.night.maniacTarget, "Маньяк выбрал этого игрока для убийства.");
+        addNightSource(draft.night.sheriffShotTarget, "Шериф стрелял в ранее найденного чёрного игрока.");
         const victims = uniqueNumbers([draft.night.mafiaTarget, draft.night.loversTarget, draft.night.maniacTarget, draft.night.sheriffShotTarget]);
         const aliveBeforeNight = new Set(draft.players.filter((player) => player.alive).map((player) => player.id));
         const doctorSavedIds = healedIds(draft);
@@ -1141,6 +1314,7 @@ function App() {
         const deadThisNight = [...aliveBeforeNight].filter((id) => !aliveAfterNight.has(id));
         const bombExploded = deadThisNight.some((id) => draft.roles.bomber.includes(id));
         const lastHealed = doctorSavedIds;
+        draft.nightResultDeaths = makeDeathDetails(draft, aliveBeforeNight, aliveAfterNight, nightSourceMap);
         draft.publicNightSummary = makePublicNightSummary(
           draft,
           victims,
@@ -1158,6 +1332,7 @@ function App() {
         draft.night.lastHealed = lastHealed;
         draft.nominations = [];
         draft.votes = {};
+        draft.foulVotes = {};
         draft.speechesDone = {};
         draft.lastWordsDone = {};
         draft.dayEliminationDone = false;
@@ -1168,18 +1343,6 @@ function App() {
         draft.timer.remainingSeconds = draft.timer.discussionMinutes * 60;
         addLog(draft, `начался Балаган дня ${draft.dayNumber}`);
       }
-    });
-  };
-
-  const markSpeechDone = (playerId) => {
-    updateState((draft) => {
-      if (draft.phase !== "speeches") return;
-      addLog(draft, `Игрок ${playerId} должен проголосовать.`);
-      return;
-      const speaker = getPlayer(draft, playerId);
-      if (!speaker?.alive) return;
-      draft.speechesDone[playerId] = !draft.speechesDone[playerId];
-      if (draft.speechesDone[playerId]) addLog(draft, `игрок ${playerId} завершил речь`);
     });
   };
 
@@ -1218,6 +1381,22 @@ function App() {
       draft.votes[voterId] = targetId;
       draft.speechesDone[voterId] = true;
       addLog(draft, `игрок ${voterId} голосует за ${targetId}`);
+    });
+  };
+
+  const updateFoulVote = (targetValue, delta) => {
+    updateState((draft) => {
+      if (draft.phase !== "speeches" || !hasDayVoting(draft) || draft.dayEliminationDone || draft.shootout?.active) return;
+      const targetId = Number(targetValue);
+      const target = getPlayer(draft, targetId);
+      if (!target?.alive) return;
+      const current = Math.max(0, Number(draft.foulVotes?.[targetId]) || 0);
+      const next = Math.max(0, current + Number(delta));
+      if (!draft.foulVotes || typeof draft.foulVotes !== "object") draft.foulVotes = {};
+      if (next) draft.foulVotes[targetId] = next;
+      else delete draft.foulVotes[targetId];
+      if (!draft.nominations.includes(targetId)) draft.nominations.push(targetId);
+      addLog(draft, next > current ? `фол: игрок ${targetId} получает штрафной голос` : `фол: штрафной голос игрока ${targetId} снят`);
     });
   };
 
@@ -1392,7 +1571,9 @@ function App() {
     blank.winner = null;
     blank.speechesDone = {};
     blank.lastWordsDone = {};
+    blank.foulVotes = {};
     blank.publicNightSummary = [];
+    blank.nightResultDeaths = [];
     blank.dayResult = null;
     blank.dayEliminationDone = false;
     blank.shootout = makeBlankState(state.playerCount).shootout;
@@ -1403,6 +1584,7 @@ function App() {
   };
 
   const selectPlayer = (playerId) => {
+    if (state.phase === "gameOver") return;
     if (!state.players.some((player) => player.id === playerId && player.alive)) return;
     if (state.activeMark) applyMark(playerId);
     else updateState((draft) => {
@@ -1458,7 +1640,7 @@ function App() {
       "section",
       { className: `workspace ${state.phase === "introNight" ? "" : "game-workspace"}` },
       state.phase === "introNight" && h(RolePanel, { state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCount, clearRolesConfirmed: () => updateState((draft) => { draft.rolesConfirmed = false; draft.rolesLocked = false; }) }),
-      h(MainColumn, { state, aliveOptions, updateState, castVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, markLastWordsDone, setView: (view) => updateState((draft) => { draft.view = view; }), rolesForPlayer, isMafiaVisible }),
+      h(MainColumn, { state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, markLastWordsDone, selectPlayer, setView: (view) => updateState((draft) => { draft.view = view; }), rolesForPlayer, isMafiaVisible }),
       h(ActionPanel, { state, aliveOptions, updateState, applyAction, clearCurrentNightAction, updateTimerSetting, toggleTimer, resetTimer })
     ),
     confirmConfig && h(ConfirmModal, { config: confirmConfig, onCancel: () => setConfirmAction(null) })
@@ -1516,7 +1698,7 @@ function RolePanel({ state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCo
       h("span", null, "Игроков"),
       h("input", {
         type: "number",
-        min: "1",
+        min: String(MIN_PLAYERS),
         max: String(MAX_PLAYERS),
         inputMode: "numeric",
         value: state.playerCount,
@@ -1578,22 +1760,41 @@ function RolePanel({ state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCo
   );
 }
 
-function MainColumn({ state, aliveOptions, updateState, castVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, markLastWordsDone, setView, rolesForPlayer, isMafiaVisible }) {
+function MainColumn({ state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, markLastWordsDone, selectPlayer, setView, rolesForPlayer, isMafiaVisible }) {
   const publicSummaryLines = sanitizePublicSummary(state.publicNightSummary);
   return h(
     "section",
     { className: "main-column" },
+    state.phase === "gameOver" && h(GameOverHero, { state }),
     state.phase === "discussion" && publicSummaryLines.length > 0 && h(NightResultsCard, { state, lines: publicSummaryLines }),
-    state.phase === "speeches" && h(DayFlowCard, { state, aliveOptions, castVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker }),
+    state.phase === "speeches" && h(DayFlowCard, { state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker }),
     state.phase === "voteResults" && h(VoteResultsCard, { state, markLastWordsDone }),
     h(LogBox, { state, updateState }),
-    h(Board, { state, updateState, setView, rolesForPlayer, isMafiaVisible })
+    h(Board, { state, updateState, setView, selectPlayer, rolesForPlayer, isMafiaVisible })
+  );
+}
+
+function GameOverHero({ state }) {
+  const alivePlayers = state.players.filter((player) => player.alive);
+  const deadPlayers = state.players.filter((player) => !player.alive);
+  return h(
+    "section",
+    { className: `game-over-hero winner-${state.winner || "none"}` },
+    h("div", { className: "game-over-emblem" }, h(Icon, { name: state.winner === "Мирные" ? "Sun" : state.winner === "Маньяк" ? "Swords" : "Crown" })),
+    h("div", { className: "game-over-copy" }, h("span", null, "Партия завершена"), h("h2", null, `Победа: ${state.winner || "не определена"}`), h("p", null, alivePlayers.length ? `Выжившие: ${formatPlayers(alivePlayers.map((player) => player.id))}.` : "За столом не осталось живых игроков.")),
+    h(
+      "div",
+      { className: "game-over-lists" },
+      h("div", null, h("strong", null, "Выжившие"), alivePlayers.length ? alivePlayers.map((player) => h("span", { key: player.id }, `Игрок ${player.id}: ${roleSummaryForPlayer(state, player.id)}`)) : h("span", null, "Никого")),
+      h("div", null, h("strong", null, "Выбыли"), deadPlayers.length ? deadPlayers.slice(0, 8).map((player) => h("span", { key: player.id }, `Игрок ${player.id}: ${roleSummaryForPlayer(state, player.id)} (${player.deathReason || "выбыл"})`)) : h("span", null, "Никого"))
+    )
   );
 }
 
 function NightResultsCard({ state, lines }) {
   const hasDeaths = lines.some((line) => /Выбыли ночью/i.test(line));
   const icon = hasDeaths ? "MoonStar" : "Megaphone";
+  const deaths = Array.isArray(state.nightResultDeaths) ? state.nightResultDeaths : [];
   return h(
     "div",
     { className: `vote-results-card night-results-card ${hasDeaths ? "result-eliminated" : "result-night"}` },
@@ -1616,6 +1817,7 @@ function NightResultsCard({ state, lines }) {
         )
       )
     ),
+    deaths.length > 0 && h(DeathChainCard, { deaths, title: "Служебно для ведущего: цепочка ночи", compact: true }),
     h("p", { className: "host-note" }, "После объявления можно начинать Балаган.")
   );
 }
@@ -1656,11 +1858,30 @@ function VoteResultsCard({ state, markLastWordsDone }) {
           )
         )
       ),
+    deaths.length > 1 && h(DeathChainCard, { deaths, title: "Цепочка выбытия" }),
     blockedLastWords.length > 0 &&
       h("p", { className: "host-note no-last-word-summary" }, `Без последнего слова: ${blockedLastWords.map((death) => `игрок ${death.id}`).join(", ")}. У мафии, Дона, Щита и шерифа последнего слова нет.`),
     pendingLastWords.length > 0
       ? h("p", { className: "host-note warning-note" }, `Перед ночью нужно дать последнюю речь: ${pendingLastWords.map((id) => `игрок ${id}`).join(", ")}.`)
       : h("p", { className: "host-note" }, "И наступает ночь.")
+  );
+}
+
+function DeathChainCard({ deaths, title, compact = false }) {
+  return h(
+    "div",
+    { className: `death-chain-card ${compact ? "compact" : ""}` },
+    h("h4", null, title),
+    deaths.map((death) =>
+      h(
+        "div",
+        { key: `${death.id}-${death.reason}`, className: `death-chain-row reason-${death.reason || "unknown"}` },
+        h("span", { className: "death-chain-icon" }, h(Icon, { name: deathReasonIcon(death.reason) })),
+        h("strong", null, `Игрок ${death.id}`),
+        h("span", { className: "death-chain-role" }, death.role || "Роль не указана", h("small", null, death.source || deathReasonSource(death.reason))),
+        h("em", null, deathReasonLabel(death.reason))
+      )
+    )
   );
 }
 
@@ -1675,7 +1896,7 @@ function playerHasVisibleMark(player, state) {
   );
 }
 
-function Board({ state, updateState, setView, rolesForPlayer, isMafiaVisible }) {
+function Board({ state, updateState, setView, selectPlayer, rolesForPlayer, isMafiaVisible }) {
   const statusFilters = [
     ["all", "Все"],
     ["alive", "Живые"],
@@ -1723,17 +1944,19 @@ function Board({ state, updateState, setView, rolesForPlayer, isMafiaVisible }) 
         h("span", null, `${visiblePlayers.length} / ${state.players.length}`)
       ),
     visiblePlayers.length
-      ? h("div", { className: "players-grid", "aria-label": "Игроки" }, visiblePlayers.map((player) => h(PlayerCard, { key: player.id, player, state, rolesForPlayer, isMafiaVisible })))
+      ? h("div", { className: "players-grid", "aria-label": "Игроки" }, visiblePlayers.map((player) => h(PlayerCard, { key: player.id, player, state, rolesForPlayer, isMafiaVisible, onSelect: selectPlayer })))
       : h("div", { className: "empty-filter" }, "Нет игроков для этого фильтра")
   );
 }
 
-function DayFlowCard({ state, aliveOptions, castVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker }) {
+function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker }) {
   const aliveVoteOptions = aliveOptions.filter((option) => state.players.some((player) => player.id === option.id && player.alive));
   const votes = state.votes && typeof state.votes === "object" ? state.votes : {};
   const alivePlayers = state.players.filter((player) => player.alive);
   const votingOpen = hasDayVoting(state);
-  const voteCounts = Object.values(votes).reduce((counts, id) => ({ ...counts, [id]: (counts[id] || 0) + 1 }), {});
+  const foulVotes = state.foulVotes && typeof state.foulVotes === "object" ? state.foulVotes : {};
+  const voteCounts = voteTally(votes, foulVotes, (id) => state.players.some((player) => player.id === id && player.alive));
+  const normalVoteCounts = voteTally(votes, {}, (id) => state.players.some((player) => player.id === id && player.alive));
   const completedVotes = alivePlayers.filter((player) => Boolean(votes[player.id])).length;
   const speechesComplete = alivePlayers.filter((player) => state.speechesDone?.[player.id]).length;
   const shootoutOrdered = shootoutOrderedPlayers(state);
@@ -1818,7 +2041,26 @@ function DayFlowCard({ state, aliveOptions, castVote, setShootoutNumber, setShoo
               )
               : h("span", { className: "day-note" }, "Без голосования")
             : h("span", { className: "day-note" }, player.deathReason || "Выбыл"),
-          h("span", { className: "row-votes" }, votingOpen ? `${voteCounts[player.id] || 0}` : state.speechesDone?.[player.id] ? "✓" : "-")
+          player.alive && votingOpen
+            ? h(
+                "div",
+                { className: "foul-controls", "aria-label": `Фолы игрока ${player.id}` },
+                h("button", { type: "button", className: "foul-button", disabled: state.dayEliminationDone || state.shootout.active || !Number(foulVotes[player.id]), onClick: () => updateFoulVote(player.id, -1), title: `Снять фол игроку ${player.id}` }, "-"),
+                h("span", null, Number(foulVotes[player.id]) || 0),
+                h("button", { type: "button", className: "foul-button", disabled: state.dayEliminationDone || state.shootout.active, onClick: () => updateFoulVote(player.id, 1), title: `Добавить фол игроку ${player.id}` }, "+")
+              )
+            : h("span", { className: "day-note" }, "-"),
+          h(
+            "div",
+            { className: `vote-breakdown ${Number(foulVotes[player.id]) ? "with-foul" : ""}` },
+            votingOpen
+              ? [
+                  h("span", { key: "votes" }, h("em", null, "Голоса"), h("strong", null, normalVoteCounts[player.id] || 0)),
+                  h("span", { key: "fouls" }, h("em", null, "Фолы"), h("strong", null, Number(foulVotes[player.id]) || 0)),
+                  h("span", { key: "total", className: "total" }, h("em", null, "Итого"), h("strong", null, voteCounts[player.id] || 0))
+                ]
+              : state.speechesDone?.[player.id] ? "✓" : "-"
+          )
         )
       )
     ),
@@ -1998,7 +2240,7 @@ function LogBox({ state, updateState }) {
   );
 }
 
-function PlayerCard({ player, state, rolesForPlayer, isMafiaVisible }) {
+function PlayerCard({ player, state, rolesForPlayer, isMafiaVisible, onSelect }) {
   const classNames = ["player-card"];
   const playerRoles = rolesForPlayer(player.id);
   if (isMafiaVisible(player.id)) classNames.push("mafia");
@@ -2006,6 +2248,7 @@ function PlayerCard({ player, state, rolesForPlayer, isMafiaVisible }) {
   if (player.shielded) classNames.push("shielded");
   if (player.bombed) classNames.push("bombed");
   if (!player.alive) classNames.push("dead");
+  if (player.alive && Number(state.targetId) === player.id) classNames.push("selected");
   const roleContent =
     state.view === "roles"
       ? playerRoles.length
@@ -2015,8 +2258,8 @@ function PlayerCard({ player, state, rolesForPlayer, isMafiaVisible }) {
         : "Мирный"
       : statusText(player);
   return h(
-    "div",
-    { className: classNames.join(" ") },
+    "button",
+    { type: "button", className: classNames.join(" "), disabled: !player.alive, onClick: () => onSelect(player.id), title: player.alive ? `Выбрать игрока ${player.id}` : `Игрок ${player.id} выбыл` },
     h(
       "div",
       { className: "badges" },
@@ -2085,6 +2328,38 @@ function ActionPanel({ state, aliveOptions, updateState, applyAction, clearCurre
       h("h3", null, "Текущая фаза"),
       h("strong", null, phaseName(state)),
       h("p", null, state.phase === "introNight" ? "Первая ночь: ведущий знакомит роли, игровые действия закрыты." : state.phase === "discussion" ? "Балаган: свободный разговор за столом. Таймер задается ведущим." : state.phase === "speeches" ? votingOpen ? "Речи и голосование." : "Первый день: только речи игроков, без голосования." : state.phase === "voteResults" ? "Ведущий объявляет итог голосования перед ночью." : state.phase === "gameOver" ? "Партия завершена." : "Ночные действия доступны.")
+    ),
+    h(
+      "div",
+      { className: "mark-card" },
+      h(
+        "div",
+        { className: "panel-head compact" },
+        h("h3", null, "Метки ведущего"),
+        state.activeMark && h("button", { type: "button", className: "mark-clear", onClick: () => updateState((draft) => { draft.activeMark = null; }), title: "Снять режим метки" }, h(Icon, { name: "X", label: "Снять режим метки" }))
+      ),
+      h(
+        "div",
+        { className: "mark-buttons", role: "group", "aria-label": "Метки ведущего" },
+        MARK_ACTIONS.map((mark) =>
+          h(
+            "button",
+            {
+              key: mark.key,
+              type: "button",
+              className: state.activeMark === mark.key ? "active" : "",
+              disabled: state.phase === "gameOver",
+              onClick: () => updateState((draft) => {
+                draft.activeMark = draft.activeMark === mark.key ? null : mark.key;
+              }),
+              title: mark.label,
+              "aria-pressed": state.activeMark === mark.key
+            },
+            h(Icon, { name: mark.icon }),
+            h("span", null, mark.label)
+          )
+        )
+      )
     ),
     timerVisible &&
       h(
