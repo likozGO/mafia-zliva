@@ -838,10 +838,30 @@ function App() {
     draft.night.checks.push({ by, target, result });
   };
 
+  const clearKamikazeRedirectAction = (draft, actionKey) => {
+    const redirect = draft.night.kamikazeRedirect;
+    if (!redirect?.actions?.includes(actionKey)) return;
+    const actions = redirect.actions.filter((key) => key !== actionKey);
+    if (actions.length) {
+      draft.night.kamikazeRedirect = { ...redirect, actions };
+    } else {
+      draft.night.kamikazeRedirect = null;
+    }
+  };
+
   const clearNightActionEffect = (draft, actionKey) => {
-    if (actionKey === "mafia") draft.night.mafiaTarget = null;
-    if (actionKey === "lovers") draft.night.loversTarget = null;
-    if (actionKey === "maniac") draft.night.maniacTarget = null;
+    if (actionKey === "mafia") {
+      draft.night.mafiaTarget = null;
+      clearKamikazeRedirectAction(draft, actionKey);
+    }
+    if (actionKey === "lovers") {
+      draft.night.loversTarget = null;
+      clearKamikazeRedirectAction(draft, actionKey);
+    }
+    if (actionKey === "maniac") {
+      draft.night.maniacTarget = null;
+      clearKamikazeRedirectAction(draft, actionKey);
+    }
     if (actionKey === "doctor") {
       draft.night.healed = null;
       draft.players.forEach((player) => {
@@ -982,6 +1002,7 @@ function App() {
       }
 
       if (draft.roles.kamikaze.includes(targetId) && ["mafia", "lovers", "maniac"].includes(action)) {
+        clearKamikazeRedirectAction(draft, action);
         draft.night[`${action}Target`] = targetId;
         if (draft.night.kamikazeRedirect) {
           if (!draft.night.kamikazeRedirect.actions.includes(action)) draft.night.kamikazeRedirect.actions.push(action);
@@ -994,9 +1015,18 @@ function App() {
         return;
       }
 
-      if (action === "mafia") draft.night.mafiaTarget = targetId;
-      if (action === "lovers") draft.night.loversTarget = targetId;
-      if (action === "maniac") draft.night.maniacTarget = targetId;
+      if (action === "mafia") {
+        clearKamikazeRedirectAction(draft, action);
+        draft.night.mafiaTarget = targetId;
+      }
+      if (action === "lovers") {
+        clearKamikazeRedirectAction(draft, action);
+        draft.night.loversTarget = targetId;
+      }
+      if (action === "maniac") {
+        clearKamikazeRedirectAction(draft, action);
+        draft.night.maniacTarget = targetId;
+      }
       if (action === "doctor") {
         const previousHeals = lastHealedIds(draft);
         const currentHeals = healedIds(draft);
