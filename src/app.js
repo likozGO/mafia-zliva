@@ -373,7 +373,14 @@ function dayOrder(state) {
 }
 
 function nextAliveSpeakerFallbackOrder(state) {
-  return state.players.filter((player) => player.alive).map((player) => player.id);
+  const aliveIds = state.players.filter((player) => player.alive).map((player) => player.id);
+  if (!aliveIds.length) return [];
+  const direction = window.MafiaUiFocus?.normalizeDayDirection?.(state.dayDirection) || (state.dayDirection === "backward" ? "backward" : "forward");
+  const orderedIds = direction === "backward" ? [...aliveIds].reverse() : aliveIds;
+  const requestedStart = Number(state.dayStartPlayerId);
+  const startId = orderedIds.includes(requestedStart) ? requestedStart : orderedIds[0];
+  const startIndex = orderedIds.indexOf(startId);
+  return orderedIds.slice(startIndex).concat(orderedIds.slice(0, startIndex));
 }
 
 function completeSpeechIds(state) {
