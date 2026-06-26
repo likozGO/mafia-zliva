@@ -118,6 +118,8 @@ function makeBlankState(playerCount = DEFAULT_PLAYER_COUNT) {
     playerCount: count,
     phase: "introNight",
     dayNumber: 1,
+    dayStartPlayerId: 1,
+    dayDirection: "forward",
     nightNumber: 1,
     timer: {
       discussionMinutes: 4,
@@ -230,6 +232,8 @@ function loadState() {
         donSheriffFound: Array.isArray(saved.donSheriffFound) ? saved.donSheriffFound : [],
         sheriffActionMode: ["check", "shoot"].includes(saved.sheriffActionMode) ? saved.sheriffActionMode : "check",
         dayEliminationDone: Boolean(saved.dayEliminationDone),
+        dayStartPlayerId: Number(saved.dayStartPlayerId) || blank.dayStartPlayerId,
+        dayDirection: window.MafiaUiFocus?.normalizeDayDirection(saved.dayDirection) || "forward",
         shootout: {
           ...blank.shootout,
           ...(saved.shootout && typeof saved.shootout === "object" ? saved.shootout : {}),
@@ -354,6 +358,37 @@ function nextAliveSpeaker(state, currentSpeaker) {
   const alive = state.players.filter((player) => player.alive).map((player) => player.id);
   if (!alive.length) return 1;
   return alive.find((id) => id > currentSpeaker) || alive[0];
+}
+
+function dayOrder(state) {
+  return window.MafiaUiFocus?.daySpeakerOrder?.(state) || nextAliveSpeakerFallbackOrder(state);
+}
+
+function nextAliveSpeakerFallbackOrder(state) {
+  return state.players.filter((player) => player.alive).map((player) => player.id);
+}
+
+function completeSpeechIds(state) {
+  const votingOpen = hasDayVoting(state);
+  return state.players
+    .filter((player) => player.alive)
+    .map((player) => player.id)
+    .filter((id) => votingOpen ? Boolean(state.votes?.[id]) : Boolean(state.speechesDone?.[id]));
+}
+
+function nextOrderedSpeaker(state, currentSpeaker) {
+  return window.MafiaUiFocus?.nextDaySpeaker?.({
+    ...state,
+    currentSpeaker,
+    completeIds: completeSpeechIds(state)
+  }) || 0;
+}
+
+function resetDayOrder(draft) {
+  const firstAlive = draft.players.find((player) => player.alive)?.id || 1;
+  draft.dayStartPlayerId = firstAlive;
+  draft.dayDirection = "forward";
+  draft.timer.currentSpeaker = firstAlive;
 }
 
 function actionName(actionKey) {
@@ -705,7 +740,7 @@ function App() {
           draft.timer.running = false;
           if (draft.phase === "discussion") {
             draft.phase = "speeches";
-            draft.timer.currentSpeaker = nextAliveSpeaker(draft, 0);
+            resetDayOrder(draft);
             draft.timer.remainingSeconds = draft.timer.speechSeconds;
             draft.speechesDone = {};
             draft.shootout = makeBlankState(draft.playerCount).shootout;
@@ -1162,7 +1197,7 @@ function App() {
       if (draft.phase === "discussion") {
         draft.phase = "speeches";
         draft.timer.remainingSeconds = draft.timer.speechSeconds;
-        draft.timer.currentSpeaker = nextAliveSpeaker(draft, 0);
+        resetDayOrder(draft);
         draft.speechesDone = {};
         draft.lastWordsDone = {};
         draft.dayResult = null;
@@ -1529,7 +1564,6 @@ function App() {
       const currentSpeaker = Number(draft.timer.currentSpeaker);
       const aliveIds = draft.players.filter((player) => player.alive).map((player) => player.id);
       const isComplete = (id) => hasDayVoting(draft) ? Boolean(draft.votes[id]) : Boolean(draft.speechesDone?.[id]);
-      const nextIncompleteAfter = (id) => aliveIds.find((aliveId) => aliveId > id && !isComplete(aliveId)) || aliveIds.find((aliveId) => !isComplete(aliveId)) || 0;
       if (!aliveIds.length || aliveIds.every(isComplete)) {
         draft.timer.currentSpeaker = 0;
         draft.timer.running = false;
@@ -1537,25 +1571,48 @@ function App() {
         addLog(draft, "все речи завершены");
         return;
       }
+
       const currentIsPending = aliveIds.includes(currentSpeaker) && !isComplete(currentSpeaker);
       if (!currentIsPending) {
-        const nextSpeakerId = nextIncompleteAfter(currentSpeaker);
+        const nextSpeakerId = nextOrderedSpeaker(draft, currentSpeaker);
         draft.timer.currentSpeaker = nextSpeakerId;
         draft.timer.remainingSeconds = draft.timer.speechSeconds;
         draft.timer.running = false;
         addLog(draft, nextSpeakerId ? `слово у игрока ${nextSpeakerId}` : "все речи завершены");
         return;
       }
+
       if (hasDayVoting(draft) && !draft.votes[currentSpeaker]) {
         addLog(draft, `Игрок ${currentSpeaker} должен проголосовать.`);
         return;
       }
+
       draft.speechesDone[currentSpeaker] = true;
-      const nextSpeakerId = nextIncompleteAfter(currentSpeaker);
+      const nextSpeakerId = nextOrderedSpeaker(draft, currentSpeaker);
       draft.timer.currentSpeaker = nextSpeakerId || 0;
       draft.timer.remainingSeconds = draft.timer.speechSeconds;
       draft.timer.running = false;
       addLog(draft, nextSpeakerId ? `слово у игрока ${nextSpeakerId}` : "все речи завершены");
+    });
+  };
+
+  const updateDayOrder = (field, value) => {
+    updateState((draft) => {
+      if (draft.phase !== "speeches") return;
+      if (field === "dayStartPlayerId") {
+        const selectedId = Number(value);
+        if (!draft.players.some((player) => player.id === selectedId && player.alive)) return;
+        draft.dayStartPlayerId = selectedId;
+      }
+      if (field === "dayDirection") {
+        draft.dayDirection = window.MafiaUiFocus?.normalizeDayDirection(value) || "forward";
+      }
+      const completeIds = new Set(completeSpeechIds(draft));
+      if (!draft.timer.currentSpeaker || completeIds.has(Number(draft.timer.currentSpeaker))) {
+        draft.timer.currentSpeaker = nextOrderedSpeaker(draft, Number(draft.timer.currentSpeaker));
+      }
+      draft.timer.running = false;
+      draft.timer.remainingSeconds = draft.timer.speechSeconds;
     });
   };
 
@@ -1640,7 +1697,7 @@ function App() {
       "section",
       { className: `workspace ${state.phase === "introNight" ? "" : "game-workspace"}` },
       state.phase === "introNight" && h(RolePanel, { state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCount, clearRolesConfirmed: () => updateState((draft) => { draft.rolesConfirmed = false; draft.rolesLocked = false; }) }),
-      h(MainColumn, { state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, markLastWordsDone, selectPlayer, setView: (view) => updateState((draft) => { draft.view = view; }), rolesForPlayer, isMafiaVisible }),
+      h(MainColumn, { state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, markLastWordsDone, selectPlayer, setView: (view) => updateState((draft) => { draft.view = view; }), rolesForPlayer, isMafiaVisible }),
       h(ActionPanel, { state, aliveOptions, updateState, applyAction, clearCurrentNightAction, updateTimerSetting, toggleTimer, resetTimer })
     ),
     confirmConfig && h(ConfirmModal, { config: confirmConfig, onCancel: () => setConfirmAction(null) })
@@ -1760,14 +1817,14 @@ function RolePanel({ state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCo
   );
 }
 
-function MainColumn({ state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, markLastWordsDone, selectPlayer, setView, rolesForPlayer, isMafiaVisible }) {
+function MainColumn({ state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, markLastWordsDone, selectPlayer, setView, rolesForPlayer, isMafiaVisible }) {
   const publicSummaryLines = sanitizePublicSummary(state.publicNightSummary);
   return h(
     "section",
     { className: "main-column" },
     state.phase === "gameOver" && h(GameOverHero, { state }),
     state.phase === "discussion" && publicSummaryLines.length > 0 && h(NightResultsCard, { state, lines: publicSummaryLines }),
-    state.phase === "speeches" && h(DayFlowCard, { state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker }),
+    state.phase === "speeches" && h(DayFlowCard, { state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder }),
     state.phase === "voteResults" && h(VoteResultsCard, { state, markLastWordsDone }),
     h(LogBox, { state, updateState }),
     h(Board, { state, updateState, setView, selectPlayer, rolesForPlayer, isMafiaVisible })
@@ -1949,7 +2006,7 @@ function Board({ state, updateState, setView, selectPlayer, rolesForPlayer, isMa
   );
 }
 
-function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker }) {
+function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder }) {
   const aliveVoteOptions = aliveOptions.filter((option) => state.players.some((player) => player.id === option.id && player.alive));
   const votes = state.votes && typeof state.votes === "object" ? state.votes : {};
   const alivePlayers = state.players.filter((player) => player.alive);
