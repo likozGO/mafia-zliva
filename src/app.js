@@ -232,7 +232,7 @@ function loadState() {
         donSheriffFound: Array.isArray(saved.donSheriffFound) ? saved.donSheriffFound : [],
         sheriffActionMode: ["check", "shoot"].includes(saved.sheriffActionMode) ? saved.sheriffActionMode : "check",
         dayEliminationDone: Boolean(saved.dayEliminationDone),
-        dayStartPlayerId: Number(saved.dayStartPlayerId) || blank.dayStartPlayerId,
+        dayStartPlayerId: blank.dayStartPlayerId,
         dayDirection: window.MafiaUiFocus?.normalizeDayDirection(saved.dayDirection) || "forward",
         shootout: {
           ...blank.shootout,
@@ -245,6 +245,10 @@ function loadState() {
         activeMark: MARK_ACTIONS.some((mark) => mark.key === saved.activeMark) ? saved.activeMark : null,
         log: Array.isArray(saved.log) ? saved.log : []
       };
+      const savedDayStartPlayerId = Number(saved.dayStartPlayerId);
+      loaded.dayStartPlayerId = loaded.players.some((player) => player.id === savedDayStartPlayerId && player.alive)
+        ? savedDayStartPlayerId
+        : firstAlivePlayerId(loaded);
       return normalizeLoadedGameOver(loaded);
     }
   } catch {
@@ -384,8 +388,12 @@ function nextOrderedSpeaker(state, currentSpeaker) {
   }) || 0;
 }
 
+function firstAlivePlayerId(state) {
+  return state.players.find((player) => player.alive)?.id || 1;
+}
+
 function resetDayOrder(draft) {
-  const firstAlive = draft.players.find((player) => player.alive)?.id || 1;
+  const firstAlive = firstAlivePlayerId(draft);
   draft.dayStartPlayerId = firstAlive;
   draft.dayDirection = "forward";
   draft.timer.currentSpeaker = firstAlive;
