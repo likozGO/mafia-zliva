@@ -423,6 +423,12 @@ function resolveCurrentDaySpeaker(state, preferredSpeaker) {
   return nextOrderedSpeaker(state, speakerId) || nextOrderedSpeaker(state, 0);
 }
 
+function canCastDayVote(state, voterId) {
+  if (!hasDayVoting(state)) return true;
+  const speakerId = Number(state.timer.currentSpeaker);
+  return Number(voterId) === speakerId || Boolean(state.votes?.[voterId]);
+}
+
 function resetDayOrder(draft) {
   const firstAlive = firstAlivePlayerId(draft);
   draft.dayStartPlayerId = firstAlive;
@@ -1451,6 +1457,10 @@ function App() {
       const voter = getPlayer(draft, voterId);
       const target = getPlayer(draft, targetId);
       if (!voter?.alive || !target?.alive) return;
+      if (!canCastDayVote(draft, voterId)) {
+        addLog(draft, `Игрок ${voterId} голосует только в свою очередь.`);
+        return;
+      }
       if (!draft.nominations.includes(targetId)) draft.nominations.push(targetId);
       draft.votes[voterId] = targetId;
       draft.speechesDone[voterId] = true;
@@ -1646,6 +1656,7 @@ function App() {
       }
       if (field === "dayDirection") {
         draft.dayDirection = window.MafiaUiFocus?.normalizeDayDirection(value) || "forward";
+        draft.timer.currentSpeaker = resolveCurrentDaySpeaker(draft, draft.dayStartPlayerId);
       }
       const completeIds = new Set(completeSpeechIds(draft));
       if (!draft.timer.currentSpeaker || completeIds.has(Number(draft.timer.currentSpeaker))) {
@@ -2166,7 +2177,7 @@ function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootou
                 "select",
                 {
                   className: Number(votes[player.id]) ? "has-vote" : "",
-                  disabled: state.dayEliminationDone,
+                  disabled: state.dayEliminationDone || !canCastDayVote(state, player.id),
                   value: currentVoteTarget(player.id),
                   onChange: (event) => castVote(player.id, Number(event.target.value))
                 },
