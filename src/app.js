@@ -2050,6 +2050,9 @@ function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootou
   const aliveVoteOptions = aliveOptions.filter((option) => state.players.some((player) => player.id === option.id && player.alive));
   const votes = state.votes && typeof state.votes === "object" ? state.votes : {};
   const alivePlayers = state.players.filter((player) => player.alive);
+  const speakerOrder = window.MafiaUiFocus?.daySpeakerOrder?.(state) || alivePlayers.map((player) => player.id);
+  const orderPreview = speakerOrder.map((id) => `#${id}`).join(" -> ");
+  const selectedDayStartPlayerId = alivePlayers.some((player) => player.id === Number(state.dayStartPlayerId)) ? Number(state.dayStartPlayerId) : alivePlayers[0]?.id || "";
   const votingOpen = hasDayVoting(state);
   const foulVotes = state.foulVotes && typeof state.foulVotes === "object" ? state.foulVotes : {};
   const voteCounts = voteTally(votes, foulVotes, (id) => state.players.some((player) => player.id === id && player.alive));
@@ -2072,6 +2075,40 @@ function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootou
       "div",
       { className: "day-flow-head" },
       h("div", null, h("h3", null, votingOpen ? "Речи и голосование" : "Речи игроков"), h("span", null, votingOpen ? `${completedVotes} / ${alivePlayers.length} голосов` : `${speechesComplete} / ${alivePlayers.length} речей`))
+    ),
+    h(
+      "div",
+      { className: "day-order-controls" },
+      h(
+        "label",
+        null,
+        h("span", null, "Открывает стол"),
+        h(
+          "select",
+          {
+            value: selectedDayStartPlayerId,
+            onChange: (event) => updateDayOrder("dayStartPlayerId", event.target.value),
+            "data-testid": "day-start-player"
+          },
+          alivePlayers.map((player) => h("option", { key: player.id, value: player.id }, `#${player.id}`))
+        )
+      ),
+      h(
+        "label",
+        null,
+        h("span", null, "Направление"),
+        h(
+          "select",
+          {
+            value: state.dayDirection === "backward" ? "backward" : "forward",
+            onChange: (event) => updateDayOrder("dayDirection", event.target.value),
+            "data-testid": "day-direction"
+          },
+          h("option", { value: "forward" }, "Вперед"),
+          h("option", { value: "backward" }, "Назад")
+        )
+      ),
+      h("div", { className: "day-order-preview" }, h("span", null, "Очередь"), h("strong", null, orderPreview || "-"))
     ),
     h(
       "div",
