@@ -249,6 +249,10 @@ function loadState() {
       loaded.dayStartPlayerId = loaded.players.some((player) => player.id === savedDayStartPlayerId && player.alive)
         ? savedDayStartPlayerId
         : firstAlivePlayerId(loaded);
+      if (loaded.phase === "speeches") {
+        loaded.timer.currentSpeaker = resolveCurrentDaySpeaker(loaded, Number(loaded.timer.currentSpeaker));
+        loaded.timer.running = Boolean(loaded.timer.running && loaded.timer.currentSpeaker);
+      }
       return normalizeLoadedGameOver(loaded);
     }
   } catch {
@@ -381,15 +385,35 @@ function completeSpeechIds(state) {
 }
 
 function nextOrderedSpeaker(state, currentSpeaker) {
-  return window.MafiaUiFocus?.nextDaySpeaker?.({
-    ...state,
-    currentSpeaker,
-    completeIds: completeSpeechIds(state)
-  }) || 0;
+  const completeIds = completeSpeechIds(state);
+  if (window.MafiaUiFocus?.nextDaySpeaker) {
+    return window.MafiaUiFocus.nextDaySpeaker({
+      ...state,
+      currentSpeaker,
+      completeIds
+    }) || 0;
+  }
+  const order = dayOrder(state);
+  if (!order.length || order.every((id) => completeIds.includes(id))) return 0;
+  const currentIndex = order.indexOf(Number(currentSpeaker));
+  const startIndex = currentIndex >= 0 ? currentIndex + 1 : 0;
+  for (let offset = 0; offset < order.length; offset += 1) {
+    const id = order[(startIndex + offset) % order.length];
+    if (!completeIds.includes(id)) return id;
+  }
+  return 0;
 }
 
 function firstAlivePlayerId(state) {
   return state.players.find((player) => player.alive)?.id || 1;
+}
+
+function resolveCurrentDaySpeaker(state, preferredSpeaker) {
+  const speakerId = Number(preferredSpeaker);
+  const completeIds = new Set(completeSpeechIds(state));
+  const speakerPending = state.players.some((player) => player.id === speakerId && player.alive) && !completeIds.has(speakerId);
+  if (speakerPending) return speakerId;
+  return nextOrderedSpeaker(state, speakerId) || nextOrderedSpeaker(state, 0);
 }
 
 function resetDayOrder(draft) {
@@ -1611,6 +1635,7 @@ function App() {
         const selectedId = Number(value);
         if (!draft.players.some((player) => player.id === selectedId && player.alive)) return;
         draft.dayStartPlayerId = selectedId;
+        draft.timer.currentSpeaker = resolveCurrentDaySpeaker(draft, selectedId);
       }
       if (field === "dayDirection") {
         draft.dayDirection = window.MafiaUiFocus?.normalizeDayDirection(value) || "forward";
