@@ -69,6 +69,57 @@
     });
   }
 
+  function checkReveal(check) {
+    const by = String(check?.by || "");
+    const target = Number(check?.target);
+    const result = String(check?.result || "");
+    if (!target || !["Шериф", "Дон"].includes(by)) return null;
+    const isSheriff = by === "Шериф";
+    const found = isSheriff ? result === "черный" : result === "шериф";
+    return {
+      by,
+      target,
+      title: isSheriff ? "Проверка Шерифа" : "Проверка Дона",
+      message: isSheriff
+        ? found ? "Мафия найдена" : "Мафия не найдена"
+        : found ? "Шериф найден" : "Шериф не найден",
+      targetLabel: `Игрок #${target}`,
+      icon: isSheriff ? "BadgeCheck" : "Crown",
+      tone: isSheriff ? found ? "mafia-found" : "mafia-clear" : found ? "sheriff-found" : "sheriff-missing",
+      actionKey: isSheriff ? "sheriff" : "don"
+    };
+  }
+
+  function normalizedDiscoveryAction(actionKey) {
+    return ["sheriff", "don"].includes(actionKey) ? actionKey : "";
+  }
+
+  function normalizedDiscoveries(discoveries) {
+    if (!discoveries || typeof discoveries !== "object") return {};
+    return Object.fromEntries(
+      Object.entries(discoveries)
+        .map(([key, value]) => [normalizedDiscoveryAction(key), Number(value)])
+        .filter(([key, value]) => key && value)
+    );
+  }
+
+  function recordCheckDiscovery(discoveries, actionKey, target, shouldRecord) {
+    const key = normalizedDiscoveryAction(actionKey);
+    const next = normalizedDiscoveries(discoveries);
+    if (!key) return next;
+    delete next[key];
+    const targetId = Number(target);
+    if (shouldRecord && targetId) next[key] = targetId;
+    return next;
+  }
+
+  function rollbackCheckDiscovery(knownIds, discoveries, actionKey) {
+    const key = normalizedDiscoveryAction(actionKey);
+    const discoveryId = Number(normalizedDiscoveries(discoveries)[key]);
+    const known = uniqueNumberList(knownIds || []);
+    return discoveryId ? known.filter((id) => id !== discoveryId) : known;
+  }
+
   function voteAudit(context) {
     const playerId = Number(context?.playerId);
     const votes = context?.votes || {};
@@ -194,6 +245,7 @@
   }
 
   root.MafiaUiFocus = {
+    checkReveal,
     daySpeakerOrder,
     filterInitialImmunityTargets,
     finalSpeechRequiredDeathIds,
@@ -205,6 +257,8 @@
     normalizeDayDirection,
     phaseProgress,
     primaryFocus,
+    recordCheckDiscovery,
+    rollbackCheckDiscovery,
     rowFlashClass,
     shouldExpireInitialImmunity,
     toggleInitialImmunitySelection,

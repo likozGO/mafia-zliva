@@ -155,3 +155,59 @@ test("game over presentation stays above app chrome and remains readable in blac
   assert.match(CSS, /\.game-over-emblem \.asset-icon\s*\{[\s\S]*width:\s*56px[\s\S]*height:\s*56px/s);
   assert.match(CSS, /\.theme-black \.game-over-copy h2\s*\{[\s\S]*color:\s*#f8fafc/s);
 });
+
+test("black theme keeps the vote results heading readable", () => {
+  assert.match(CSS, /\.theme-black \.vote-results-head h3\s*\{[\s\S]*color:\s*#f8fafc/s);
+});
+
+test("black theme uses muted button accents instead of the signal yellow fill", () => {
+  const primaryRule = CSS.match(/\.theme-black \.primary-action,[\s\S]*?\.theme-black \.day-player-row button\.ok\s*\{([\s\S]*?)\}/)?.[1] || "";
+  assert.match(CSS, /--button-accent:\s*#[0-9a-f]{6}/i);
+  assert.match(primaryRule, /background:\s*var\(--button-accent\)/);
+  assert.doesNotMatch(primaryRule, /background:\s*var\(--accent\)/);
+});
+
+test("black theme keeps selected player cards and night target notes subdued", () => {
+  const selectedRule = CSS.match(/\.theme-black \.player-card\.selected,[\s\S]*?\.theme-black \.day-player-row\.current\s*\{([\s\S]*?)\}/)?.[1] || "";
+  const targetNoteRule = CSS.match(/\.theme-black \.night-target-note\s*\{([\s\S]*?)\}/)?.[1] || "";
+
+  assert.match(selectedRule, /border-color:\s*var\(--button-accent-border\)/);
+  assert.doesNotMatch(selectedRule, /border-color:\s*var\(--accent\)/);
+  assert.match(targetNoteRule, /background:\s*#211d16/);
+  assert.match(targetNoteRule, /color:\s*var\(--quiet-accent-text\)/);
+});
+
+test("black theme keeps the night ledger count pill subdued", () => {
+  const countPillRule = CSS.match(/\.theme-black \.night-ledger-head span\s*\{([\s\S]*?)\}/)?.[1] || "";
+
+  assert.match(countPillRule, /background:\s*var\(--quiet-accent-bg\)/);
+  assert.match(countPillRule, /color:\s*var\(--quiet-accent-text\)/);
+  assert.doesNotMatch(countPillRule, /background:\s*#fff/);
+});
+
+test("night checks open a host-only reveal overlay with a repeat action", () => {
+  assert.match(APP, /checkReveal/);
+  assert.match(APP, /function CheckRevealOverlay/);
+  assert.match(APP, /setCheckReveal/);
+  assert.match(APP, /window\.MafiaUiFocus\?\.checkReveal/);
+  assert.match(APP, /Показать последнюю проверку/);
+  assert.match(APP, /Исправить/);
+  assert.match(CSS, /\.check-reveal-overlay/);
+  assert.match(CSS, /\.check-reveal-card/);
+  assert.match(CSS, /\.last-check-reveal/);
+});
+
+test("night actions live in the main column above the player board", () => {
+  assert.match(APP, /function NightOperationsBlock/);
+  assert.match(APP, /state\.phase === "night" && h\(NightOperationsBlock/);
+  assert.match(APP, /h\(Board, \{ state, updateState, setView, selectPlayer, rolesForPlayer, isMafiaVisible \}\)/);
+  assert.match(APP, /function ActionPanel\(\{ state, updateState, updateTimerSetting, toggleTimer, resetTimer, blockReason, openDrawers, setOpenDrawers, lastCheckReveal, onShowCheckReveal \}\)/);
+  assert.match(CSS, /\.night-operations-grid/);
+  assert.match(CSS, /\.night-action-card\.main-night-action/);
+  assert.match(CSS, /\.night-ledger\.main-night-ledger/);
+});
+
+test("mobile night layout keeps main night actions before the side panel", () => {
+  assert.match(APP, /className: `workspace \$\{state\.phase === "introNight" \? "" : "game-workspace"\} phase-\$\{state\.phase\}`/);
+  assert.match(CSS, /\.workspace\.game-workspace\.phase-night \.action-panel\s*\{[\s\S]*order:\s*0/s);
+});

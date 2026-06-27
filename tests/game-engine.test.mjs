@@ -96,6 +96,22 @@ test("detectWinner covers mafia, civilians, maniac, and unfinished games", () =>
   assert.equal(engine.detectWinner(engine.makeBlankState(10)), null);
 });
 
+test("kamikaze redirect target options exclude the kamikaze themself", () => {
+  const state = engine.makeBlankState(20);
+  state.phase = "night";
+  state.nightNumber = 2;
+  state.activeAction = "kamikaze";
+  state.targetId = 20;
+  state.night.kamikazeRedirect = { kamikaze: 20, target: null, actions: ["mafia"] };
+  state.players.find((player) => player.id === 18).alive = false;
+
+  const targets = engine.nightTargetOptions(state, "kamikaze").map((option) => option.id);
+
+  assert.ok(!targets.includes(20), "kamikaze should not be able to redirect to themself");
+  assert.ok(!targets.includes(18), "dead players should not be target options");
+  assert.ok(targets.includes(19), "other alive players remain available");
+});
+
 test("thirty deterministic elimination simulations end with a valid winner", () => {
   const winners = new Set(["Мафия", "Мирные", "Маньяк"]);
 

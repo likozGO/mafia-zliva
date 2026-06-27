@@ -1,0 +1,6629 @@
+{
+  "summary": {
+    "runs": 300,
+    "baseSeed": 8675309,
+    "winners": {
+      "Маньяк": 17,
+      "Мафия": 202,
+      "Мирные": 81
+    },
+    "nights": 1899,
+    "dayDeaths": 1349,
+    "nightDeaths": 2557,
+    "kamikazeActivations": 850,
+    "multiAttackRedirects": 321,
+    "selfRedirects": 157,
+    "sheriffShotAtKamikaze": 0,
+    "shieldBlockedMafia": 259,
+    "findingsBySeverity": {
+      "odd-case": 157
+    }
+  },
+  "games": [
+    {
+      "gameNumber": 1,
+      "playerCount": 15,
+      "nights": 10,
+      "dayDeaths": 7,
+      "nightDeaths": 5,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 2,
+      "playerCount": 15,
+      "nights": 5,
+      "dayDeaths": 2,
+      "nightDeaths": 5,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 3,
+      "playerCount": 15,
+      "nights": 8,
+      "dayDeaths": 7,
+      "nightDeaths": 6,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 4,
+      "playerCount": 15,
+      "nights": 5,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 5,
+      "playerCount": 15,
+      "nights": 5,
+      "dayDeaths": 2,
+      "nightDeaths": 7,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 6,
+      "playerCount": 15,
+      "nights": 11,
+      "dayDeaths": 4,
+      "nightDeaths": 9,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 7,
+      "playerCount": 15,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 8,
+      "playerCount": 15,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 7,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 9,
+      "playerCount": 15,
+      "nights": 10,
+      "dayDeaths": 3,
+      "nightDeaths": 10,
+      "kamikazeActivations": 8,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 10,
+      "playerCount": 15,
+      "nights": 11,
+      "dayDeaths": 7,
+      "nightDeaths": 6,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 11,
+      "playerCount": 15,
+      "nights": 7,
+      "dayDeaths": 7,
+      "nightDeaths": 6,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 2,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 12,
+      "playerCount": 15,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 6,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 13,
+      "playerCount": 15,
+      "nights": 3,
+      "dayDeaths": 4,
+      "nightDeaths": 3,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 14,
+      "playerCount": 15,
+      "nights": 8,
+      "dayDeaths": 7,
+      "nightDeaths": 6,
+      "kamikazeActivations": 7,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 15,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 16,
+      "playerCount": 15,
+      "nights": 9,
+      "dayDeaths": 4,
+      "nightDeaths": 9,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 17,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 6,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 18,
+      "playerCount": 15,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 19,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 20,
+      "playerCount": 15,
+      "nights": 4,
+      "dayDeaths": 4,
+      "nightDeaths": 5,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 21,
+      "playerCount": 15,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 4,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 7,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 22,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 8,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 23,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 24,
+      "playerCount": 15,
+      "nights": 4,
+      "dayDeaths": 2,
+      "nightDeaths": 5,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 25,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 7,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 26,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 3,
+      "nightDeaths": 8,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 27,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 6,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 28,
+      "playerCount": 15,
+      "nights": 5,
+      "dayDeaths": 5,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 29,
+      "playerCount": 15,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 8,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 30,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 31,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 3,
+      "nightDeaths": 8,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 32,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 6,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 5,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 33,
+      "playerCount": 15,
+      "nights": 3,
+      "dayDeaths": 4,
+      "nightDeaths": 4,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 7,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 34,
+      "playerCount": 15,
+      "nights": 5,
+      "dayDeaths": 1,
+      "nightDeaths": 8,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 35,
+      "playerCount": 15,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 36,
+      "playerCount": 15,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 9,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 37,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 38,
+      "playerCount": 15,
+      "nights": 4,
+      "dayDeaths": 2,
+      "nightDeaths": 5,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 39,
+      "playerCount": 15,
+      "nights": 5,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 40,
+      "playerCount": 15,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 41,
+      "playerCount": 15,
+      "nights": 6,
+      "dayDeaths": 3,
+      "nightDeaths": 7,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 5,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 42,
+      "playerCount": 15,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 43,
+      "playerCount": 16,
+      "nights": 3,
+      "dayDeaths": 2,
+      "nightDeaths": 4,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 44,
+      "playerCount": 16,
+      "nights": 4,
+      "dayDeaths": 3,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 45,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 46,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 47,
+      "playerCount": 16,
+      "nights": 4,
+      "dayDeaths": 4,
+      "nightDeaths": 8,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 48,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 7,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 49,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 50,
+      "playerCount": 16,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 51,
+      "playerCount": 16,
+      "nights": 2,
+      "dayDeaths": 2,
+      "nightDeaths": 4,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 52,
+      "playerCount": 16,
+      "nights": 4,
+      "dayDeaths": 5,
+      "nightDeaths": 7,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 53,
+      "playerCount": 16,
+      "nights": 2,
+      "dayDeaths": 3,
+      "nightDeaths": 2,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 54,
+      "playerCount": 16,
+      "nights": 4,
+      "dayDeaths": 3,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 55,
+      "playerCount": 16,
+      "nights": 3,
+      "dayDeaths": 3,
+      "nightDeaths": 2,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 56,
+      "playerCount": 16,
+      "nights": 4,
+      "dayDeaths": 2,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 5,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 57,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 7,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 58,
+      "playerCount": 16,
+      "nights": 3,
+      "dayDeaths": 2,
+      "nightDeaths": 3,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 59,
+      "playerCount": 16,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 8,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 60,
+      "playerCount": 16,
+      "nights": 8,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 61,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 62,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 8,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 63,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 64,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 5,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 65,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 66,
+      "playerCount": 16,
+      "nights": 3,
+      "dayDeaths": 3,
+      "nightDeaths": 5,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 67,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 68,
+      "playerCount": 16,
+      "nights": 4,
+      "dayDeaths": 3,
+      "nightDeaths": 5,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 69,
+      "playerCount": 16,
+      "nights": 7,
+      "dayDeaths": 3,
+      "nightDeaths": 9,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 70,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 2,
+      "nightDeaths": 6,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 8,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 71,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 8,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 72,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 73,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 8,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 74,
+      "playerCount": 16,
+      "nights": 9,
+      "dayDeaths": 2,
+      "nightDeaths": 12,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 75,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 7,
+      "nightDeaths": 5,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 76,
+      "playerCount": 16,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 5,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 77,
+      "playerCount": 16,
+      "nights": 3,
+      "dayDeaths": 3,
+      "nightDeaths": 4,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 78,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 79,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 6,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 4,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 80,
+      "playerCount": 16,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 9,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 81,
+      "playerCount": 16,
+      "nights": 3,
+      "dayDeaths": 2,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 82,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 83,
+      "playerCount": 16,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 9,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 84,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 85,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 86,
+      "playerCount": 16,
+      "nights": 6,
+      "dayDeaths": 3,
+      "nightDeaths": 10,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 87,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 9,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 88,
+      "playerCount": 17,
+      "nights": 3,
+      "dayDeaths": 3,
+      "nightDeaths": 6,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 8,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 89,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 90,
+      "playerCount": 17,
+      "nights": 3,
+      "dayDeaths": 2,
+      "nightDeaths": 4,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 91,
+      "playerCount": 17,
+      "nights": 8,
+      "dayDeaths": 4,
+      "nightDeaths": 9,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 92,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 12,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 1,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 93,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 4,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 94,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 95,
+      "playerCount": 17,
+      "nights": 10,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 96,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 6,
+      "nightDeaths": 8,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 97,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 98,
+      "playerCount": 17,
+      "nights": 10,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 99,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 8,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 100,
+      "playerCount": 17,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 101,
+      "playerCount": 17,
+      "nights": 3,
+      "dayDeaths": 1,
+      "nightDeaths": 6,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 102,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 8,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 103,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 2,
+      "nightDeaths": 13,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 104,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 105,
+      "playerCount": 17,
+      "nights": 9,
+      "dayDeaths": 3,
+      "nightDeaths": 12,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 106,
+      "playerCount": 17,
+      "nights": 7,
+      "dayDeaths": 8,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 107,
+      "playerCount": 17,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 108,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 8,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 109,
+      "playerCount": 17,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 110,
+      "playerCount": 17,
+      "nights": 4,
+      "dayDeaths": 3,
+      "nightDeaths": 3,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 111,
+      "playerCount": 17,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Маньяк",
+      "alive": 1,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 112,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 113,
+      "playerCount": 17,
+      "nights": 4,
+      "dayDeaths": 3,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 114,
+      "playerCount": 17,
+      "nights": 3,
+      "dayDeaths": 3,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 115,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 2,
+      "nightDeaths": 7,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 116,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 5,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 117,
+      "playerCount": 17,
+      "nights": 4,
+      "dayDeaths": 2,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 118,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 119,
+      "playerCount": 17,
+      "nights": 4,
+      "dayDeaths": 3,
+      "nightDeaths": 8,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 120,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 121,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 122,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 123,
+      "playerCount": 17,
+      "nights": 4,
+      "dayDeaths": 4,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 124,
+      "playerCount": 17,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 125,
+      "playerCount": 17,
+      "nights": 3,
+      "dayDeaths": 1,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 126,
+      "playerCount": 17,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 7,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 127,
+      "playerCount": 17,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 7,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 128,
+      "playerCount": 17,
+      "nights": 4,
+      "dayDeaths": 2,
+      "nightDeaths": 4,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 129,
+      "playerCount": 17,
+      "nights": 5,
+      "dayDeaths": 2,
+      "nightDeaths": 8,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 130,
+      "playerCount": 17,
+      "nights": 3,
+      "dayDeaths": 3,
+      "nightDeaths": 6,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 7,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 131,
+      "playerCount": 18,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 132,
+      "playerCount": 18,
+      "nights": 6,
+      "dayDeaths": 3,
+      "nightDeaths": 10,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 133,
+      "playerCount": 18,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 7,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 134,
+      "playerCount": 18,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 135,
+      "playerCount": 18,
+      "nights": 3,
+      "dayDeaths": 1,
+      "nightDeaths": 6,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 11,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 136,
+      "playerCount": 18,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 137,
+      "playerCount": 18,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 138,
+      "playerCount": 18,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 139,
+      "playerCount": 18,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 140,
+      "playerCount": 18,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 11,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 141,
+      "playerCount": 18,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 2,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 142,
+      "playerCount": 18,
+      "nights": 3,
+      "dayDeaths": 1,
+      "nightDeaths": 5,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 12,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 143,
+      "playerCount": 18,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 144,
+      "playerCount": 18,
+      "nights": 9,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 145,
+      "playerCount": 18,
+      "nights": 4,
+      "dayDeaths": 5,
+      "nightDeaths": 7,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 5,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 146,
+      "playerCount": 18,
+      "nights": 2,
+      "dayDeaths": 1,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 11,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 147,
+      "playerCount": 18,
+      "nights": 3,
+      "dayDeaths": 2,
+      "nightDeaths": 8,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 148,
+      "playerCount": 18,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 149,
+      "playerCount": 18,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 12,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 150,
+      "playerCount": 18,
+      "nights": 8,
+      "dayDeaths": 7,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 151,
+      "playerCount": 18,
+      "nights": 4,
+      "dayDeaths": 3,
+      "nightDeaths": 7,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 152,
+      "playerCount": 18,
+      "nights": 7,
+      "dayDeaths": 3,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 153,
+      "playerCount": 18,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 12,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 154,
+      "playerCount": 18,
+      "nights": 5,
+      "dayDeaths": 1,
+      "nightDeaths": 10,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 7,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 155,
+      "playerCount": 18,
+      "nights": 8,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 156,
+      "playerCount": 18,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 9,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 157,
+      "playerCount": 18,
+      "nights": 4,
+      "dayDeaths": 3,
+      "nightDeaths": 4,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 158,
+      "playerCount": 18,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 6,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 159,
+      "playerCount": 18,
+      "nights": 7,
+      "dayDeaths": 3,
+      "nightDeaths": 13,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 160,
+      "playerCount": 18,
+      "nights": 8,
+      "dayDeaths": 7,
+      "nightDeaths": 9,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 6,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 161,
+      "playerCount": 18,
+      "nights": 2,
+      "dayDeaths": 1,
+      "nightDeaths": 5,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 12,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 162,
+      "playerCount": 18,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 13,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 1,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 163,
+      "playerCount": 18,
+      "nights": 8,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 164,
+      "playerCount": 18,
+      "nights": 3,
+      "dayDeaths": 2,
+      "nightDeaths": 6,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 165,
+      "playerCount": 18,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 166,
+      "playerCount": 18,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 167,
+      "playerCount": 18,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 168,
+      "playerCount": 18,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 12,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 1,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 169,
+      "playerCount": 18,
+      "nights": 4,
+      "dayDeaths": 1,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 11,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 170,
+      "playerCount": 18,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 8,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 171,
+      "playerCount": 18,
+      "nights": 3,
+      "dayDeaths": 3,
+      "nightDeaths": 5,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 172,
+      "playerCount": 18,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 11,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 173,
+      "playerCount": 18,
+      "nights": 2,
+      "dayDeaths": 1,
+      "nightDeaths": 5,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 12,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 174,
+      "playerCount": 18,
+      "nights": 3,
+      "dayDeaths": 4,
+      "nightDeaths": 4,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 175,
+      "playerCount": 19,
+      "nights": 9,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 176,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 3,
+      "nightDeaths": 8,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 177,
+      "playerCount": 19,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 11,
+      "kamikazeActivations": 7,
+      "multiAttackRedirects": 5,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 178,
+      "playerCount": 19,
+      "nights": 8,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 179,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 180,
+      "playerCount": 19,
+      "nights": 9,
+      "dayDeaths": 8,
+      "nightDeaths": 7,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 181,
+      "playerCount": 19,
+      "nights": 4,
+      "dayDeaths": 1,
+      "nightDeaths": 7,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 182,
+      "playerCount": 19,
+      "nights": 5,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 183,
+      "playerCount": 19,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 184,
+      "playerCount": 19,
+      "nights": 8,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 185,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 5,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 186,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 5,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 187,
+      "playerCount": 19,
+      "nights": 10,
+      "dayDeaths": 7,
+      "nightDeaths": 9,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 188,
+      "playerCount": 19,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 189,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 12,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 3,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 190,
+      "playerCount": 19,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 191,
+      "playerCount": 19,
+      "nights": 2,
+      "dayDeaths": 1,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 12,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 192,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 2,
+      "nightDeaths": 11,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 193,
+      "playerCount": 19,
+      "nights": 4,
+      "dayDeaths": 4,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 194,
+      "playerCount": 19,
+      "nights": 4,
+      "dayDeaths": 4,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 195,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 11,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 196,
+      "playerCount": 19,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 4,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 197,
+      "playerCount": 19,
+      "nights": 9,
+      "dayDeaths": 7,
+      "nightDeaths": 9,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 198,
+      "playerCount": 19,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 5,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 199,
+      "playerCount": 19,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 200,
+      "playerCount": 19,
+      "nights": 5,
+      "dayDeaths": 2,
+      "nightDeaths": 11,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 2,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 201,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 202,
+      "playerCount": 19,
+      "nights": 8,
+      "dayDeaths": 7,
+      "nightDeaths": 10,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 203,
+      "playerCount": 19,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 8,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 204,
+      "playerCount": 19,
+      "nights": 11,
+      "dayDeaths": 5,
+      "nightDeaths": 11,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 205,
+      "playerCount": 19,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 11,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 206,
+      "playerCount": 19,
+      "nights": 3,
+      "dayDeaths": 3,
+      "nightDeaths": 6,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 207,
+      "playerCount": 19,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 9,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 208,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 3,
+      "nightDeaths": 9,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 209,
+      "playerCount": 19,
+      "nights": 9,
+      "dayDeaths": 5,
+      "nightDeaths": 11,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 210,
+      "playerCount": 19,
+      "nights": 10,
+      "dayDeaths": 5,
+      "nightDeaths": 11,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 211,
+      "playerCount": 19,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 8,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 212,
+      "playerCount": 19,
+      "nights": 4,
+      "dayDeaths": 5,
+      "nightDeaths": 6,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 213,
+      "playerCount": 19,
+      "nights": 9,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 214,
+      "playerCount": 19,
+      "nights": 8,
+      "dayDeaths": 7,
+      "nightDeaths": 9,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 215,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 216,
+      "playerCount": 19,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 217,
+      "playerCount": 19,
+      "nights": 8,
+      "dayDeaths": 4,
+      "nightDeaths": 13,
+      "kamikazeActivations": 7,
+      "multiAttackRedirects": 4,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 218,
+      "playerCount": 19,
+      "nights": 10,
+      "dayDeaths": 8,
+      "nightDeaths": 7,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 219,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 8,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 5,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 220,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 221,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 3,
+      "nightDeaths": 16,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 1,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 222,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 12,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 223,
+      "playerCount": 20,
+      "nights": 9,
+      "dayDeaths": 4,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 224,
+      "playerCount": 20,
+      "nights": 12,
+      "dayDeaths": 9,
+      "nightDeaths": 8,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 225,
+      "playerCount": 20,
+      "nights": 10,
+      "dayDeaths": 4,
+      "nightDeaths": 12,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 226,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 12,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 227,
+      "playerCount": 20,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 12,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 228,
+      "playerCount": 20,
+      "nights": 5,
+      "dayDeaths": 6,
+      "nightDeaths": 8,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 229,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 11,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 230,
+      "playerCount": 20,
+      "nights": 13,
+      "dayDeaths": 8,
+      "nightDeaths": 10,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 231,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 9,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 232,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 12,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 233,
+      "playerCount": 20,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 234,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 235,
+      "playerCount": 20,
+      "nights": 9,
+      "dayDeaths": 7,
+      "nightDeaths": 10,
+      "kamikazeActivations": 7,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 236,
+      "playerCount": 20,
+      "nights": 3,
+      "dayDeaths": 2,
+      "nightDeaths": 8,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 237,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 11,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 238,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 8,
+      "nightDeaths": 9,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 239,
+      "playerCount": 20,
+      "nights": 5,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 240,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 3,
+      "nightDeaths": 6,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 4,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 241,
+      "playerCount": 20,
+      "nights": 11,
+      "dayDeaths": 9,
+      "nightDeaths": 8,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 5,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 242,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 12,
+      "kamikazeActivations": 7,
+      "multiAttackRedirects": 4,
+      "selfRedirects": 2,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 243,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 3,
+      "nightDeaths": 11,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 244,
+      "playerCount": 20,
+      "nights": 6,
+      "dayDeaths": 4,
+      "nightDeaths": 10,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 245,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 13,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Маньяк",
+      "alive": 1,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 246,
+      "playerCount": 20,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 247,
+      "playerCount": 20,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 7,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 9,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 248,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 7,
+      "nightDeaths": 6,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 249,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 6,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 250,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 14,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 251,
+      "playerCount": 20,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 7,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 252,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 3,
+      "nightDeaths": 12,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 253,
+      "playerCount": 20,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 5,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 12,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 254,
+      "playerCount": 20,
+      "nights": 9,
+      "dayDeaths": 9,
+      "nightDeaths": 6,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 255,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 12,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 256,
+      "playerCount": 20,
+      "nights": 9,
+      "dayDeaths": 8,
+      "nightDeaths": 8,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 257,
+      "playerCount": 20,
+      "nights": 5,
+      "dayDeaths": 6,
+      "nightDeaths": 11,
+      "kamikazeActivations": 0,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 258,
+      "playerCount": 20,
+      "nights": 5,
+      "dayDeaths": 4,
+      "nightDeaths": 5,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 259,
+      "playerCount": 20,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 12,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 260,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 12,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 261,
+      "playerCount": 20,
+      "nights": 6,
+      "dayDeaths": 6,
+      "nightDeaths": 9,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 262,
+      "playerCount": 20,
+      "nights": 7,
+      "dayDeaths": 7,
+      "nightDeaths": 9,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 3,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 263,
+      "playerCount": 21,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 264,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 13,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 265,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 5,
+      "nightDeaths": 6,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 4,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 266,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 267,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 12,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 268,
+      "playerCount": 21,
+      "nights": 12,
+      "dayDeaths": 7,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 269,
+      "playerCount": 21,
+      "nights": 3,
+      "dayDeaths": 3,
+      "nightDeaths": 6,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 12,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 270,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 3,
+      "nightDeaths": 12,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 271,
+      "playerCount": 21,
+      "nights": 4,
+      "dayDeaths": 5,
+      "nightDeaths": 8,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 272,
+      "playerCount": 21,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 13,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 273,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 7,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 274,
+      "playerCount": 21,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 10,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 275,
+      "playerCount": 21,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 12,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 276,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 13,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 277,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 7,
+      "nightDeaths": 12,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 278,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 7,
+      "nightDeaths": 9,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 279,
+      "playerCount": 21,
+      "nights": 4,
+      "dayDeaths": 5,
+      "nightDeaths": 5,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 280,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 12,
+      "kamikazeActivations": 6,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 281,
+      "playerCount": 21,
+      "nights": 6,
+      "dayDeaths": 5,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 282,
+      "playerCount": 21,
+      "nights": 5,
+      "dayDeaths": 3,
+      "nightDeaths": 8,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 10,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 283,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 6,
+      "nightDeaths": 6,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 284,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 7,
+      "nightDeaths": 12,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 285,
+      "playerCount": 21,
+      "nights": 8,
+      "dayDeaths": 3,
+      "nightDeaths": 12,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 4,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 286,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 4,
+      "nightDeaths": 11,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 287,
+      "playerCount": 21,
+      "nights": 8,
+      "dayDeaths": 7,
+      "nightDeaths": 9,
+      "kamikazeActivations": 7,
+      "multiAttackRedirects": 3,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 288,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 9,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 3,
+      "winner": "Мафия",
+      "alive": 6,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 289,
+      "playerCount": 21,
+      "nights": 8,
+      "dayDeaths": 5,
+      "nightDeaths": 14,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 290,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 7,
+      "nightDeaths": 11,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 291,
+      "playerCount": 21,
+      "nights": 8,
+      "dayDeaths": 7,
+      "nightDeaths": 12,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 292,
+      "playerCount": 21,
+      "nights": 8,
+      "dayDeaths": 8,
+      "nightDeaths": 10,
+      "kamikazeActivations": 4,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Маньяк",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 293,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 10,
+      "kamikazeActivations": 3,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 294,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 4,
+      "nightDeaths": 13,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мирные",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 295,
+      "playerCount": 21,
+      "nights": 8,
+      "dayDeaths": 6,
+      "nightDeaths": 11,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 4,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 296,
+      "playerCount": 21,
+      "nights": 7,
+      "dayDeaths": 5,
+      "nightDeaths": 14,
+      "kamikazeActivations": 1,
+      "multiAttackRedirects": 0,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 2,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 297,
+      "playerCount": 21,
+      "nights": 11,
+      "dayDeaths": 4,
+      "nightDeaths": 15,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 298,
+      "playerCount": 21,
+      "nights": 4,
+      "dayDeaths": 4,
+      "nightDeaths": 9,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 8,
+      "kamikazeAlive": false
+    },
+    {
+      "gameNumber": 299,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 7,
+      "nightDeaths": 12,
+      "kamikazeActivations": 5,
+      "multiAttackRedirects": 2,
+      "selfRedirects": 0,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 0,
+      "winner": "Мафия",
+      "alive": 2,
+      "kamikazeAlive": true
+    },
+    {
+      "gameNumber": 300,
+      "playerCount": 21,
+      "nights": 9,
+      "dayDeaths": 6,
+      "nightDeaths": 12,
+      "kamikazeActivations": 2,
+      "multiAttackRedirects": 1,
+      "selfRedirects": 1,
+      "sheriffShotAtKamikaze": 0,
+      "shieldBlockedMafia": 1,
+      "winner": "Мирные",
+      "alive": 2,
+      "kamikazeAlive": false
+    }
+  ],
+  "findings": [
+    {
+      "severity": "odd-case",
+      "gameNumber": 1,
+      "turn": 8,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 9,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 2,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 14,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 3,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 4,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 6,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 13,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 11,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 9,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 11,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 9,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 14,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 5,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 15,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 7,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 16,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 9,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 18,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 11,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 19,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 11,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 21,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 9,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 22,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 2,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 24,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 15,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 26,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 9,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 29,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 5,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 32,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 2,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 34,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 5,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 35,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 12,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 36,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 10,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 37,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 12,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 38,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 3,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 40,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 15,
+        "kamikazeId": 7,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 43,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 14,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 44,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 6,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 46,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 13,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 49,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 3,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 54,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 1,
+        "actions": [
+          "mafia",
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 55,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 11,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 56,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 8,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 63,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 12,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 64,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 9,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 68,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 10,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 69,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 7,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 70,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 15,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 71,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 1,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 72,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 15,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 81,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 14,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 82,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 6,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 84,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 16,
+        "kamikazeId": 13,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 87,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 3,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 89,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 7,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 90,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 9,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 93,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 2,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 95,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 15,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 98,
+      "turn": 9,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 13,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 100,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 4,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 103,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 10,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 104,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 12,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 106,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 17,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 108,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 7,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 110,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 11,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 111,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 13,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 112,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 16,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 114,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 7,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 115,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 14,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 116,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 11,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 117,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 13,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 118,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 2,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 119,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 4,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 120,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 6,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 123,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 12,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 125,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 3,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 126,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 5,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 127,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 7,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 128,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 10,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 129,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 16,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 130,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 17,
+        "kamikazeId": 14,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 131,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 17,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 132,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 17,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 133,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 7,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 134,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 10,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 135,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 12,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 136,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 18,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 140,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 9,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 144,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 4,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 146,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 8,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 151,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 17,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 152,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 8,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 156,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 2,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 159,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 9,
+        "actions": [
+          "mafia",
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 161,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 16,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 167,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 13,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 169,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 17,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 170,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 6,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 171,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 18,
+        "kamikazeId": 8,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 175,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 9,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 176,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 9,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 178,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 9,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 179,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 18,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 180,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 10,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 181,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 10,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 182,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 10,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 183,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 10,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 188,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 11,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 190,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 18,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 191,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 12,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 194,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 12,
+        "actions": [
+          "mafia",
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 195,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 16,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 199,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 19,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 200,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 13,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 200,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 13,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 201,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 13,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 202,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 14,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 205,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 15,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 207,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 1,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 210,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 1,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 212,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 18,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 213,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 19,
+        "actions": [
+          "mafia",
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 215,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 2,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 216,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 2,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 218,
+      "turn": 10,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 19,
+        "kamikazeId": 2,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 220,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 7,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 221,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 17,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 223,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 17,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 224,
+      "turn": 9,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 5,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 225,
+      "turn": 8,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 7,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 231,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 18,
+        "actions": [
+          "mafia",
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 232,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 13,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 234,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 4,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 239,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 4,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 242,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 16,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 242,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 16,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 243,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 2,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 244,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 18,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 246,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 20,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 247,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 13,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 249,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 4,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 250,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 7,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 251,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 10,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 252,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 13,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 254,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 20,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 255,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 7,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 260,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 7,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 261,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 20,
+        "kamikazeId": 10,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 266,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 19,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 270,
+      "turn": 5,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 10,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 271,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 4,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 272,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 11,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 273,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 18,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 274,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 13,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 275,
+      "turn": 8,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 18,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 276,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 16,
+        "actions": [
+          "mafia",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 277,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 8,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 279,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 10,
+        "actions": [
+          "mafia"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 281,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 11,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 282,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 5,
+        "actions": [
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 284,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 19,
+        "actions": [
+          "mafia",
+          "lovers"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 286,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 19,
+        "actions": [
+          "mafia",
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 289,
+      "turn": 4,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 3,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 292,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 21,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 294,
+      "turn": 6,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 14,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 295,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 8,
+        "actions": [
+          "mafia",
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 296,
+      "turn": 1,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 1,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 297,
+      "turn": 7,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 17,
+        "actions": [
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 298,
+      "turn": 3,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 16,
+        "actions": [
+          "lovers",
+          "maniac"
+        ]
+      }
+    },
+    {
+      "severity": "odd-case",
+      "gameNumber": 300,
+      "turn": 2,
+      "message": "Kamikaze redirect accepted kamikaze as the redirected target, so kamikaze dies by own redirected attack.",
+      "state": {
+        "playerCount": 21,
+        "kamikazeId": 19,
+        "actions": [
+          "maniac"
+        ]
+      }
+    }
+  ]
+}

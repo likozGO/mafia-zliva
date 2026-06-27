@@ -5,6 +5,9 @@ await import("../src/ui-focus.js");
 
 const {
   daySpeakerOrder,
+  checkReveal,
+  recordCheckDiscovery,
+  rollbackCheckDiscovery,
   finalSpeechRequiredDeathIds,
   filterInitialImmunityTargets,
   initialImmunityActiveIds,
@@ -120,6 +123,31 @@ test("nightActionLedger returns one row per action with actor, target, result, a
     { key: "don", label: "Дон", state: "done", actor: "#3", target: "#4", result: "не шериф" },
     { key: "lawyer", label: "Адвокат", state: "pending", actor: "#8", target: "-", result: "Ожидает" }
   ]);
+});
+
+test("checkReveal formats sheriff and don check outcomes for the host overlay", () => {
+  assert.deepEqual(checkReveal({ by: "Шериф", target: 7, result: "черный" }), {
+    by: "Шериф",
+    target: 7,
+    title: "Проверка Шерифа",
+    message: "Мафия найдена",
+    targetLabel: "Игрок #7",
+    icon: "BadgeCheck",
+    tone: "mafia-found",
+    actionKey: "sheriff"
+  });
+  assert.equal(checkReveal({ by: "Шериф", target: 8, result: "красный" }).message, "Мафия не найдена");
+  assert.equal(checkReveal({ by: "Дон", target: 4, result: "шериф" }).message, "Шериф найден");
+  assert.equal(checkReveal({ by: "Дон", target: 5, result: "не шериф" }).message, "Шериф не найден");
+});
+
+test("check discovery tracking rolls back only knowledge added by the current night check", () => {
+  assert.deepEqual(recordCheckDiscovery({}, "sheriff", 5, true), { sheriff: 5 });
+  assert.deepEqual(recordCheckDiscovery({ sheriff: 5 }, "sheriff", 6, false), {});
+
+  assert.deepEqual(rollbackCheckDiscovery([5, 7], { sheriff: 5 }, "sheriff"), [7]);
+  assert.deepEqual(rollbackCheckDiscovery([5, 7], {}, "sheriff"), [5, 7]);
+  assert.deepEqual(rollbackCheckDiscovery([4], { don: 4 }, "don"), []);
 });
 
 test("voteAudit shows voter choice and target received totals", () => {

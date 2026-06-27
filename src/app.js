@@ -205,6 +205,7 @@ function makeBlankState(playerCount = DEFAULT_PLAYER_COUNT) {
       alibi: null,
       shielded: null,
       checks: [],
+      checkDiscoveries: {},
       bombed: [],
       previousBombed: null,
       blockedActions: {},
@@ -234,6 +235,7 @@ function loadState() {
           ...blank.night,
           ...(saved.night || {}),
           bombed: Array.isArray(saved.night?.bombed) ? saved.night.bombed : saved.night?.bombed ? [saved.night.bombed] : [],
+          checkDiscoveries: saved.night?.checkDiscoveries && typeof saved.night.checkDiscoveries === "object" ? saved.night.checkDiscoveries : {},
           blockedActions: saved.night?.blockedActions && typeof saved.night.blockedActions === "object" ? saved.night.blockedActions : {}
         },
         bombTargetIds: Array.isArray(saved.bombTargetIds) ? saved.bombTargetIds : blank.bombTargetIds,
@@ -663,6 +665,32 @@ function aliveKnownSheriffMafia(state) {
   return uniqueNumbers(state.sheriffMafiaFound || []).filter((id) => state.players.some((player) => player.id === id && player.alive));
 }
 
+function resolveBaseNightTargetOptions(state, actionKey, sourceOptions = null) {
+  const options = sourceOptions || state.players.map((player) => ({ id: player.id, label: `Игрок ${player.id}${player.alive ? "" : " (выбыл)"}` }));
+  const aliveOptions = options.filter((option) => state.players.some((player) => player.id === option.id && player.alive));
+  const doctorUnavailable = new Set([...lastHealedIds(state), ...healedIds(state)]);
+  const sheriffKnownTargets = aliveKnownSheriffMafia(state);
+  let targets = actionKey === "doctor"
+    ? aliveOptions.filter((option) => !doctorUnavailable.has(option.id))
+    : actionKey === "sheriff" && state.sheriffActionMode === "shoot"
+      ? aliveOptions.filter((option) => sheriffKnownTargets.includes(option.id))
+      : aliveOptions;
+
+  if (actionKey === "kamikaze") {
+    const kamikazeId = Number(state.night.kamikazeRedirect?.kamikaze);
+    if (kamikazeId) targets = targets.filter((option) => option.id !== kamikazeId);
+  }
+
+  return targets;
+}
+
+function resolveNightTargetOptions(state, actionKey, sourceOptions = null) {
+  return filterInitialImmunityOptions(resolveBaseNightTargetOptions(state, actionKey, sourceOptions), state, {
+    actionKey,
+    sheriffActionMode: state.sheriffActionMode || "check"
+  });
+}
+
 function phaseBlockReason(state, roleDrafts) {
   if (state.phase === "gameOver") return "Игра уже завершена.";
   if (state.phase === "introNight" && !state.rolesConfirmed) {
@@ -880,6 +908,7 @@ window.MafiaGameEngine = Object.freeze({
   actionActorIds,
   availableActions,
   availableNightActions,
+  nightTargetOptions: resolveNightTargetOptions,
   requiredNightActions,
   incompleteNightActions,
   doctorHealLimit,
@@ -952,6 +981,8 @@ function App() {
   const [gameOverOverlayHidden, setGameOverOverlayHidden] = useState(false);
   const [ledgerFlashKey, setLedgerFlashKey] = useState(null);
   const [blockerTooltipOpen, setBlockerTooltipOpen] = useState(false);
+  const [checkReveal, setCheckReveal] = useState(null);
+  const [lastCheckReveal, setLastCheckReveal] = useState(null);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -974,6 +1005,12 @@ function App() {
     const timeoutId = window.setTimeout(() => setLedgerFlashKey(null), 900);
     return () => window.clearTimeout(timeoutId);
   }, [ledgerFlashKey]);
+
+  useEffect(() => {
+    if (state.phase === "night") return;
+    setCheckReveal(null);
+    setLastCheckReveal(null);
+  }, [state.phase]);
 
   useEffect(() => {
     if (!state.timer.running) return undefined;
@@ -1149,6 +1186,18 @@ function App() {
     }
   };
 
+  const clearCheckDiscoveryEffect = (draft, actionKey) => {
+    if (!["sheriff", "don"].includes(actionKey)) return;
+    const discoveries = draft.night.checkDiscoveries || {};
+    if (actionKey === "sheriff") {
+      draft.sheriffMafiaFound = window.MafiaUiFocus?.rollbackCheckDiscovery(draft.sheriffMafiaFound || [], discoveries, actionKey) || [];
+    }
+    if (actionKey === "don") {
+      draft.donSheriffFound = window.MafiaUiFocus?.rollbackCheckDiscovery(draft.donSheriffFound || [], discoveries, actionKey) || [];
+    }
+    draft.night.checkDiscoveries = window.MafiaUiFocus?.recordCheckDiscovery(discoveries, actionKey, null, false) || {};
+  };
+
   const clearNightActionEffect = (draft, actionKey) => {
     if (actionKey === "mafia") {
       draft.night.mafiaTarget = null;
@@ -1175,10 +1224,14 @@ function App() {
       });
     }
     if (actionKey === "sheriff") {
+      clearCheckDiscoveryEffect(draft, actionKey);
       draft.night.sheriffShotTarget = null;
       draft.night.checks = draft.night.checks.filter((check) => check.by !== "Шериф");
     }
-    if (actionKey === "don") draft.night.checks = draft.night.checks.filter((check) => check.by !== "Дон");
+    if (actionKey === "don") {
+      clearCheckDiscoveryEffect(draft, actionKey);
+      draft.night.checks = draft.night.checks.filter((check) => check.by !== "Дон");
+    }
     if (actionKey === "shield") {
       draft.night.shielded = null;
       draft.night.blockedActions = {};
@@ -1241,6 +1294,7 @@ function App() {
 
   const applyAction = () => {
     let flashedAction = null;
+    let nextCheckReveal = null;
     updateState((draft) => {
       if (!canUseNightActions(draft)) {
         addLog(draft, "ночные действия пока недоступны");
@@ -1292,6 +1346,15 @@ function App() {
         if (!redirect?.kamikaze) {
           addLog(draft, "камикадзе не был целью этой ночью");
           return;
+        }
+        const redirectTargetIds = resolveNightTargetOptions(draft, action).map((option) => option.id);
+        if (!redirectTargetIds.length) {
+          addLog(draft, "нет доступной цели для перевода камикадзе");
+          return;
+        }
+        if (!redirectTargetIds.includes(targetId)) {
+          targetId = redirectTargetIds[0];
+          draft.targetId = targetId;
         }
         redirect.target = targetId;
         (redirect.actions || []).forEach((attackAction) => {
@@ -1399,33 +1462,78 @@ function App() {
           draft.night.checks = draft.night.checks.filter((check) => check.by !== "Шериф");
           addLog(draft, `Шериф выбрал выстрел по игроку ${targetId}`);
         } else {
-        const black = isSheriffBlack(draft, targetId);
-        setNightCheck(draft, "Шериф", targetId, black ? "черный" : "красный");
-        addLog(draft, `Шериф проверил игрока ${targetId}: ${black ? "черный" : "красный"}`);
+          clearCheckDiscoveryEffect(draft, action);
+          const black = isSheriffBlack(draft, targetId);
+          const result = black ? "черный" : "красный";
+          const alreadyKnown = (draft.sheriffMafiaFound || []).includes(targetId);
+          setNightCheck(draft, "Шериф", targetId, result);
+          addLog(draft, `Шериф проверил игрока ${targetId}: ${result}`);
           if (black) draft.sheriffMafiaFound = uniqueNumbers([...(draft.sheriffMafiaFound || []), targetId]);
+          draft.night.checkDiscoveries = window.MafiaUiFocus?.recordCheckDiscovery(draft.night.checkDiscoveries || {}, action, targetId, black && !alreadyKnown) || {};
+          const reveal = window.MafiaUiFocus?.checkReveal({ by: "Шериф", target: targetId, result });
+          if (reveal) nextCheckReveal = { ...reveal, addedToKnown: black && !alreadyKnown };
         }
       }
       if (action === "don") {
+        clearCheckDiscoveryEffect(draft, action);
         const sheriff = draft.roles.sheriff.includes(targetId);
-        setNightCheck(draft, "Дон", targetId, sheriff ? "шериф" : "не шериф");
-        addLog(draft, `Дон проверил игрока ${targetId}: ${sheriff ? "шериф" : "не шериф"}`);
+        const result = sheriff ? "шериф" : "не шериф";
+        const alreadyKnown = (draft.donSheriffFound || []).includes(targetId);
+        setNightCheck(draft, "Дон", targetId, result);
+        addLog(draft, `Дон проверил игрока ${targetId}: ${result}`);
         if (sheriff) draft.donSheriffFound = uniqueNumbers([...(draft.donSheriffFound || []), targetId]);
+        draft.night.checkDiscoveries = window.MafiaUiFocus?.recordCheckDiscovery(draft.night.checkDiscoveries || {}, action, targetId, sheriff && !alreadyKnown) || {};
+        const reveal = window.MafiaUiFocus?.checkReveal({ by: "Дон", target: targetId, result });
+        if (reveal) nextCheckReveal = { ...reveal, addedToKnown: sheriff && !alreadyKnown };
       }
       addLog(draft, `${actionName(action)}: игрок ${targetId}`);
       draft.activeAction = isNightActionDone(draft, action) ? nextNightActionKey(draft, action) : action;
       flashedAction = action;
     });
-    if (flashedAction) setLedgerFlashKey(flashedAction);
+    window.setTimeout(() => {
+      if (flashedAction) setLedgerFlashKey(flashedAction);
+      if (nextCheckReveal) {
+        setLastCheckReveal(nextCheckReveal);
+        setCheckReveal(nextCheckReveal);
+      }
+    }, 0);
   };
 
   const clearCurrentNightAction = () => {
+    let clearedCheckAction = null;
     updateState((draft) => {
       if (draft.phase !== "night") return;
       const action = availableNightActions(draft).some((item) => item.key === draft.activeAction) ? draft.activeAction : nextNightActionKey(draft);
       clearNightActionEffect(draft, action);
+      if (["sheriff", "don"].includes(action)) clearedCheckAction = action;
       draft.activeAction = action;
       addLog(draft, `${actionName(action)}: действие очищено`);
     });
+    window.setTimeout(() => {
+      if (!clearedCheckAction) return;
+      setCheckReveal(null);
+      setLastCheckReveal(null);
+    }, 0);
+  };
+
+  const correctCheckReveal = (reveal) => {
+    if (!reveal) return;
+    updateState((draft) => {
+      if (draft.phase !== "night") return;
+      clearNightActionEffect(draft, reveal.actionKey);
+      if (reveal.addedToKnown && reveal.actionKey === "sheriff") {
+        draft.sheriffMafiaFound = uniqueNumbers(draft.sheriffMafiaFound || []).filter((id) => id !== reveal.target);
+      }
+      if (reveal.addedToKnown && reveal.actionKey === "don") {
+        draft.donSheriffFound = uniqueNumbers(draft.donSheriffFound || []).filter((id) => id !== reveal.target);
+      }
+      draft.activeAction = reveal.actionKey;
+      draft.targetId = reveal.target;
+      if (reveal.actionKey === "sheriff") draft.sheriffActionMode = "check";
+      addLog(draft, `${actionName(reveal.actionKey)}: проверка игрока ${reveal.target} очищена`);
+    });
+    setCheckReveal(null);
+    setLastCheckReveal(null);
   };
 
   const applyMark = (playerId) => {
@@ -2061,13 +2169,25 @@ function App() {
       ),
       h(
         "section",
-        { className: `workspace ${state.phase === "introNight" ? "" : "game-workspace"}` },
+        { className: `workspace ${state.phase === "introNight" ? "" : "game-workspace"} phase-${state.phase}` },
         state.phase === "introNight" && h(RolePanel, { state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCount, updateInitialImmunity, clearRolesConfirmed: () => updateState((draft) => { draft.rolesConfirmed = false; draft.rolesLocked = false; }) }),
-        h(MainColumn, { state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, toggleTimer, resetTimer, markLastWordsDone, selectPlayer, setView: (view) => updateState((draft) => { draft.view = view; }), rolesForPlayer, isMafiaVisible }),
-        h(ActionPanel, { state, aliveOptions, updateState, applyAction, clearCurrentNightAction, updateTimerSetting, toggleTimer, resetTimer, blockReason, openDrawers, setOpenDrawers, ledgerFlashKey })
+        h(MainColumn, { state, aliveOptions, updateState, applyAction, clearCurrentNightAction, ledgerFlashKey, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, toggleTimer, resetTimer, markLastWordsDone, selectPlayer, setView: (view) => updateState((draft) => { draft.view = view; }), rolesForPlayer, isMafiaVisible }),
+        h(ActionPanel, {
+          state,
+          updateState,
+          updateTimerSetting,
+          toggleTimer,
+          resetTimer,
+          blockReason,
+          openDrawers,
+          setOpenDrawers,
+          lastCheckReveal,
+          onShowCheckReveal: () => lastCheckReveal && setCheckReveal(lastCheckReveal)
+        })
       ),
       h(FloatingLogPanel, { state, updateState, open: logPanelOpen, onToggle: () => setLogPanelOpen((open) => !open), onClose: () => setLogPanelOpen(false), theme, toggleTheme }),
     state.phase === "gameOver" && !gameOverOverlayHidden && h(GameOverOverlay, { state, onHide: () => setGameOverOverlayHidden(true) }),
+    checkReveal && h(CheckRevealOverlay, { reveal: checkReveal, onClose: () => setCheckReveal(null), onCorrect: () => correctCheckReveal(checkReveal) }),
     confirmConfig && h(ConfirmModal, { config: confirmConfig, onCancel: () => setConfirmAction(null) })
   );
 }
@@ -2232,7 +2352,7 @@ function RolePanel({ state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCo
   );
 }
 
-function MainColumn({ state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, toggleTimer, resetTimer, markLastWordsDone, selectPlayer, setView, rolesForPlayer, isMafiaVisible }) {
+function MainColumn({ state, aliveOptions, updateState, applyAction, clearCurrentNightAction, ledgerFlashKey, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, toggleTimer, resetTimer, markLastWordsDone, selectPlayer, setView, rolesForPlayer, isMafiaVisible }) {
   const publicSummaryLines = sanitizePublicSummary(state.publicNightSummary);
   return h(
     "section",
@@ -2241,7 +2361,111 @@ function MainColumn({ state, aliveOptions, updateState, castVote, updateFoulVote
     state.phase === "discussion" && publicSummaryLines.length > 0 && h(NightResultsCard, { state, lines: publicSummaryLines, markLastWordsDone }),
     state.phase === "speeches" && h(DayFlowCard, { state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, toggleTimer, resetTimer }),
     state.phase === "voteResults" && h(VoteResultsCard, { state, markLastWordsDone }),
+    state.phase === "night" && h(NightOperationsBlock, { state, aliveOptions, updateState, applyAction, clearCurrentNightAction, ledgerFlashKey }),
     h(Board, { state, updateState, setView, selectPlayer, rolesForPlayer, isMafiaVisible })
+  );
+}
+
+function NightOperationsBlock({ state, aliveOptions, updateState, applyAction, clearCurrentNightAction, ledgerFlashKey }) {
+  const actionsAvailable = canUseNightActions(state);
+  const actionOptions = availableNightActions(state);
+  const activeAction = actionOptions.some((action) => action.key === state.activeAction) ? state.activeAction : canUseNightActions(state) ? nextNightActionKey(state) : actionOptions[0]?.key || "mafia";
+  const nextMissing = incompleteNightActions(state)[0];
+  const ledgerRows = window.MafiaUiFocus?.nightActionLedger(nightLedgerContext(state)) || [];
+  const completedRows = ledgerRows.filter((row) => row.state !== "pending").length;
+  const progressValue = `${completedRows} / ${ledgerRows.length || requiredNightActions(state).length}`;
+  const aliveVoteOptions = aliveOptions.filter((option) => state.players.some((player) => player.id === option.id && player.alive));
+  const sheriffKnownTargets = aliveKnownSheriffMafia(state);
+  const sheriffCanShoot = activeAction === "sheriff" && sheriffKnownTargets.length > 0;
+  const baseTargetOptions = resolveBaseNightTargetOptions(state, activeAction, aliveOptions);
+  const targetOptions = resolveNightTargetOptions(state, activeAction, aliveOptions);
+  const hiddenByImmunityIds = baseTargetOptions.filter((option) => !targetOptions.some((target) => target.id === option.id)).map((option) => option.id);
+  const bombTargets = resolveBombTargets(state);
+  return h(
+    "section",
+    { className: "night-operations-grid", "aria-label": "Ночные действия" },
+    h(
+      "div",
+      { className: "night-action-card main-night-action" },
+      h(
+        "div",
+        { className: "night-action-head" },
+        h(
+          "div",
+          { className: "night-action-title" },
+          h("span", null, h(Icon, { name: "MoonStar" })),
+          h("div", null, h("h2", null, "Ночной ход"), h("p", null, nextMissing ? `Следующее: ${nextMissing[1]}` : "Все действия записаны"))
+        ),
+        h("span", { className: `night-progress-pill ${nextMissing ? "pending" : "done"}` }, progressValue)
+      ),
+      h(
+        "div",
+        { className: "night-action-form" },
+        h(
+          "label",
+          { className: "mini-field night-action-select" },
+          h("span", null, "Роль"),
+          h(
+            "select",
+            {
+              title: "Активная роль",
+              "data-testid": "active-action",
+              disabled: !actionsAvailable,
+              value: activeAction,
+              onChange: (event) => updateState((draft) => {
+                draft.activeAction = event.target.value;
+              })
+            },
+            actionOptions.map((action) => h("option", { key: action.key, value: action.key }, action.name))
+          )
+        ),
+        sheriffCanShoot &&
+          h(
+            "label",
+            { className: "mini-field action-mode-field" },
+            h("span", null, "Действие шерифа"),
+            h(
+              "select",
+              {
+                value: state.sheriffActionMode || "check",
+                onChange: (event) => updateState((draft) => {
+                  draft.sheriffActionMode = event.target.value;
+                  if (event.target.value === "shoot") {
+                    draft.targetId = sheriffKnownTargets.includes(Number(draft.targetId)) ? Number(draft.targetId) : sheriffKnownTargets[0];
+                  }
+                })
+              },
+              h("option", { value: "check" }, "Проверить игрока"),
+              h("option", { value: "shoot" }, "Выстрелить в найденную мафию")
+            )
+          ),
+        h(
+          "div",
+          { className: "night-target-area" },
+          activeAction === "bomb"
+            ? h(BombTargetFields, { targets: bombTargets, options: aliveVoteOptions, disabled: !actionsAvailable || aliveVoteOptions.length < bombRequiredTargetCount(state), updateState })
+            : h(PlayerSelectField, { label: "Цель", testId: "target-select", value: targetOptions.some((option) => option.id === Number(state.targetId)) ? state.targetId : targetOptions[0]?.id || "", options: targetOptions, disabled: !actionsAvailable || !targetOptions.length, onChange: (value) => updateState((draft) => { draft.targetId = Number(value); }) })
+        )
+      ),
+      hiddenByImmunityIds.length > 0 && h("p", { className: "immunity-action-note" }, h(Icon, { name: STATUS_ICONS.immunity }), `Защищены иммунитетом: ${formatPlayers(hiddenByImmunityIds)}`),
+      h(
+        "div",
+        { className: "action-buttons two-actions night-action-buttons" },
+        h("button", { type: "button", className: "primary-action", onClick: applyAction, disabled: !actionsAvailable, "data-testid": "apply-action" }, "Применить"),
+        h("button", { type: "button", className: "muted", onClick: clearCurrentNightAction, disabled: !actionsAvailable, "data-testid": "clear-action" }, "Очистить")
+      )
+    ),
+    h(
+      "div",
+      { className: "night-ledger main-night-ledger" },
+      h(
+        "div",
+        { className: "night-ledger-head" },
+        h("h3", null, "Ночной журнал действий"),
+        h("span", null, progressValue)
+      ),
+      h("div", { className: "night-ledger-body" }, ledgerRows.map((row) => h(NightLedgerRow, { key: row.key, row, flashKey: ledgerFlashKey })))
+    )
   );
 }
 
@@ -2286,6 +2510,28 @@ function GameOverOverlay({ state, onHide }) {
         "div",
         { className: "game-over-actions" },
         h("button", { type: "button", className: "primary-action", onClick: onHide }, "Показать стол")
+      )
+    )
+  );
+}
+
+function CheckRevealOverlay({ reveal, onClose, onCorrect }) {
+  return h(
+    "section",
+    { className: `check-reveal-overlay reveal-${reveal.tone}`, role: "dialog", "aria-modal": "true", "aria-label": reveal.title },
+    h("div", { className: "check-reveal-burst", "aria-hidden": "true" }, Array.from({ length: 14 }, (_, index) => h("span", { key: index, style: { "--i": index } }))),
+    h(
+      "div",
+      { className: "check-reveal-card" },
+      h("div", { className: "check-reveal-emblem" }, h(Icon, { name: reveal.icon })),
+      h("span", { className: "check-reveal-kicker" }, reveal.title),
+      h("h2", null, reveal.message),
+      h("p", null, reveal.targetLabel),
+      h(
+        "div",
+        { className: "check-reveal-actions" },
+        h("button", { type: "button", className: "muted", onClick: onCorrect }, "Исправить"),
+        h("button", { type: "button", className: "primary-action", onClick: onClose }, "Записано")
       )
     )
   );
@@ -3124,28 +3370,14 @@ function AuditChip({ icon, label, value, detail, tone = "plain" }) {
   );
 }
 
-function ActionPanel({ state, aliveOptions, updateState, applyAction, clearCurrentNightAction, updateTimerSetting, toggleTimer, resetTimer, blockReason, openDrawers, setOpenDrawers, ledgerFlashKey }) {
+function ActionPanel({ state, updateState, updateTimerSetting, toggleTimer, resetTimer, blockReason, openDrawers, setOpenDrawers, lastCheckReveal, onShowCheckReveal }) {
   const actionsAvailable = canUseNightActions(state);
   const actionOptions = availableNightActions(state);
   const activeAction = actionOptions.some((action) => action.key === state.activeAction) ? state.activeAction : canUseNightActions(state) ? nextNightActionKey(state) : actionOptions[0]?.key || "mafia";
   const timerVisible = state.phase === "discussion";
   const nightChecklist = requiredNightActions(state);
   const nextMissing = incompleteNightActions(state)[0];
-  const ledgerRows = state.phase === "night" ? window.MafiaUiFocus?.nightActionLedger(nightLedgerContext(state)) || [] : [];
-  const aliveVoteOptions = aliveOptions.filter((option) => state.players.some((player) => player.id === option.id && player.alive));
   const alivePlayers = state.players.filter((player) => player.alive);
-  const votingOpen = hasDayVoting(state);
-  const doctorUnavailable = new Set([...lastHealedIds(state), ...healedIds(state)]);
-  const sheriffKnownTargets = aliveKnownSheriffMafia(state);
-  const sheriffCanShoot = activeAction === "sheriff" && sheriffKnownTargets.length > 0;
-  const baseNightTargetOptions = activeAction === "doctor"
-    ? aliveVoteOptions.filter((option) => !doctorUnavailable.has(option.id))
-    : activeAction === "sheriff" && state.sheriffActionMode === "shoot"
-      ? aliveVoteOptions.filter((option) => sheriffKnownTargets.includes(option.id))
-      : aliveVoteOptions;
-  const nightTargetOptions = filterInitialImmunityOptions(baseNightTargetOptions, state, { actionKey: activeAction, sheriffActionMode: state.sheriffActionMode || "check" });
-  const hiddenByImmunityIds = baseNightTargetOptions.filter((option) => !nightTargetOptions.some((target) => target.id === option.id)).map((option) => option.id);
-  const bombTargets = resolveBombTargets(state);
   const speechesFlowComplete = state.phase === "speeches" && alivePlayers.length > 0 && alivePlayers.every((player) => hasDayVoting(state) ? Boolean(state.votes?.[player.id]) : Boolean(state.speechesDone?.[player.id]));
   const latestEvent = window.MafiaUiFocus?.latestLogEntry(state) || "Событий пока нет";
   const nightProgress = window.MafiaUiFocus?.phaseProgress({ phase: state.phase, nightChecklist, blockedActions: state.night.blockedActions || {} });
@@ -3190,6 +3422,14 @@ function ActionPanel({ state, aliveOptions, updateState, applyAction, clearCurre
         state.activeMark && h(AuditChip, { icon: "MousePointer2", label: "Метка", value: MARK_ACTIONS.find((mark) => mark.key === state.activeMark)?.label || state.activeMark, tone: "active" }),
         blockReason && h(AuditChip, { icon: "Lock", label: "Блокер", value: blockReason, tone: "warning" })
       ),
+      state.phase === "night" && lastCheckReveal &&
+        h(
+          "button",
+          { type: "button", className: `last-check-reveal reveal-${lastCheckReveal.tone}`, onClick: onShowCheckReveal, title: "Показать последнюю проверку" },
+          h("span", null, h(Icon, { name: lastCheckReveal.icon })),
+          h("strong", null, "Показать последнюю проверку"),
+          h("em", null, `${lastCheckReveal.by} -> #${lastCheckReveal.target}: ${lastCheckReveal.message}`)
+        ),
       h(
         "div",
         { className: "drawer-grid", role: "group", "aria-label": "Дополнительные панели" },
@@ -3279,66 +3519,6 @@ function ActionPanel({ state, aliveOptions, updateState, applyAction, clearCurre
             h("div", { key: player.id, className: "summary-line" }, h("strong", null, `Игрок ${player.id}`), h("span", null, roleSummaryForPlayer(state, player.id)))
           )
         )
-      ),
-    state.phase === "night" &&
-      h(
-        "div",
-        { className: "night-action-card" },
-        h(
-          "div",
-          { className: "panel-head" },
-          h("h2", null, "Ход"),
-          h(
-            "select",
-            {
-              title: "Активная роль",
-              "data-testid": "active-action",
-              disabled: !actionsAvailable,
-              value: activeAction,
-              onChange: (event) => updateState((draft) => {
-                draft.activeAction = event.target.value;
-              })
-            },
-            actionOptions.map((action) => h("option", { key: action.key, value: action.key }, action.name))
-          )
-        ),
-        sheriffCanShoot &&
-          h(
-            "label",
-            { className: "mini-field action-mode-field" },
-            h("span", null, "Действие шерифа"),
-            h(
-              "select",
-              {
-                value: state.sheriffActionMode || "check",
-                onChange: (event) => updateState((draft) => {
-                  draft.sheriffActionMode = event.target.value;
-                  if (event.target.value === "shoot") {
-                    draft.targetId = sheriffKnownTargets.includes(Number(draft.targetId)) ? Number(draft.targetId) : sheriffKnownTargets[0];
-                  }
-                })
-              },
-              h("option", { value: "check" }, "Проверить игрока"),
-              h("option", { value: "shoot" }, "Выстрелить в найденную мафию")
-            )
-        ),
-        activeAction === "bomb"
-          ? h(BombTargetFields, { targets: bombTargets, options: aliveVoteOptions, disabled: !actionsAvailable || aliveVoteOptions.length < bombRequiredTargetCount(state), updateState })
-          : h(PlayerSelectField, { label: "Цель", testId: "target-select", value: nightTargetOptions.some((option) => option.id === Number(state.targetId)) ? state.targetId : nightTargetOptions[0]?.id || "", options: nightTargetOptions, disabled: !actionsAvailable || !nightTargetOptions.length, onChange: (value) => updateState((draft) => { draft.targetId = Number(value); }) }),
-        hiddenByImmunityIds.length > 0 && h("p", { className: "immunity-action-note" }, h(Icon, { name: STATUS_ICONS.immunity }), `Защищены иммунитетом: ${formatPlayers(hiddenByImmunityIds)}`),
-        h(
-          "div",
-          { className: "action-buttons two-actions" },
-          h("button", { type: "button", className: "primary-action", onClick: applyAction, disabled: !actionsAvailable, "data-testid": "apply-action" }, "Применить"),
-          h("button", { type: "button", className: "muted", onClick: clearCurrentNightAction, disabled: !actionsAvailable, "data-testid": "clear-action" }, "Очистить")
-        )
-      ),
-    state.phase === "night" &&
-      h(
-        "div",
-        { className: "night-ledger" },
-        h("h3", null, "Ночной журнал действий"),
-        h("div", { className: "night-ledger-body" }, ledgerRows.map((row) => h(NightLedgerRow, { key: row.key, row, flashKey: ledgerFlashKey })))
       ),
     null
   );

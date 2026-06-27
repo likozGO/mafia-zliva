@@ -5,7 +5,7 @@ import { existsSync, readFileSync } from "node:fs";
 const INDEX_HTML = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const APP_JS = readFileSync(new URL("../src/app.js", import.meta.url), "utf8");
 const FAVICON_URL = new URL("../favicon.svg", import.meta.url);
-const EXPECTED_ASSET_VERSION = "20260627-confetti-vendor";
+const EXPECTED_ASSET_VERSION = "20260627-vote-results";
 
 test("local app assets share the current cache-busting version", () => {
   const assetUrls = [...INDEX_HTML.matchAll(/(?:href|src)="\.\/(src\/(?:styles|ui-focus|app)\.(?:css|js)\?v=([^"]+))"/g)]
