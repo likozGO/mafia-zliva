@@ -18,6 +18,7 @@ const STATUS_ICONS = {
   bomb: "Bomb",
   heal: "Cross",
   alibi: "Scale",
+  immunity: "Candle",
   target: "Crosshair",
   shield: "Shield",
   dead: "CircleX"
@@ -30,6 +31,29 @@ const MARK_ACTIONS = [
   { key: "heal", label: "Лечение", icon: STATUS_ICONS.heal },
   { key: "alibi", label: "Алиби", icon: STATUS_ICONS.alibi }
 ];
+
+const FALLBACK_ICON_NODES = {
+  Candle: [
+    ["path", { d: "M12 2s3 2.4 3 5a3 3 0 0 1-6 0c0-2.6 3-5 3-5Z" }],
+    ["path", { d: "M12 10v4" }],
+    ["path", { d: "M8 14h8" }],
+    ["path", { d: "M9 14v7h6v-7" }],
+    ["path", { d: "M7 21h10" }]
+  ]
+};
+
+const IMAGE_ICON_SOURCES = {
+  Crown: "/src/assets/roles/don.png",
+  Skull: "/src/assets/roles/mafia.png",
+  Shield: "/src/assets/roles/shield.png",
+  BadgeCheck: "/src/assets/roles/sheriff.png",
+  Swords: "/src/assets/roles/maniac.png",
+  Scale: "/src/assets/roles/lawyer.png",
+  Cross: "/src/assets/roles/doctor.png",
+  Heart: "/src/assets/roles/lover.png",
+  Bomb: "/src/assets/roles/bomber.png",
+  Zap: "/src/assets/roles/kamikaze.png"
+};
 
 const ACTIONS = [
   { key: "mafia", name: "Выстрел мафии" },
@@ -63,6 +87,7 @@ const DEFAULT_PLAYER_COUNT = 20;
 const MIN_PLAYERS = 6;
 const MAX_PLAYERS = 24;
 const STORAGE_KEY = "mafia-host-react-state-v1";
+const THEME_KEY = "mafia-host-react-theme";
 
 function clampPlayerCount(value) {
   return Math.max(MIN_PLAYERS, Math.min(MAX_PLAYERS, Number(value) || DEFAULT_PLAYER_COUNT));
@@ -118,23 +143,26 @@ function makeBlankState(playerCount = DEFAULT_PLAYER_COUNT) {
     playerCount: count,
     phase: "introNight",
     dayNumber: 1,
-    dayStartPlayerId: 1,
-    dayDirection: "forward",
+    dayStartPlayerId: null,
+    dayDirection: "",
     nightNumber: 1,
     timer: {
       discussionMinutes: 4,
       speechSeconds: 60,
       remainingSeconds: 0,
       running: false,
-      currentSpeaker: 1
+      currentSpeaker: 0
     },
     view: "status",
     statusFilter: "all",
     rolesLocked: false,
     rolesConfirmed: false,
     setupError: "",
+    startImmunityIds: [],
+    startImmunityExpired: false,
     winner: null,
     nominations: [],
+    voteTargetOrder: [],
     votes: {},
     foulVotes: {},
     abstained: {},
@@ -218,8 +246,11 @@ function loadState() {
         rolesLocked: Boolean(saved.rolesLocked),
         rolesConfirmed: Boolean(saved.rolesConfirmed),
         setupError: saved.setupError || "",
+        startImmunityIds: uniqueNumbers(Array.isArray(saved.startImmunityIds) ? saved.startImmunityIds : []).filter((id) => id >= 1 && id <= playerCount).slice(0, 5),
+        startImmunityExpired: Boolean(saved.startImmunityExpired),
         winner: saved.winner || null,
         nominations: Array.isArray(saved.nominations) ? saved.nominations : [],
+        voteTargetOrder: uniqueNumbers(Array.isArray(saved.voteTargetOrder) ? saved.voteTargetOrder : []).filter((id) => id >= 1 && id <= playerCount),
         votes: saved.votes && typeof saved.votes === "object" ? saved.votes : {},
         foulVotes: saved.foulVotes && typeof saved.foulVotes === "object" ? saved.foulVotes : {},
         abstained: saved.abstained && typeof saved.abstained === "object" ? saved.abstained : {},
@@ -233,7 +264,7 @@ function loadState() {
         sheriffActionMode: ["check", "shoot"].includes(saved.sheriffActionMode) ? saved.sheriffActionMode : "check",
         dayEliminationDone: Boolean(saved.dayEliminationDone),
         dayStartPlayerId: blank.dayStartPlayerId,
-        dayDirection: window.MafiaUiFocus?.normalizeDayDirection(saved.dayDirection) || "forward",
+        dayDirection: ["forward", "backward"].includes(saved.dayDirection) ? saved.dayDirection : "",
         shootout: {
           ...blank.shootout,
           ...(saved.shootout && typeof saved.shootout === "object" ? saved.shootout : {}),
@@ -248,9 +279,9 @@ function loadState() {
       const savedDayStartPlayerId = Number(saved.dayStartPlayerId);
       loaded.dayStartPlayerId = loaded.players.some((player) => player.id === savedDayStartPlayerId && player.alive)
         ? savedDayStartPlayerId
-        : firstAlivePlayerId(loaded);
+        : null;
       if (loaded.phase === "speeches") {
-        loaded.timer.currentSpeaker = resolveCurrentDaySpeaker(loaded, Number(loaded.timer.currentSpeaker));
+        loaded.timer.currentSpeaker = isDayOrderReady(loaded) ? resolveCurrentDaySpeaker(loaded, Number(loaded.timer.currentSpeaker)) : 0;
         loaded.timer.running = Boolean(loaded.timer.running && loaded.timer.currentSpeaker);
       }
       return normalizeLoadedGameOver(loaded);
@@ -259,6 +290,14 @@ function loadState() {
     localStorage.removeItem(STORAGE_KEY);
   }
   return makeBlankState();
+}
+
+function loadTheme() {
+  try {
+    return localStorage.getItem(THEME_KEY) === "black" ? "black" : "light";
+  } catch {
+    return "light";
+  }
 }
 
 function roleSlotsFromRoles(roles, playerCount = DEFAULT_PLAYER_COUNT) {
@@ -415,6 +454,12 @@ function firstAlivePlayerId(state) {
   return state.players.find((player) => player.alive)?.id || 1;
 }
 
+function isDayOrderReady(state) {
+  const startId = Number(state.dayStartPlayerId);
+  const hasStartPlayer = state.players.some((player) => player.id === startId && player.alive);
+  return hasStartPlayer && ["forward", "backward"].includes(state.dayDirection);
+}
+
 function resolveCurrentDaySpeaker(state, preferredSpeaker) {
   const speakerId = Number(preferredSpeaker);
   const completeIds = new Set(completeSpeechIds(state));
@@ -430,10 +475,9 @@ function canCastDayVote(state, voterId) {
 }
 
 function resetDayOrder(draft) {
-  const firstAlive = firstAlivePlayerId(draft);
-  draft.dayStartPlayerId = firstAlive;
-  draft.dayDirection = "forward";
-  draft.timer.currentSpeaker = firstAlive;
+  draft.dayStartPlayerId = null;
+  draft.dayDirection = "";
+  draft.timer.currentSpeaker = 0;
 }
 
 function actionName(actionKey) {
@@ -530,6 +574,49 @@ function incompleteNightActions(state) {
   return requiredNightActions(state).filter(([, , done]) => !done);
 }
 
+function nightActionTargets(state, actionKey) {
+  if (actionKey === "mafia") return state.night.mafiaTarget;
+  if (actionKey === "lovers") return state.night.loversTarget;
+  if (actionKey === "maniac") return state.night.maniacTarget;
+  if (actionKey === "doctor") return healedIds(state);
+  if (actionKey === "lawyer") return state.night.alibi;
+  if (actionKey === "shield") return state.night.shielded;
+  if (actionKey === "bomb") return state.night.bombed || [];
+  if (actionKey === "kamikaze") return state.night.kamikazeRedirect?.target;
+  if (actionKey === "sheriff") {
+    const check = state.night.checks.find((item) => item.by === "Шериф");
+    return state.night.sheriffShotTarget || check?.target;
+  }
+  if (actionKey === "don") return state.night.checks.find((item) => item.by === "Дон")?.target;
+  return null;
+}
+
+function nightActionResult(state, actionKey) {
+  if (actionKey === "don") return state.night.checks.find((item) => item.by === "Дон")?.result || "";
+  if (actionKey === "sheriff") {
+    if (state.night.sheriffShotTarget) return "выстрел";
+    return state.night.checks.find((item) => item.by === "Шериф")?.result || "";
+  }
+  if (actionKey === "doctor" && healedIds(state).length) return "лечение";
+  if (actionKey === "lawyer" && state.night.alibi) return "алиби";
+  if (actionKey === "shield" && state.night.shielded) return "щит";
+  if (["mafia", "lovers", "maniac"].includes(actionKey) && nightActionTargets(state, actionKey)) return "цель выстрела";
+  if (actionKey === "bomb" && Array.isArray(state.night.bombed) && state.night.bombed.length) return "бомба";
+  if (actionKey === "kamikaze" && state.night.kamikazeRedirect?.target) return "перевод удара";
+  return "";
+}
+
+function nightLedgerContext(state) {
+  const actions = requiredNightActions(state);
+  return {
+    actions,
+    actors: Object.fromEntries(actions.map(([key]) => [key, actionActorIds(state, key)])),
+    targets: Object.fromEntries(actions.map(([key]) => [key, nightActionTargets(state, key)])),
+    results: Object.fromEntries(actions.map(([key]) => [key, nightActionResult(state, key)])),
+    blockedActions: state.night.blockedActions || {}
+  };
+}
+
 function doctorHealLimit(state) {
   return state.playerCount >= 16 && state.nightNumber <= 3 ? 2 : 1;
 }
@@ -548,6 +635,30 @@ function lastHealedIds(state) {
   return uniqueNumbers(Array.isArray(state.night?.lastHealed) ? state.night.lastHealed : state.night?.lastHealed ? [state.night.lastHealed] : []);
 }
 
+function activeInitialImmunityIds(state) {
+  return window.MafiaUiFocus?.initialImmunityActiveIds(state) || [];
+}
+
+function hasActiveInitialImmunity(state, playerId) {
+  return activeInitialImmunityIds(state).includes(Number(playerId));
+}
+
+function visibleInitialImmunityIds(state) {
+  return state.startImmunityExpired ? [] : uniqueNumbers(state.startImmunityIds || []).filter((id) => state.players.some((player) => player.id === id));
+}
+
+function hasVisibleInitialImmunity(state, playerId) {
+  return visibleInitialImmunityIds(state).includes(Number(playerId));
+}
+
+function isInitialImmunityAttackAction(state, actionKey) {
+  return ["mafia", "lovers", "maniac"].includes(actionKey) || (actionKey === "sheriff" && state.sheriffActionMode === "shoot");
+}
+
+function filterInitialImmunityOptions(options, state, context = {}) {
+  return window.MafiaUiFocus?.filterInitialImmunityTargets(options, { ...state, ...context }) || options;
+}
+
 function aliveKnownSheriffMafia(state) {
   return uniqueNumbers(state.sheriffMafiaFound || []).filter((id) => state.players.some((player) => player.id === id && player.alive));
 }
@@ -558,11 +669,18 @@ function phaseBlockReason(state, roleDrafts) {
     const issues = validateRoles(parseRoleSlots(roleDrafts, state.playerCount), state.playerCount);
     return issues[0] || "Подтвердите выбранные роли перед началом игры.";
   }
+  if (state.phase === "discussion") {
+    const pendingNightLastWords = nightFinalSpeechRequiredIds(state);
+    if (pendingNightLastWords.length === 1) return `Игрок #${pendingNightLastWords[0]} ещё не сказал последнюю речь.`;
+    if (pendingNightLastWords.length > 1) return `Последняя речь ещё нужна игрокам: ${pendingNightLastWords.map((id) => `#${id}`).join(", ")}.`;
+  }
   if (state.phase === "speeches") {
     if (state.shootout?.active) {
       if (!state.shootout.number) return "Выберите секретное число для перестрелки.";
       return "Завершите перестрелку перед переходом к ночи.";
     }
+    if (state.dayEliminationDone && state.dayResult) return "";
+    if (!isDayOrderReady(state)) return "Выберите, кто открывает стол, и направление.";
     const aliveIds = state.players.filter((player) => player.alive).map((player) => player.id);
     if (!hasDayVoting(state)) {
       const missingSpeeches = aliveIds.filter((id) => !state.speechesDone?.[id]);
@@ -599,6 +717,13 @@ function hasNoFinalSpeech(state, playerId) {
 
 function finalSpeechRequiredIds(state) {
   return uniqueNumbers(state.dayResult?.lastWordsRequired || []).filter((id) => !state.lastWordsDone?.[id]);
+}
+
+function nightFinalSpeechRequiredIds(state) {
+  return window.MafiaUiFocus?.finalSpeechRequiredDeathIds({
+    deaths: state.nightResultDeaths || [],
+    lastWordsDone: state.lastWordsDone || {}
+  }) || [];
 }
 
 function makeDeathDetails(state, beforeAliveIds, afterAliveIds, sourceMap = {}) {
@@ -734,8 +859,63 @@ function applyWinCondition(draft) {
   return true;
 }
 
+window.MafiaGameEngine = Object.freeze({
+  ROLE_DEFS,
+  DEFAULT_PLAYER_COUNT,
+  MIN_PLAYERS,
+  MAX_PLAYERS,
+  clampPlayerCount,
+  getRoleSlotCount,
+  activeRoleDefs,
+  createPlayers,
+  normalizeRoles,
+  makeBlankState,
+  roleSlotsFromRoles,
+  parseRoleSlots,
+  validateRoles,
+  phaseName,
+  hasDayVoting,
+  canUseNightActions,
+  actionRoleKey,
+  actionActorIds,
+  availableActions,
+  availableNightActions,
+  requiredNightActions,
+  incompleteNightActions,
+  doctorHealLimit,
+  doctorRequiredHeals,
+  healedIds,
+  lastHealedIds,
+  detectWinner,
+  voteTally,
+  voteLeaders,
+  uniqueNumbers
+});
+
+async function fireGameOverConfetti(winner) {
+  const confetti = typeof window.confetti === "function"
+    ? window.confetti
+    : (await import("/node_modules/canvas-confetti/dist/confetti.module.mjs")).default;
+  if (typeof confetti !== "function") return;
+  const colors = winner === "Мирные" ? ["#facc15", "#22c55e", "#3b82f6"] : winner === "Маньяк" ? ["#7c3aed", "#ef4444", "#f97316"] : ["#111827", "#ef4444", "#facc15"];
+  confetti({ particleCount: 160, spread: 90, origin: { y: 0.62 }, colors });
+  window.setTimeout(() => {
+    confetti({ particleCount: 90, spread: 130, startVelocity: 36, origin: { y: 0.45 }, colors });
+  }, 450);
+}
+
 function Icon({ name, label }) {
-  const iconNode = window.lucide?.icons?.[name] || window.lucide?.[name];
+  const imageSrc = IMAGE_ICON_SOURCES[name];
+  if (imageSrc) {
+    return h("img", {
+      src: imageSrc,
+      className: "asset-icon",
+      alt: label || "",
+      "aria-hidden": label ? undefined : "true",
+      draggable: "false"
+    });
+  }
+  const iconNode = window.lucide?.icons?.[name] || window.lucide?.[name] || FALLBACK_ICON_NODES[name];
   if (!iconNode) return h("span", { "aria-hidden": label ? undefined : "true" }, "");
   const renderNode = ([tag, attrs = {}, children = []], index = 0) => {
     const { class: className, ...svgAttrs } = attrs;
@@ -766,12 +946,36 @@ function Icon({ name, label }) {
 
 function App() {
   const [state, setState] = useState(loadState);
+  const [theme, setTheme] = useState(loadTheme);
   const [roleDrafts, setRoleDrafts] = useState(() => roleSlotsFromRoles(state.roles, state.playerCount));
   const [confirmAction, setConfirmAction] = useState(null);
+  const [openDrawers, setOpenDrawers] = useState([]);
+  const [logPanelOpen, setLogPanelOpen] = useState(false);
+  const [gameOverOverlayHidden, setGameOverOverlayHidden] = useState(false);
+  const [ledgerFlashKey, setLedgerFlashKey] = useState(null);
+  const [blockerTooltipOpen, setBlockerTooltipOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
+
+  useEffect(() => {
+    localStorage.setItem(THEME_KEY, theme);
+  }, [theme]);
+
+  useEffect(() => {
+    if (state.phase !== "gameOver") {
+      setGameOverOverlayHidden(false);
+      return;
+    }
+    fireGameOverConfetti(state.winner).catch(() => {});
+  }, [state.phase, state.winner]);
+
+  useEffect(() => {
+    if (!ledgerFlashKey) return undefined;
+    const timeoutId = window.setTimeout(() => setLedgerFlashKey(null), 900);
+    return () => window.clearTimeout(timeoutId);
+  }, [ledgerFlashKey]);
 
   useEffect(() => {
     if (!state.timer.running) return undefined;
@@ -788,6 +992,7 @@ function App() {
             resetDayOrder(draft);
             draft.timer.remainingSeconds = draft.timer.speechSeconds;
             draft.speechesDone = {};
+            draft.voteTargetOrder = [];
             draft.shootout = makeBlankState(draft.playerCount).shootout;
             draft.log = [`${phaseName(draft)}: Балаган завершен, начались речи`, ...draft.log].slice(0, 80);
           } else if (draft.phase === "speeches") {
@@ -856,6 +1061,7 @@ function App() {
       draft.playerCount = nextCount;
       draft.players = createPlayers(nextCount).map((player) => draft.players.find((current) => current.id === player.id) || player);
       draft.roles = normalizeRoles(draft.roles, nextCount);
+      draft.startImmunityIds = uniqueNumbers(draft.startImmunityIds || []).filter((id) => id <= nextCount).slice(0, 5);
       draft.targetId = Math.min(draft.targetId, nextCount);
       draft.bombTargetIds = (draft.bombTargetIds || [1, 2, 3]).map((id) => Math.min(Number(id) || 1, nextCount));
       draft.kamikazeTargetId = Math.min(draft.kamikazeTargetId, nextCount);
@@ -868,6 +1074,22 @@ function App() {
       draft.night = makeBlankState(nextCount).night;
     });
     setRoleDrafts((drafts) => roleSlotsFromRoles(normalizeRoles(parseRoleSlots(drafts, nextCount), nextCount), nextCount));
+  };
+
+  const updateInitialImmunity = (playerId) => {
+    updateState((draft) => {
+      if (draft.rolesLocked || draft.phase !== "introNight") return;
+      const targetId = Number(playerId);
+      const nextIds = window.MafiaUiFocus?.toggleInitialImmunitySelection(draft.startImmunityIds || [], targetId, draft.playerCount, 5)
+        || uniqueNumbers([...(draft.startImmunityIds || []), targetId]).filter((id) => id >= 1 && id <= draft.playerCount).slice(0, 5);
+      if (nextIds.length === draft.startImmunityIds?.length && !nextIds.includes(targetId) && (draft.startImmunityIds || []).length >= 5) {
+        addLog(draft, "стартовых иммунитетов может быть не больше 5");
+        return;
+      }
+      draft.startImmunityIds = nextIds;
+      draft.startImmunityExpired = false;
+      addLog(draft, draft.startImmunityIds.length ? `стартовые иммунитеты: ${formatPlayers(draft.startImmunityIds)}` : "стартовые иммунитеты очищены");
+    });
   };
 
   const setExclusive = (draft, field, targetId) => {
@@ -1020,6 +1242,7 @@ function App() {
   };
 
   const applyAction = () => {
+    let flashedAction = null;
     updateState((draft) => {
       if (!canUseNightActions(draft)) {
         addLog(draft, "ночные действия пока недоступны");
@@ -1039,7 +1262,11 @@ function App() {
         draft.targetId = targetId;
       }
       if (action === "sheriff" && draft.sheriffActionMode === "shoot") {
-        const knownTargets = aliveKnownSheriffMafia(draft);
+        const knownTargets = filterInitialImmunityOptions(
+          aliveKnownSheriffMafia(draft).map((id) => ({ id })).filter((option) => draft.players.some((player) => player.id === option.id && player.alive)),
+          draft,
+          { actionKey: "sheriff", sheriffActionMode: "shoot" }
+        ).map((option) => option.id);
         if (!knownTargets.includes(targetId)) targetId = knownTargets[0] || targetId;
         draft.targetId = targetId;
       }
@@ -1053,6 +1280,10 @@ function App() {
       const target = getPlayer(draft, targetId);
       if (action !== "bomb" && (!target || !target.alive)) {
         addLog(draft, "Выберите живого игрока для действия.");
+        return;
+      }
+      if (action !== "bomb" && isInitialImmunityAttackAction(draft, action) && hasActiveInitialImmunity(draft, targetId) && draft.nightNumber === 2) {
+        addLog(draft, `игрок ${targetId} защищён стартовым иммунитетом`);
         return;
       }
       if (!draft.night.blockedActions || typeof draft.night.blockedActions !== "object") draft.night.blockedActions = {};
@@ -1070,6 +1301,7 @@ function App() {
         });
         addLog(draft, `камикадзе ${redirect.kamikaze} перевел удар на игрока ${targetId}`);
         draft.activeAction = nextNightActionKey(draft, action);
+        flashedAction = action;
         return;
       }
 
@@ -1078,6 +1310,7 @@ function App() {
         clearNightActionEffect(draft, action);
         addLog(draft, `щит заблокировал действие "${actionName(action)}" игрока ${draft.night.shielded}`);
         draft.activeAction = nextNightActionKey(draft, action);
+        flashedAction = action;
         return;
       }
 
@@ -1092,6 +1325,7 @@ function App() {
           addLog(draft, `камикадзе ${targetId} был выбран целью`);
         }
         draft.activeAction = nextNightActionKey(draft, action);
+        flashedAction = action;
         return;
       }
 
@@ -1181,7 +1415,9 @@ function App() {
       }
       addLog(draft, `${actionName(action)}: игрок ${targetId}`);
       draft.activeAction = isNightActionDone(draft, action) ? nextNightActionKey(draft, action) : action;
+      flashedAction = action;
     });
+    if (flashedAction) setLedgerFlashKey(flashedAction);
   };
 
   const clearCurrentNightAction = () => {
@@ -1240,10 +1476,16 @@ function App() {
       }
 
       if (draft.phase === "discussion") {
+        const pendingNightLastWords = nightFinalSpeechRequiredIds(draft);
+        if (pendingNightLastWords.length) {
+          addLog(draft, `Последняя речь ещё нужна игрокам: ${pendingNightLastWords.join(", ")}.`);
+          return;
+        }
         draft.phase = "speeches";
         draft.timer.remainingSeconds = draft.timer.speechSeconds;
         resetDayOrder(draft);
         draft.speechesDone = {};
+        draft.voteTargetOrder = [];
         draft.lastWordsDone = {};
         draft.dayResult = null;
         draft.shootout = makeBlankState(draft.playerCount).shootout;
@@ -1269,14 +1511,15 @@ function App() {
             return;
           }
           const isAliveTarget = (targetId) => Boolean(getPlayer(draft, targetId)?.alive);
+          const isAllowedVoteTarget = (targetId) => isAliveTarget(targetId) && !hasActiveInitialImmunity(draft, targetId);
           const activeVotes = Object.fromEntries(
             Object.entries(draft.votes).filter(([voterId, targetId]) => {
               const voter = getPlayer(draft, voterId);
               const target = getPlayer(draft, targetId);
-              return voter?.alive && target?.alive;
+              return voter?.alive && target?.alive && isAllowedVoteTarget(Number(targetId));
             })
           );
-          const leaders = voteLeaders(activeVotes, draft.foulVotes, isAliveTarget);
+          const leaders = voteLeaders(activeVotes, draft.foulVotes, isAllowedVoteTarget);
           if (leaders.length > 1) {
             draft.shootout = {
               active: true,
@@ -1341,6 +1584,14 @@ function App() {
           };
           draft.lastWordsDone = {};
         }
+        if (hasDayVoting(draft) && draft.dayNumber === 2 && activeInitialImmunityIds(draft).length > 0) {
+          const expiredIds = activeInitialImmunityIds(draft);
+          draft.dayResult = {
+            ...draft.dayResult,
+            immunityExpiredIds: expiredIds,
+            immunityExpiredMessage: `Иммунитет спал: ${formatPlayers(expiredIds)}.`
+          };
+        }
         draft.phase = "voteResults";
         draft.timer.remainingSeconds = 0;
         draft.timer.running = false;
@@ -1353,6 +1604,12 @@ function App() {
         if (pendingLastWords.length) {
           addLog(draft, `Последняя речь ещё нужна игрокам: ${pendingLastWords.join(", ")}.`);
           return;
+        }
+        if (window.MafiaUiFocus?.shouldExpireInitialImmunity(draft)) {
+          const expiredIds = activeInitialImmunityIds(draft);
+          const message = draft.dayResult?.immunityExpiredMessage || `Иммунитет спал: ${formatPlayers(expiredIds)}.`;
+          draft.startImmunityExpired = true;
+          addLog(draft, message);
         }
         draft.phase = "night";
         draft.nightNumber = draft.dayNumber + 1;
@@ -1382,7 +1639,10 @@ function App() {
         addNightSource(draft.night.loversTarget, "Любовники выбрали этого игрока для выстрела.");
         addNightSource(draft.night.maniacTarget, "Маньяк выбрал этого игрока для убийства.");
         addNightSource(draft.night.sheriffShotTarget, "Шериф стрелял в ранее найденного чёрного игрока.");
-        const victims = uniqueNumbers([draft.night.mafiaTarget, draft.night.loversTarget, draft.night.maniacTarget, draft.night.sheriffShotTarget]);
+        const rawVictims = uniqueNumbers([draft.night.mafiaTarget, draft.night.loversTarget, draft.night.maniacTarget, draft.night.sheriffShotTarget]);
+        const immuneAttackIds = draft.nightNumber === 2 ? rawVictims.filter((id) => hasActiveInitialImmunity(draft, id)) : [];
+        immuneAttackIds.forEach((id) => addLog(draft, `игрок ${id} пережил атаку: стартовый иммунитет`));
+        const victims = rawVictims.filter((id) => !immuneAttackIds.includes(id));
         const aliveBeforeNight = new Set(draft.players.filter((player) => player.alive).map((player) => player.id));
         const doctorSavedIds = healedIds(draft);
         const savedByDoctor = victims.filter((id) => doctorSavedIds.includes(id));
@@ -1411,6 +1671,7 @@ function App() {
         draft.night = makeBlankState(draft.playerCount).night;
         draft.night.lastHealed = lastHealed;
         draft.nominations = [];
+        draft.voteTargetOrder = [];
         draft.votes = {};
         draft.foulVotes = {};
         draft.speechesDone = {};
@@ -1428,9 +1689,9 @@ function App() {
 
   const markLastWordsDone = (playerId) => {
     updateState((draft) => {
-      if (draft.phase !== "voteResults") return;
       const id = Number(playerId);
-      if (!finalSpeechRequiredIds(draft).includes(id)) return;
+      const requiredIds = draft.phase === "voteResults" ? finalSpeechRequiredIds(draft) : draft.phase === "discussion" ? nightFinalSpeechRequiredIds(draft) : [];
+      if (!requiredIds.includes(id)) return;
       draft.lastWordsDone[id] = true;
       addLog(draft, `игрок ${id} сказал последнюю речь`);
     });
@@ -1442,6 +1703,10 @@ function App() {
       const targetId = Number(playerId || draft.targetId);
       const target = getPlayer(draft, targetId);
       if (!target?.alive) return;
+      if (hasActiveInitialImmunity(draft, targetId) && draft.dayNumber === 2) {
+        addLog(draft, `игрок ${targetId} защищён стартовым иммунитетом`);
+        return;
+      }
       if (!draft.nominations.includes(targetId)) {
         draft.nominations.push(targetId);
         addLog(draft, `номинирован игрок ${targetId}`);
@@ -1452,6 +1717,10 @@ function App() {
   const castVote = (voterValue, targetValue) => {
     updateState((draft) => {
       if (draft.phase !== "speeches") return;
+      if (!isDayOrderReady(draft)) {
+        addLog(draft, "Сначала выберите, кто открывает стол, и направление.");
+        return;
+      }
       const voterId = Number(voterValue || draft.voterId);
       const targetId = Number(targetValue || draft.targetId);
       const voter = getPlayer(draft, voterId);
@@ -1461,6 +1730,12 @@ function App() {
         addLog(draft, `Игрок ${voterId} голосует только в свою очередь.`);
         return;
       }
+      if (hasDayVoting(draft) && hasActiveInitialImmunity(draft, targetId)) {
+        addLog(draft, `голос за игрока ${targetId} не принят: стартовый иммунитет`);
+        return;
+      }
+      if (!Array.isArray(draft.voteTargetOrder)) draft.voteTargetOrder = [];
+      if (!draft.voteTargetOrder.includes(targetId)) draft.voteTargetOrder.push(targetId);
       if (!draft.nominations.includes(targetId)) draft.nominations.push(targetId);
       draft.votes[voterId] = targetId;
       draft.speechesDone[voterId] = true;
@@ -1474,6 +1749,10 @@ function App() {
       const targetId = Number(targetValue);
       const target = getPlayer(draft, targetId);
       if (!target?.alive) return;
+      if (hasActiveInitialImmunity(draft, targetId)) {
+        addLog(draft, `фол не добавлен игроку ${targetId}: стартовый иммунитет`);
+        return;
+      }
       const current = Math.max(0, Number(draft.foulVotes?.[targetId]) || 0);
       const next = Math.max(0, current + Number(delta));
       if (!draft.foulVotes || typeof draft.foulVotes !== "object") draft.foulVotes = {};
@@ -1593,6 +1872,10 @@ function App() {
   const toggleTimer = () => {
     updateState((draft) => {
       if (!["discussion", "speeches"].includes(draft.phase)) return;
+      if (draft.phase === "speeches" && !isDayOrderReady(draft)) {
+        addLog(draft, "Сначала выберите, кто открывает стол, и направление.");
+        return;
+      }
       if (draft.timer.remainingSeconds <= 0) {
         draft.timer.remainingSeconds = draft.phase === "discussion" ? draft.timer.discussionMinutes * 60 : draft.timer.speechSeconds;
       }
@@ -1610,6 +1893,10 @@ function App() {
   const nextSpeaker = () => {
     updateState((draft) => {
       if (draft.phase !== "speeches") return;
+      if (!isDayOrderReady(draft)) {
+        addLog(draft, "Сначала выберите, кто открывает стол, и направление.");
+        return;
+      }
       const currentSpeaker = Number(draft.timer.currentSpeaker);
       const aliveIds = draft.players.filter((player) => player.alive).map((player) => player.id);
       const isComplete = (id) => hasDayVoting(draft) ? Boolean(draft.votes[id]) : Boolean(draft.speechesDone?.[id]);
@@ -1652,12 +1939,18 @@ function App() {
         const selectedId = Number(value);
         if (!draft.players.some((player) => player.id === selectedId && player.alive)) return;
         draft.dayStartPlayerId = selectedId;
-        draft.timer.currentSpeaker = resolveCurrentDaySpeaker(draft, selectedId);
       }
       if (field === "dayDirection") {
-        draft.dayDirection = window.MafiaUiFocus?.normalizeDayDirection(value) || "forward";
-        draft.timer.currentSpeaker = resolveCurrentDaySpeaker(draft, draft.dayStartPlayerId);
+        if (!["forward", "backward"].includes(value)) return;
+        draft.dayDirection = value;
       }
+      if (!isDayOrderReady(draft)) {
+        draft.timer.currentSpeaker = 0;
+        draft.timer.running = false;
+        draft.timer.remainingSeconds = draft.timer.speechSeconds;
+        return;
+      }
+      draft.timer.currentSpeaker = resolveCurrentDaySpeaker(draft, draft.dayStartPlayerId);
       const completeIds = new Set(completeSpeechIds(draft));
       if (!draft.timer.currentSpeaker || completeIds.has(Number(draft.timer.currentSpeaker))) {
         draft.timer.currentSpeaker = nextOrderedSpeaker(draft, Number(draft.timer.currentSpeaker));
@@ -1724,33 +2017,59 @@ function App() {
         }
       : null;
 
+  const toggleTheme = () => setTheme((current) => current === "black" ? "light" : "black");
+
   return h(
     "main",
-    { className: "app" },
-    h(
-      "header",
-      { className: "topbar" },
-      h("div", { className: `phase-hero phase-${state.phase}` }, h("span", null, state.phase === "night" || state.phase === "introNight" ? "Ночь" : state.phase === "gameOver" ? "Итог" : "День"), h("h1", { className: "phase-label" }, phaseName(state))),
+    { className: `app theme-${theme}` },
       h(
-        "div",
-        { className: "top-actions-wrap" },
+        "header",
+        { className: "topbar" },
+        h("div", { className: `phase-hero phase-${state.phase}` }, h("span", null, state.phase === "night" || state.phase === "introNight" ? "Ночь" : state.phase === "gameOver" ? "Итог" : "День"), h("h1", { className: "phase-label" }, phaseName(state))),
         h(
           "div",
-          { className: "top-actions" },
-          h("button", { type: "button", className: "icon-text", onClick: () => setConfirmAction("nextPhase"), disabled: Boolean(blockReason), title: blockReason || "Следующая фаза", "aria-label": "Следующая фаза", "data-testid": "next-phase" }, h("span", null, "→"), h("span", null, "Следующая фаза")),
-          h("button", { type: "button", className: "icon-text muted", onClick: () => setConfirmAction("reset"), title: "Сбросить партию", "aria-label": "Сбросить партию", "data-testid": "reset-game" }, h("span", null, "↺"), h("span", null, "Сброс"))
+          { className: "top-actions-wrap" },
+          h(
+            "div",
+            { className: "top-actions" },
+            h(
+              "button",
+              {
+                type: "button",
+                className: `icon-text ${blockReason ? "blocked-action" : ""}`,
+                onClick: () => {
+                  if (blockReason) {
+                    setBlockerTooltipOpen(true);
+                    return;
+                  }
+                  setConfirmAction("nextPhase");
+                },
+                onMouseEnter: () => blockReason && setBlockerTooltipOpen(true),
+                onMouseLeave: () => setBlockerTooltipOpen(false),
+                onFocus: () => blockReason && setBlockerTooltipOpen(true),
+                onBlur: () => setBlockerTooltipOpen(false),
+                "data-blocked": blockReason ? "true" : "false",
+                title: blockReason || "Следующая фаза",
+                "aria-label": blockReason ? `Следующая фаза недоступна: ${blockReason}` : "Следующая фаза",
+                "data-testid": "next-phase"
+              },
+              h("span", null, h(Icon, { name: "ChevronRight" })),
+              h("span", null, "Следующая фаза"),
+              blockReason && h("span", { className: `phase-blocker-tooltip ${blockerTooltipOpen ? "visible" : ""}`, role: "tooltip" }, blockReason)
+            ),
+            h("button", { type: "button", className: "icon-text muted", onClick: () => setConfirmAction("reset"), title: "Сбросить партию", "aria-label": "Сбросить партию", "data-testid": "reset-game" }, h("span", null, "↺"), h("span", null, "Сброс"))
+          )
         ),
-        blockReason && h("p", { className: "phase-block-reason", "data-testid": "phase-block-reason" }, blockReason)
-      )
-    ),
-    h("section", { className: "role-strip", "aria-label": "Роли" }, h("div", { className: "role-grid" }, activeRoleDefs(state.playerCount).map((role) => h(RolePill, { key: role.key, role, players: state.roles[role.key] })))),
-    h(
-      "section",
-      { className: `workspace ${state.phase === "introNight" ? "" : "game-workspace"}` },
-      state.phase === "introNight" && h(RolePanel, { state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCount, clearRolesConfirmed: () => updateState((draft) => { draft.rolesConfirmed = false; draft.rolesLocked = false; }) }),
-      h(MainColumn, { state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, markLastWordsDone, selectPlayer, setView: (view) => updateState((draft) => { draft.view = view; }), rolesForPlayer, isMafiaVisible }),
-      h(ActionPanel, { state, aliveOptions, updateState, applyAction, clearCurrentNightAction, updateTimerSetting, toggleTimer, resetTimer })
-    ),
+      ),
+      h(
+        "section",
+        { className: `workspace ${state.phase === "introNight" ? "" : "game-workspace"}` },
+        state.phase === "introNight" && h(RolePanel, { state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCount, updateInitialImmunity, clearRolesConfirmed: () => updateState((draft) => { draft.rolesConfirmed = false; draft.rolesLocked = false; }) }),
+        h(MainColumn, { state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, toggleTimer, resetTimer, markLastWordsDone, selectPlayer, setView: (view) => updateState((draft) => { draft.view = view; }), rolesForPlayer, isMafiaVisible }),
+        h(ActionPanel, { state, aliveOptions, updateState, applyAction, clearCurrentNightAction, updateTimerSetting, toggleTimer, resetTimer, blockReason, openDrawers, setOpenDrawers, ledgerFlashKey })
+      ),
+      h(FloatingLogPanel, { state, updateState, open: logPanelOpen, onToggle: () => setLogPanelOpen((open) => !open), onClose: () => setLogPanelOpen(false), theme, toggleTheme }),
+    state.phase === "gameOver" && !gameOverOverlayHidden && h(GameOverOverlay, { state, onHide: () => setGameOverOverlayHidden(true) }),
     confirmConfig && h(ConfirmModal, { config: confirmConfig, onCancel: () => setConfirmAction(null) })
   );
 }
@@ -1774,19 +2093,35 @@ function ConfirmModal({ config, onCancel }) {
   );
 }
 
-function RolePill({ role, players }) {
+function ImmunityInline({ state, playerId, compact = false }) {
+  if (!hasVisibleInitialImmunity(state, playerId)) return null;
+  return h("span", { className: `immunity-inline ${compact ? "compact" : ""}`, title: "Стартовый иммунитет" }, h(Icon, { name: STATUS_ICONS.immunity, label: "Стартовый иммунитет" }));
+}
+
+function PlayerNumberWithImmunity({ state, playerId, prefix = "Игрок " }) {
+  return h("span", { className: "player-number-with-immunity" }, `${prefix}${playerId}`, h(ImmunityInline, { state, playerId }));
+}
+
+function RolePill({ role, players, state }) {
   return h(
     "div",
     { className: `role-pill role-${role.key}` },
     h("strong", null, h("span", { className: "role-icon", "aria-hidden": "true" }, h(Icon, { name: role.icon })), role.name),
-    h("span", null, players?.length ? players.join(", ") : "нет")
+    h(
+      "span",
+      { className: "role-player-list" },
+      players?.length
+        ? players.map((playerId, index) => h("span", { key: playerId, className: "role-player-id" }, index > 0 ? ", " : "", playerId, h(ImmunityInline, { state, playerId, compact: true })))
+        : "нет"
+    )
   );
 }
 
-function RolePanel({ state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCount, clearRolesConfirmed }) {
+function RolePanel({ state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCount, updateInitialImmunity, clearRolesConfirmed }) {
   const visibleRoles = activeRoleDefs(state.playerCount);
   const liveRoleIssues = state.rolesLocked ? [] : validateRoles(parseRoleSlots(roleDrafts, state.playerCount), state.playerCount);
   const roleError = state.setupError || liveRoleIssues.join("; ");
+  const selectedImmunityIds = new Set(visibleInitialImmunityIds(state));
   return h(
     "aside",
     { className: "panel setup-panel" },
@@ -1830,6 +2165,37 @@ function RolePanel({ state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCo
     roleError && h("p", { className: "setup-error" }, roleError),
     h(
       "div",
+      { className: "immunity-setup" },
+      h(
+        "div",
+        { className: "immunity-setup-head" },
+        h("span", null, h(Icon, { name: STATUS_ICONS.immunity })),
+        h("div", null, h("strong", null, "Стартовые иммунитеты"), h("small", null, `${selectedImmunityIds.size} / 5. Защищают от первой ночной атаки и первого голосования`))
+      ),
+      h(
+        "div",
+        { className: "immunity-player-grid", role: "group", "aria-label": "Стартовые иммунитеты" },
+        state.players.map((player) =>
+          h(
+            "button",
+            {
+              key: player.id,
+              type: "button",
+              className: selectedImmunityIds.has(player.id) ? "selected" : "",
+              disabled: state.rolesLocked || (!selectedImmunityIds.has(player.id) && selectedImmunityIds.size >= 5),
+              onClick: () => updateInitialImmunity(player.id),
+              title: selectedImmunityIds.has(player.id) ? `Снять иммунитет с игрока ${player.id}` : `Выдать иммунитет игроку ${player.id}`,
+              "aria-pressed": selectedImmunityIds.has(player.id),
+              "data-testid": `immunity-player-${player.id}`
+            },
+            h("strong", null, player.id),
+            h(Icon, { name: STATUS_ICONS.immunity, label: selectedImmunityIds.has(player.id) ? "Иммунитет выдан" : "Выдать иммунитет" })
+          )
+        )
+      ),
+    ),
+    h(
+      "div",
       { className: "role-editors" },
       visibleRoles.map((role) =>
         h(
@@ -1868,16 +2234,15 @@ function RolePanel({ state, roleDrafts, setRoleDrafts, saveRoles, updatePlayerCo
   );
 }
 
-function MainColumn({ state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, markLastWordsDone, selectPlayer, setView, rolesForPlayer, isMafiaVisible }) {
+function MainColumn({ state, aliveOptions, updateState, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, toggleTimer, resetTimer, markLastWordsDone, selectPlayer, setView, rolesForPlayer, isMafiaVisible }) {
   const publicSummaryLines = sanitizePublicSummary(state.publicNightSummary);
   return h(
     "section",
     { className: "main-column" },
     state.phase === "gameOver" && h(GameOverHero, { state }),
-    state.phase === "discussion" && publicSummaryLines.length > 0 && h(NightResultsCard, { state, lines: publicSummaryLines }),
-    state.phase === "speeches" && h(DayFlowCard, { state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder }),
+    state.phase === "discussion" && publicSummaryLines.length > 0 && h(NightResultsCard, { state, lines: publicSummaryLines, markLastWordsDone }),
+    state.phase === "speeches" && h(DayFlowCard, { state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, toggleTimer, resetTimer }),
     state.phase === "voteResults" && h(VoteResultsCard, { state, markLastWordsDone }),
-    h(LogBox, { state, updateState }),
     h(Board, { state, updateState, setView, selectPlayer, rolesForPlayer, isMafiaVisible })
   );
 }
@@ -1899,10 +2264,40 @@ function GameOverHero({ state }) {
   );
 }
 
-function NightResultsCard({ state, lines }) {
+function GameOverOverlay({ state, onHide }) {
+  const alivePlayers = state.players.filter((player) => player.alive);
+  const deadPlayers = state.players.filter((player) => !player.alive);
+  const winnerTone = state.winner === "Мирные" ? "peace" : state.winner === "Маньяк" ? "maniac" : "mafia";
+  return h(
+    "section",
+    { className: `game-over-overlay winner-${winnerTone}`, role: "dialog", "aria-modal": "true", "aria-label": "Итог игры" },
+    h("div", { className: "game-over-burst", "aria-hidden": "true" }, Array.from({ length: 18 }, (_, index) => h("span", { key: index, style: { "--i": index } }))),
+    h(
+      "div",
+      { className: "game-over-stage" },
+      h("span", { className: "game-over-kicker" }, "Партия завершена"),
+      h("h2", null, `Победа: ${state.winner || "не определена"}`),
+      h("p", null, alivePlayers.length ? `Выжившие: ${formatPlayers(alivePlayers.map((player) => player.id))}.` : "За столом не осталось живых игроков."),
+      h(
+        "div",
+        { className: "game-over-scoreboard" },
+        h("div", null, h("strong", null, alivePlayers.length), h("span", null, "живых")),
+        h("div", null, h("strong", null, deadPlayers.length), h("span", null, "выбыли"))
+      ),
+      h(
+        "div",
+        { className: "game-over-actions" },
+        h("button", { type: "button", className: "primary-action", onClick: onHide }, "Показать стол")
+      )
+    )
+  );
+}
+
+function NightResultsCard({ state, lines, markLastWordsDone }) {
   const hasDeaths = lines.some((line) => /Выбыли ночью/i.test(line));
   const icon = hasDeaths ? "MoonStar" : "Megaphone";
   const deaths = Array.isArray(state.nightResultDeaths) ? state.nightResultDeaths : [];
+  const pendingLastWords = nightFinalSpeechRequiredIds(state);
   return h(
     "div",
     { className: `vote-results-card night-results-card ${hasDeaths ? "result-eliminated" : "result-night"}` },
@@ -1925,8 +2320,28 @@ function NightResultsCard({ state, lines }) {
         )
       )
     ),
+    deaths.length > 0 &&
+      h(
+        "div",
+        { className: "day-result-details night-last-words" },
+        h("h4", null, "Последние слова после ночи"),
+        deaths.map((death) =>
+          h(
+            "div",
+            { key: death.id, className: `day-result-row ${death.finalSpeech ? "" : "no-last-word"}` },
+            h("strong", null, `Игрок ${death.id}`),
+            h("span", null, death.role || roleSummaryForPlayer(state, death.id)),
+            h("em", null, death.reason || "ночь"),
+            death.finalSpeech
+              ? h("button", { type: "button", className: state.lastWordsDone?.[death.id] ? "muted done-action" : "primary-action", onClick: () => markLastWordsDone(death.id), disabled: Boolean(state.lastWordsDone?.[death.id]) }, state.lastWordsDone?.[death.id] ? "Речь сказана" : "Последняя речь")
+              : h("span", { className: "no-last-word-note" }, "Последнего слова нет")
+          )
+        )
+      ),
     deaths.length > 0 && h(DeathChainCard, { deaths, title: "Служебно для ведущего: цепочка ночи", compact: true }),
-    h("p", { className: "host-note" }, "После объявления можно начинать Балаган.")
+    pendingLastWords.length > 0
+      ? h("p", { className: "host-note warning-note" }, `Перед речами нужно дать последнюю речь: ${pendingLastWords.map((id) => `игрок ${id}`).join(", ")}.`)
+      : h("p", { className: "host-note" }, "После объявления можно начинать Балаган.")
   );
 }
 
@@ -1948,6 +2363,8 @@ function VoteResultsCard({ state, markLastWordsDone }) {
     ),
     h("strong", null, result.message),
     result.role && h("p", { className: "revealed-role" }, `Роль раскрыта: ${result.role}`),
+    result.immunityExpiredMessage &&
+      h("div", { className: "immunity-expired-note" }, h("span", null, h(Icon, { name: STATUS_ICONS.immunity })), h("strong", null, result.immunityExpiredMessage)),
     deaths.length > 0 &&
       h(
         "div",
@@ -1997,6 +2414,7 @@ function playerHasVisibleMark(player, state) {
   return Boolean(
     player.healed ||
     player.alibi ||
+    hasVisibleInitialImmunity(state, player.id) ||
     player.shielded ||
     player.bombed ||
     state.night.checks.some((check) => check.target === player.id) ||
@@ -2020,12 +2438,19 @@ function Board({ state, updateState, setView, selectPlayer, rolesForPlayer, isMa
     if (state.statusFilter === "marked") return playerHasVisibleMark(player, state);
     return true;
   });
+  const activeMark = MARK_ACTIONS.find((mark) => mark.key === state.activeMark);
   return h(
     "section",
     { className: "board-shell" },
     h(
       "div",
       { className: "board-toolbar" },
+      h(
+        "div",
+        { className: "board-title" },
+        h("span", null, "Игровой стол"),
+        h("strong", null, `${visiblePlayers.length} / ${state.players.length}`)
+      ),
       h(
         "div",
         { className: "segmented", role: "group", "aria-label": "Режим" },
@@ -2048,8 +2473,14 @@ function Board({ state, updateState, setView, selectPlayer, rolesForPlayer, isMa
             },
             label
           )
-        ),
-        h("span", null, `${visiblePlayers.length} / ${state.players.length}`)
+        )
+      ),
+    activeMark &&
+      h(
+        "div",
+        { className: "board-mode-banner mark-mode-banner" },
+        h(Icon, { name: "MousePointer2" }),
+        h("span", null, `Режим метки: ${activeMark.label}. Клик по игроку применит или снимет метку.`)
       ),
     visiblePlayers.length
       ? h("div", { className: "players-grid", "aria-label": "Игроки" }, visiblePlayers.map((player) => h(PlayerCard, { key: player.id, player, state, rolesForPlayer, isMafiaVisible, onSelect: selectPlayer })))
@@ -2057,37 +2488,185 @@ function Board({ state, updateState, setView, selectPlayer, rolesForPlayer, isMa
   );
 }
 
-function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder }) {
-  const aliveVoteOptions = aliveOptions.filter((option) => state.players.some((player) => player.id === option.id && player.alive));
+function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootoutNumber, setShootoutPlayer, recordShootoutGuess, nextSpeaker, updateDayOrder, toggleTimer, resetTimer }) {
+  const [dayFlowDensity, setDayFlowDensity] = useState("compact");
+  const baseAliveVoteOptions = aliveOptions.filter((option) => state.players.some((player) => player.id === option.id && player.alive));
+  const aliveVoteOptions = filterInitialImmunityOptions(baseAliveVoteOptions, state, { mode: "vote" });
   const votes = state.votes && typeof state.votes === "object" ? state.votes : {};
   const alivePlayers = state.players.filter((player) => player.alive);
-  const speakerOrder = window.MafiaUiFocus?.daySpeakerOrder?.(state) || alivePlayers.map((player) => player.id);
-  const orderPreview = speakerOrder.map((id) => `#${id}`).join(" -> ");
-  const selectedDayStartPlayerId = alivePlayers.some((player) => player.id === Number(state.dayStartPlayerId)) ? Number(state.dayStartPlayerId) : alivePlayers[0]?.id || "";
+  const dayOrderReady = isDayOrderReady(state);
+  const speakerOrder = dayOrderReady ? window.MafiaUiFocus?.daySpeakerOrder?.(state) || alivePlayers.map((player) => player.id) : [];
+  const selectedDayStartPlayerId = alivePlayers.some((player) => player.id === Number(state.dayStartPlayerId)) ? Number(state.dayStartPlayerId) : "";
+  const selectedDayDirection = ["forward", "backward"].includes(state.dayDirection) ? state.dayDirection : "";
   const votingOpen = hasDayVoting(state);
   const foulVotes = state.foulVotes && typeof state.foulVotes === "object" ? state.foulVotes : {};
-  const voteCounts = voteTally(votes, foulVotes, (id) => state.players.some((player) => player.id === id && player.alive));
-  const normalVoteCounts = voteTally(votes, {}, (id) => state.players.some((player) => player.id === id && player.alive));
+  const canReceiveVote = (id) => baseAliveVoteOptions.some((option) => option.id === id) && aliveVoteOptions.some((option) => option.id === id);
+  const voteCounts = voteTally(votes, foulVotes, canReceiveVote);
+  const normalVoteCounts = voteTally(votes, {}, canReceiveVote);
+  const activeImmuneIds = activeInitialImmunityIds(state);
   const completedVotes = alivePlayers.filter((player) => Boolean(votes[player.id])).length;
   const speechesComplete = alivePlayers.filter((player) => state.speechesDone?.[player.id]).length;
+  const dayResultFinalized = Boolean(state.dayEliminationDone && state.dayResult);
+  const dayOrderStarted = dayResultFinalized || (votingOpen ? completedVotes > 0 : speechesComplete > 0);
   const shootoutOrdered = shootoutOrderedPlayers(state);
   const shootoutAvailable = shootoutAvailablePlayers(state);
   const currentShootoutPlayer = shootoutAvailable.includes(Number(state.shootout.currentPlayer)) ? Number(state.shootout.currentPlayer) : shootoutAvailable[0];
   const currentVoteTarget = (playerId) => (votes[playerId] && aliveVoteOptions.some((option) => option.id === Number(votes[playerId])) ? votes[playerId] : "");
-  const flowComplete = alivePlayers.length > 0 && alivePlayers.every((player) => votingOpen ? Boolean(votes[player.id]) : Boolean(state.speechesDone?.[player.id]));
-  const currentSpeaker = state.timer.currentSpeaker && !flowComplete ? state.timer.currentSpeaker : null;
+  const flowComplete = dayResultFinalized || (alivePlayers.length > 0 && alivePlayers.every((player) => votingOpen ? Boolean(votes[player.id]) : Boolean(state.speechesDone?.[player.id])));
+  const currentSpeaker = dayOrderReady && state.timer.currentSpeaker && !flowComplete ? state.timer.currentSpeaker : null;
   const currentSpeakerPlayer = state.players.find((player) => player.id === currentSpeaker && player.alive);
   const tablePlayers = currentSpeakerPlayer ? state.players.filter((player) => player.id !== currentSpeakerPlayer.id) : state.players;
   const currentSpeakerDone = currentSpeakerPlayer ? votingOpen ? Boolean(votes[currentSpeakerPlayer.id]) : Boolean(state.speechesDone?.[currentSpeakerPlayer.id]) : false;
+  const auditForPlayer = (playerId) => window.MafiaUiFocus?.voteAudit({
+    playerId,
+    votes,
+    receivedVotes: normalVoteCounts[playerId] || 0,
+    foulVotes: Number(foulVotes[playerId]) || 0
+  });
+  const voteTargetOrder = uniqueNumbers(Array.isArray(state.voteTargetOrder) ? state.voteTargetOrder : []);
+  const voteSummaryById = new Map(
+    alivePlayers
+      .map((player) => {
+        const normalVotes = normalVoteCounts[player.id] || 0;
+        const fouls = Number(foulVotes[player.id]) || 0;
+        return { ...player, normalVotes, fouls, totalVotes: normalVotes + fouls };
+      })
+      .filter(({ normalVotes, fouls }) => normalVotes || fouls)
+      .map((player) => [player.id, player])
+  );
+  const orderedVoteSummaryIds = [
+    ...voteTargetOrder.filter((id) => voteSummaryById.has(id)),
+    ...alivePlayers.map((player) => player.id).filter((id) => voteSummaryById.has(id) && !voteTargetOrder.includes(id))
+  ];
+  const compactVoteSummaryPlayers = orderedVoteSummaryIds.map((id) => voteSummaryById.get(id));
+  const shootoutCard = state.shootout.active &&
+    h(
+      "div",
+      { className: "shootout-card" },
+      h("h3", null, "Перестрелка"),
+      h(
+        "p",
+        { className: "shootout-order-line" },
+        h("span", null, "Очередь:"),
+        h(
+          "strong",
+          { className: "shootout-order-sequence" },
+          shootoutOrdered.map((playerId, index) =>
+            h(
+              "span",
+              { key: `${playerId}-${index}`, className: "shootout-order-step" },
+              index > 0 && h("span", { className: "inline-arrow-icon", "aria-hidden": "true" }, h(Icon, { name: "ChevronRight" })),
+              h("span", null, `#${playerId}`)
+            )
+          )
+        )
+      ),
+      h(
+        "div",
+        { className: "shootout-legend" },
+        shootoutOrdered.map((playerId) =>
+          {
+            const alreadyShot = (state.shootout.roundShots || []).includes(playerId);
+            return (
+          h(
+            "button",
+            {
+              key: playerId,
+              type: "button",
+              className: `shootout-player-chip ${shootoutColorClass(state, playerId)} ${currentShootoutPlayer === playerId ? "active" : ""} ${alreadyShot ? "spent" : ""}`,
+              disabled: alreadyShot,
+              title: alreadyShot ? `Игрок ${playerId} уже стрелял в этом круге` : `Ход игрока ${playerId}`,
+              onClick: () => setShootoutPlayer(playerId)
+            },
+            alreadyShot ? `Игрок ${playerId} ✓` : `Игрок ${playerId}`
+          )
+            );
+          }
+        )
+      ),
+      h(
+        "label",
+        { className: "shootout-turn" },
+        h("span", null, "Кто выбирает число"),
+        h(
+          "select",
+          { value: currentShootoutPlayer || "", onChange: (event) => setShootoutPlayer(Number(event.target.value)), "data-testid": "shootout-player" },
+          shootoutAvailable.map((playerId) => h("option", { key: playerId, value: playerId }, `Игрок ${playerId}`))
+        )
+      ),
+      h(
+        "label",
+        { className: "shootout-secret" },
+        h("span", null, "Секретное число"),
+        h(
+          "select",
+          { value: state.shootout.number || "", onChange: (event) => setShootoutNumber(event.target.value), "data-testid": "shootout-number" },
+          h("option", { value: "" }, "Выбрать"),
+          Array.from({ length: 10 }, (_, index) => index + 1).map((number) => h("option", { key: number, value: number }, number))
+        )
+      ),
+      shootoutOrdered.map((playerId) =>
+        h(
+          "div",
+          { key: playerId, className: `shootout-row ${currentShootoutPlayer === playerId ? "active" : ""} ${(state.shootout.roundShots || []).includes(playerId) ? "spent" : ""}` },
+          h("strong", { className: shootoutColorClass(state, playerId) }, `Игрок ${playerId}`),
+          Array.from({ length: 10 }, (_, index) => {
+            const number = index + 1;
+            const calledBy = Number(state.shootout.calledBy?.[number]);
+            const calledClass = calledBy ? shootoutColorClass(state, calledBy) : "";
+            const isActivePlayer = currentShootoutPlayer === playerId;
+            return h(
+              "button",
+              {
+                key: number,
+                type: "button",
+                className: [state.shootout.called?.includes(number) ? "called" : "", calledClass].filter(Boolean).join(" "),
+                disabled: !state.shootout.number || state.shootout.called?.includes(number) || !isActivePlayer,
+                title: calledBy ? `Число ${number} назвал игрок ${calledBy}` : isActivePlayer ? `Игрок ${playerId} называет ${number}` : `Сейчас выбирает игрок ${currentShootoutPlayer}`,
+                onClick: () => recordShootoutGuess(playerId, number)
+              },
+              number
+            );
+          })
+        )
+      )
+    );
   return h(
     "div",
     { className: "day-flow-card main-day-flow" },
     h(
       "div",
       { className: "day-flow-head" },
-      h("div", null, h("h3", null, votingOpen ? "Речи и голосование" : "Речи игроков"), h("span", null, votingOpen ? `${completedVotes} / ${alivePlayers.length} голосов` : `${speechesComplete} / ${alivePlayers.length} речей`))
+      h("div", null, h("h3", null, votingOpen ? "Речи и голосование" : "Речи игроков"), h("span", null, votingOpen ? `${completedVotes} / ${alivePlayers.length} голосов` : `${speechesComplete} / ${alivePlayers.length} речей`)),
+      h(
+        "div",
+        { className: "day-flow-tools" },
+        votingOpen && activeImmuneIds.length > 0 && h("div", { className: "immunity-day-note" }, h(Icon, { name: STATUS_ICONS.immunity }), `Нельзя голосовать: ${formatPlayers(activeImmuneIds)}`),
+        h(
+          "div",
+          { className: "day-density-toggle segmented", role: "group", "aria-label": "Плотность панели дня" },
+          [
+            ["compact", "Minimize2", "Лаконично"],
+            ["detailed", "List", "Подробнее"]
+          ].map(([mode, icon, label]) =>
+            h(
+              "button",
+              {
+                key: mode,
+                type: "button",
+                className: dayFlowDensity === mode ? "active icon-action" : "icon-action",
+                onClick: () => setDayFlowDensity(mode),
+                "aria-pressed": dayFlowDensity === mode
+              },
+              h(Icon, { name: icon }),
+              label
+            )
+          )
+        )
+      )
     ),
-    h(
+    shootoutCard,
+    !dayOrderStarted && h(
       "div",
       { className: "day-order-controls" },
       h(
@@ -2101,6 +2680,7 @@ function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootou
             onChange: (event) => updateDayOrder("dayStartPlayerId", event.target.value),
             "data-testid": "day-start-player"
           },
+          h("option", { value: "" }, "Выберите игрока"),
           alivePlayers.map((player) => h("option", { key: player.id, value: player.id }, `#${player.id}`))
         )
       ),
@@ -2111,26 +2691,53 @@ function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootou
         h(
           "select",
           {
-            value: state.dayDirection === "backward" ? "backward" : "forward",
+            value: selectedDayDirection,
             onChange: (event) => updateDayOrder("dayDirection", event.target.value),
             "data-testid": "day-direction"
           },
+          h("option", { value: "" }, "Выберите"),
           h("option", { value: "forward" }, "Вперед"),
           h("option", { value: "backward" }, "Назад")
         )
       ),
-      h("div", { className: "day-order-preview" }, h("span", null, "Очередь"), h("strong", null, orderPreview || "-"))
+      h(
+        "div",
+        { className: "day-order-preview" },
+        h("span", null, "Очередь"),
+        speakerOrder.length
+          ? h(
+              "strong",
+              { className: "day-order-sequence" },
+              speakerOrder.map((playerId, index) =>
+                h(
+                  "span",
+                  { key: `${playerId}-${index}`, className: "day-order-step" },
+                  index > 0 && h("span", { className: "day-order-arrow", "aria-hidden": "true" }, h(Icon, { name: "ChevronRight" })),
+                  h("span", { className: "day-order-player" }, `#${playerId}`)
+                )
+              )
+            )
+          : h("strong", null, "-")
+      )
     ),
     h(
       "div",
       { className: `current-speaker-card ${currentSpeakerDone ? "done" : ""}` },
-      currentSpeakerPlayer
+      !dayResultFinalized && !dayOrderReady
+        ? h(
+            "div",
+            { className: "current-speaker-main order-pending" },
+            h("span", null, "Порядок дня"),
+            h("strong", null, "Выберите старт"),
+            h("em", null, "речи и голосование начнутся после выбора направления")
+          )
+        : currentSpeakerPlayer
         ? [
             h(
               "div",
               { key: "speaker", className: "current-speaker-main" },
               h("span", null, "Говорит"),
-              h("strong", null, `Игрок ${currentSpeakerPlayer.id}`),
+              h("strong", null, h(PlayerNumberWithImmunity, { state, playerId: currentSpeakerPlayer.id })),
               h("em", null, votingOpen ? currentSpeakerDone ? "голос принят" : "ожидает голос" : currentSpeakerDone ? "речь завершена" : "идет речь")
             ),
             votingOpen
@@ -2151,22 +2758,74 @@ function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootou
                   )
                 )
               : h("div", { key: "no-vote", className: "quick-vote-note" }, "Первый день без голосования"),
+            h(
+              "div",
+              { key: "timer", className: `speech-mini-timer ${state.timer.running ? "running" : ""}`, "aria-label": "Таймер речи" },
+              h("span", { className: "speech-mini-time" }, formatTime(state.timer.remainingSeconds)),
+              h(
+                "button",
+                {
+                  type: "button",
+                  className: "icon-action",
+                  onClick: toggleTimer,
+                  disabled: !dayOrderReady || flowComplete,
+                  title: state.timer.running ? "Пауза таймера" : "Старт таймера",
+                  "aria-label": state.timer.running ? "Пауза таймера" : "Старт таймера",
+                  "data-testid": "speech-timer-toggle"
+                },
+                h(Icon, { name: state.timer.running ? "Pause" : "Play" })
+              ),
+              h(
+                "button",
+                {
+                  type: "button",
+                  className: "icon-action muted",
+                  onClick: resetTimer,
+                  disabled: !dayOrderReady || flowComplete,
+                  title: "Сбросить таймер речи",
+                  "aria-label": "Сбросить таймер речи",
+                  "data-testid": "speech-timer-reset"
+                },
+                h(Icon, { name: "RotateCcw" })
+              )
+            ),
             h("button", { key: "next", type: "button", className: "primary-action icon-action", onClick: nextSpeaker, disabled: votingOpen && !currentSpeakerDone, "data-testid": "next-speaker" }, h(Icon, { name: currentSpeakerDone ? "ArrowRight" : votingOpen ? "Vote" : "Check" }), currentSpeakerDone ? "Следующий игрок" : votingOpen ? "Сначала выберите голос" : "Завершить речь")
           ]
         : h("div", { className: "current-speaker-main complete" }, h("span", null, "Речи"), h("strong", null, h("span", { className: "complete-icon" }, h(Icon, { name: "CheckCircle2" })), "Завершены"), h("em", null, "можно переходить дальше"))
     ),
-    h(
+    votingOpen && dayFlowDensity === "compact" && h(
       "div",
-      { className: "day-player-list" },
+      { className: "compact-vote-ledger", "aria-label": "Краткие итоги голосования" },
+      h("span", { className: "compact-vote-ledger-label" }, "Итоги"),
+      compactVoteSummaryPlayers.length
+        ? compactVoteSummaryPlayers.map((player) =>
+            h(
+              "span",
+              { key: player.id, className: `compact-vote-chip ${player.fouls ? "with-foul" : ""}` },
+              h("strong", null, `#${player.id}`),
+              h(
+                "span",
+                { className: "compact-vote-lines" },
+                player.normalVotes ? h("span", null, `${player.normalVotes} гол.`) : null,
+                player.fouls ? h("em", null, `фолы ${player.fouls}`) : null,
+                h("b", null, `итого ${player.totalVotes}`)
+              )
+            )
+          )
+        : h("span", { className: "compact-vote-empty" }, "Голосов пока нет")
+    ),
+    dayFlowDensity === "detailed" && h(
+      "div",
+      { className: `day-player-list ${votingOpen ? "detailed" : "speech-list"}` },
       tablePlayers.map((player) =>
         h(
           "div",
           { key: player.id, className: `day-player-row ${state.speechesDone?.[player.id] ? "done" : ""} ${currentSpeaker === player.id ? "current" : ""} ${player.alive ? "" : "dead"}` },
-          h("strong", null, `Игрок ${player.id}`),
+          h("strong", null, h(PlayerNumberWithImmunity, { state, playerId: player.id })),
           player.alive
             ? h(
                 "span",
-                { className: state.speechesDone?.[player.id] || Number(votes[player.id]) ? "dead-pill vote-done status-with-icon" : "day-note status-with-icon" },
+                { className: state.speechesDone?.[player.id] || Number(votes[player.id]) ? "vote-status-pill status-with-icon" : "day-note status-with-icon" },
                 h(Icon, { name: votingOpen ? Number(votes[player.id]) ? "Vote" : "CircleDashed" : state.speechesDone?.[player.id] ? "CheckCircle2" : "Mic" }),
                 votingOpen ? Number(votes[player.id]) ? "Голос" : "Ожидает" : state.speechesDone?.[player.id] ? "Речь" : "Ждет"
               )
@@ -2176,7 +2835,7 @@ function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootou
               ? h(
                 "select",
                 {
-                  className: Number(votes[player.id]) ? "has-vote" : "",
+                  className: `row-vote-select ${Number(votes[player.id]) ? "has-vote" : ""}`,
                   disabled: state.dayEliminationDone || !canCastDayVote(state, player.id),
                   value: currentVoteTarget(player.id),
                   onChange: (event) => castVote(player.id, Number(event.target.value))
@@ -2195,97 +2854,53 @@ function DayFlowCard({ state, aliveOptions, castVote, updateFoulVote, setShootou
                 h("button", { type: "button", className: "foul-button", disabled: state.dayEliminationDone || state.shootout.active, onClick: () => updateFoulVote(player.id, 1), title: `Добавить фол игроку ${player.id}` }, "+")
               )
             : h("span", { className: "day-note" }, "-"),
-          h(
-            "div",
-            { className: `vote-breakdown ${Number(foulVotes[player.id]) ? "with-foul" : ""}` },
-            votingOpen
-              ? [
-                  h("span", { key: "votes" }, h("em", null, "Голоса"), h("strong", null, normalVoteCounts[player.id] || 0)),
-                  h("span", { key: "fouls" }, h("em", null, "Фолы"), h("strong", null, Number(foulVotes[player.id]) || 0)),
-                  h("span", { key: "total", className: "total" }, h("em", null, "Итого"), h("strong", null, voteCounts[player.id] || 0))
-                ]
-              : state.speechesDone?.[player.id] ? "✓" : "-"
+          votingOpen
+            ? (() => {
+                const audit = auditForPlayer(player.id);
+                const votedTargetId = Number(votes[player.id]);
+                return h(
+                  "div",
+                  { className: "vote-audit-cell expanded" },
+                  h(
+                    "div",
+                    { className: `vote-compact-summary ${Number(foulVotes[player.id]) ? "with-foul" : ""}` },
+                    h("span", { className: votedTargetId ? "has-vote" : "" }, h(Icon, { name: "Vote" }), audit?.compactChoice || "-> -"),
+                    h("span", null, audit?.compactReceived || "Получил 0"),
+                    Number(foulVotes[player.id]) ? h("span", { className: "foul" }, audit?.compactFouls || "Фолы 0") : null,
+                    h("strong", null, audit?.compactTotal || "Итого 0")
+                  ),
+                  h(
+                    "div",
+                    { className: `vote-breakdown ${Number(foulVotes[player.id]) ? "with-foul" : ""}` },
+                    [
+                      h(
+                        "span",
+                        { key: "choice", className: "vote-choice" },
+                        h("em", null, "Голосует"),
+                        h(
+                          "strong",
+                          { className: "vote-choice-flow" },
+                          h("span", null, `#${player.id}`),
+                          h("span", { className: "inline-arrow-icon", "aria-hidden": "true" }, h(Icon, { name: "ChevronRight" })),
+                          h("span", null, votedTargetId ? `#${votedTargetId}` : "-")
+                        )
+                      ),
+                      h("span", { key: "votes" }, h("em", null, audit?.received || "Получил: 0"), h("strong", null, normalVoteCounts[player.id] || 0)),
+                      h("span", { key: "fouls" }, h("em", null, audit?.fouls || "Фолы: 0"), h("strong", null, Number(foulVotes[player.id]) || 0)),
+                      h("span", { key: "total", className: "total" }, h("em", null, audit?.total || "Итого: 0"), h("strong", null, voteCounts[player.id] || 0))
+                    ]
+                  )
+                );
+              })()
+            : h(
+                "div",
+                { className: "vote-audit-cell" },
+                h("span", { className: "day-note" }, state.speechesDone?.[player.id] ? "✓" : "-")
+              )
           )
         )
-      )
-    ),
-    h("div", { className: "vote-progress" }, votingOpen ? `${completedVotes} / ${alivePlayers.length} голосов` : `${speechesComplete} / ${alivePlayers.length} речей завершено`),
-    state.shootout.active &&
-      h(
-        "div",
-        { className: "shootout-card" },
-        h("h3", null, "Перестрелка"),
-        h("p", null, `Очередь: ${shootoutOrdered.join(" → ")}`),
-        h(
-          "div",
-          { className: "shootout-legend" },
-          shootoutOrdered.map((playerId) =>
-            {
-              const alreadyShot = (state.shootout.roundShots || []).includes(playerId);
-              return (
-            h(
-              "button",
-              {
-                key: playerId,
-                type: "button",
-                className: `shootout-player-chip ${shootoutColorClass(state, playerId)} ${currentShootoutPlayer === playerId ? "active" : ""} ${alreadyShot ? "spent" : ""}`,
-                disabled: alreadyShot,
-                title: alreadyShot ? `Игрок ${playerId} уже стрелял в этом круге` : `Ход игрока ${playerId}`,
-                onClick: () => setShootoutPlayer(playerId)
-              },
-              alreadyShot ? `Игрок ${playerId} ✓` : `Игрок ${playerId}`
-            )
-              );
-            }
-          )
-        ),
-        h(
-          "label",
-          { className: "shootout-turn" },
-          h("span", null, "Кто выбирает число"),
-          h(
-            "select",
-            { value: currentShootoutPlayer || "", onChange: (event) => setShootoutPlayer(Number(event.target.value)), "data-testid": "shootout-player" },
-            shootoutAvailable.map((playerId) => h("option", { key: playerId, value: playerId }, `Игрок ${playerId}`))
-          )
-        ),
-        h(
-          "label",
-          { className: "shootout-secret" },
-          h("span", null, "Секретное число"),
-          h(
-            "select",
-            { value: state.shootout.number || "", onChange: (event) => setShootoutNumber(event.target.value), "data-testid": "shootout-number" },
-            h("option", { value: "" }, "Выбрать"),
-            Array.from({ length: 10 }, (_, index) => index + 1).map((number) => h("option", { key: number, value: number }, number))
-          )
-        ),
-        shootoutOrdered.map((playerId) =>
-          h(
-            "div",
-            { key: playerId, className: `shootout-row ${currentShootoutPlayer === playerId ? "active" : ""} ${(state.shootout.roundShots || []).includes(playerId) ? "spent" : ""}` },
-            h("strong", { className: shootoutColorClass(state, playerId) }, `Игрок ${playerId}`),
-            Array.from({ length: 10 }, (_, index) => {
-              const number = index + 1;
-              const calledBy = Number(state.shootout.calledBy?.[number]);
-              const calledClass = calledBy ? shootoutColorClass(state, calledBy) : "";
-              const isActivePlayer = currentShootoutPlayer === playerId;
-              return h(
-                "button",
-                {
-                  key: number,
-                  type: "button",
-                  className: [state.shootout.called?.includes(number) ? "called" : "", calledClass].filter(Boolean).join(" "),
-                  disabled: !state.shootout.number || state.shootout.called?.includes(number) || !isActivePlayer,
-                  title: calledBy ? `Число ${number} назвал игрок ${calledBy}` : isActivePlayer ? `Игрок ${playerId} называет ${number}` : `Сейчас выбирает игрок ${currentShootoutPlayer}`,
-                  onClick: () => recordShootoutGuess(playerId, number)
-                },
-                number
-              );
-            })
-          )
-        )
-      )
+      ),
+    h("div", { className: "vote-progress" }, votingOpen ? `${completedVotes} / ${alivePlayers.length} голосов` : `${speechesComplete} / ${alivePlayers.length} речей завершено`)
   );
 }
 
@@ -2321,6 +2936,7 @@ function logEntryMeta(text) {
   if (lower.includes("врач") || lower.includes("леч")) return { icon: "Cross", tone: "heal" };
   if (lower.includes("перестрел")) return { icon: "Target", tone: "shootout" };
   if (lower.includes("ноч") || lower.includes("маф") || lower.includes("маньяк")) return { icon: "Moon", tone: "night" };
+  if (lower.includes("иммунитет")) return { icon: STATUS_ICONS.immunity, tone: "immunity" };
   if (lower.includes("алиби") || lower.includes("адвокат")) return { icon: "Scale", tone: "alibi" };
   if (lower.includes("роль") || lower.includes("роли")) return { icon: "BadgeCheck", tone: "setup" };
   return { icon: "Dot", tone: "plain" };
@@ -2338,7 +2954,45 @@ function groupedLogEntries(entries) {
   return groups;
 }
 
-function LogBox({ state, updateState }) {
+function FloatingLogPanel({ state, updateState, open, onToggle, onClose, theme, toggleTheme }) {
+  return h(
+    "div",
+    { className: `floating-log ${open ? "open" : ""}` },
+    open && h("div", { className: "floating-log-panel" }, h(LogBox, { state, updateState, onClose })),
+    h(
+      "div",
+      { className: "floating-log-actions" },
+      h(
+        "button",
+        {
+          type: "button",
+          className: "floating-theme-button theme-toggle",
+          onClick: toggleTheme,
+          title: theme === "black" ? "Светлая тема" : "Чёрная тема",
+          "aria-label": theme === "black" ? "Включить светлую тему" : "Включить чёрную тему",
+          "aria-pressed": theme === "black",
+          "data-testid": "theme-toggle"
+        },
+        h(Icon, { name: theme === "black" ? "Sun" : "Moon" })
+      ),
+      h(
+        "button",
+        {
+          type: "button",
+          className: "floating-log-button",
+          onClick: onToggle,
+          "aria-expanded": open,
+          "aria-label": open ? "Закрыть журнал" : "Открыть журнал",
+          title: open ? "Закрыть журнал" : "Открыть журнал"
+        },
+        h(Icon, { name: open ? "X" : "ListTree" }),
+        h("span", null, "Журнал")
+      )
+    )
+  );
+}
+
+function LogBox({ state, updateState, onClose }) {
   const groups = groupedLogEntries(state.log);
   const latest = groups[0]?.items[0];
   return h(
@@ -2348,7 +3002,12 @@ function LogBox({ state, updateState }) {
       "div",
       { className: "panel-head compact log-head" },
       h("h3", null, h(Icon, { name: "ListTree" }), " Журнал"),
-      h("button", { type: "button", onClick: () => updateState((draft) => { draft.log = []; }), title: "Очистить журнал" }, h(Icon, { name: "Trash2", label: "Очистить журнал" }))
+      h(
+        "div",
+        { className: "log-head-actions" },
+        h("button", { type: "button", onClick: () => updateState((draft) => { draft.log = []; }), title: "Очистить журнал" }, h(Icon, { name: "Trash2", label: "Очистить журнал" })),
+        onClose && h("button", { type: "button", onClick: onClose, title: "Закрыть журнал" }, h(Icon, { name: "X", label: "Закрыть журнал" }))
+      )
     ),
     latest &&
       h(
@@ -2392,6 +3051,7 @@ function PlayerCard({ player, state, rolesForPlayer, isMafiaVisible, onSelect })
   if (state.roles.shield.includes(player.id)) classNames.push("shield-role");
   if (player.shielded) classNames.push("shielded");
   if (player.bombed) classNames.push("bombed");
+  if (hasVisibleInitialImmunity(state, player.id)) classNames.push("immune");
   if (!player.alive) classNames.push("dead");
   if (player.alive && Number(state.targetId) === player.id) classNames.push("selected");
   const roleContent =
@@ -2401,7 +3061,10 @@ function PlayerCard({ player, state, rolesForPlayer, isMafiaVisible, onSelect })
             h("span", { key: role.key, className: `player-role-chip role-${role.key}` }, h(Icon, { name: role.icon }), role.name)
           )
         : "Мирный"
-      : statusText(player);
+      : statusText(player, state);
+  const selectedNightAction = state.phase === "night" && player.alive && Number(state.targetId) === player.id && canUseNightActions(state)
+    ? actionName(availableNightActions(state).some((action) => action.key === state.activeAction) ? state.activeAction : nextNightActionKey(state))
+    : "";
   return h(
     "button",
     { type: "button", className: classNames.join(" "), disabled: !player.alive, onClick: () => onSelect(player.id), title: player.alive ? `Выбрать игрока ${player.id}` : `Игрок ${player.id} выбыл` },
@@ -2414,13 +3077,22 @@ function PlayerCard({ player, state, rolesForPlayer, isMafiaVisible, onSelect })
     ),
     h("div", { className: "player-number" }, player.id),
     !player.alive && h("div", { className: "dead-label" }, "Выбыл"),
-    h("div", { className: "player-role" }, roleContent)
+    h("div", { className: "player-role" }, roleContent),
+    selectedNightAction &&
+      h(
+        "div",
+        { className: "night-target-note" },
+        h("span", null, selectedNightAction),
+        h("span", { className: "inline-arrow-icon", "aria-hidden": "true" }, h(Icon, { name: "ChevronRight" })),
+        h("strong", null, `#${player.id}`)
+      )
   );
 }
 
-function statusText(player) {
+function statusText(player, state) {
   if (!player.alive) return "Выбыл";
   const parts = [];
+  if (state && hasVisibleInitialImmunity(state, player.id)) parts.push("иммунитет");
   if (player.healed) parts.push("лечение");
   if (player.alibi) parts.push("алиби");
   if (player.shielded) parts.push("щит");
@@ -2440,72 +3112,138 @@ function badgesFor(player, state, playerRoles) {
   if (player.bombed) badges.push(["bomb", STATUS_ICONS.bomb, "Отмечен бомбой"]);
   if (player.healed) badges.push(["heal", STATUS_ICONS.heal, "Защищен врачом"]);
   if (player.alibi) badges.push(["alibi", STATUS_ICONS.alibi, "Иммунитет адвоката"]);
+  if (hasVisibleInitialImmunity(state, player.id)) badges.push(["immunity", STATUS_ICONS.immunity, "Стартовый иммунитет"]);
   if (!player.alive) badges.push(["dead", STATUS_ICONS.dead, "Выбыл"]);
   return badges;
 }
 
-function ActionPanel({ state, aliveOptions, updateState, applyAction, clearCurrentNightAction, updateTimerSetting, toggleTimer, resetTimer }) {
+function AuditChip({ icon, label, value, detail, tone = "plain" }) {
+  return h(
+    "div",
+    { className: `audit-chip audit-${tone}`, title: detail || value },
+    h("span", null, h(Icon, { name: icon })),
+    h("div", null, h("strong", null, label), h("em", null, value || detail || "-"))
+  );
+}
+
+function ActionPanel({ state, aliveOptions, updateState, applyAction, clearCurrentNightAction, updateTimerSetting, toggleTimer, resetTimer, blockReason, openDrawers, setOpenDrawers, ledgerFlashKey }) {
   const actionsAvailable = canUseNightActions(state);
   const actionOptions = availableNightActions(state);
   const activeAction = actionOptions.some((action) => action.key === state.activeAction) ? state.activeAction : canUseNightActions(state) ? nextNightActionKey(state) : actionOptions[0]?.key || "mafia";
-  const timerVisible = ["discussion", "speeches"].includes(state.phase);
+  const timerVisible = state.phase === "discussion";
   const nightChecklist = requiredNightActions(state);
+  const nextMissing = incompleteNightActions(state)[0];
+  const ledgerRows = state.phase === "night" ? window.MafiaUiFocus?.nightActionLedger(nightLedgerContext(state)) || [] : [];
   const aliveVoteOptions = aliveOptions.filter((option) => state.players.some((player) => player.id === option.id && player.alive));
   const alivePlayers = state.players.filter((player) => player.alive);
   const votingOpen = hasDayVoting(state);
   const doctorUnavailable = new Set([...lastHealedIds(state), ...healedIds(state)]);
   const sheriffKnownTargets = aliveKnownSheriffMafia(state);
   const sheriffCanShoot = activeAction === "sheriff" && sheriffKnownTargets.length > 0;
-  const nightTargetOptions = activeAction === "doctor"
+  const baseNightTargetOptions = activeAction === "doctor"
     ? aliveVoteOptions.filter((option) => !doctorUnavailable.has(option.id))
     : activeAction === "sheriff" && state.sheriffActionMode === "shoot"
       ? aliveVoteOptions.filter((option) => sheriffKnownTargets.includes(option.id))
       : aliveVoteOptions;
+  const nightTargetOptions = filterInitialImmunityOptions(baseNightTargetOptions, state, { actionKey: activeAction, sheriffActionMode: state.sheriffActionMode || "check" });
+  const hiddenByImmunityIds = baseNightTargetOptions.filter((option) => !nightTargetOptions.some((target) => target.id === option.id)).map((option) => option.id);
   const bombTargets = resolveBombTargets(state);
   const speechesFlowComplete = state.phase === "speeches" && alivePlayers.length > 0 && alivePlayers.every((player) => hasDayVoting(state) ? Boolean(state.votes?.[player.id]) : Boolean(state.speechesDone?.[player.id]));
+  const latestEvent = window.MafiaUiFocus?.latestLogEntry(state) || "Событий пока нет";
+  const nightProgress = window.MafiaUiFocus?.phaseProgress({ phase: state.phase, nightChecklist, blockedActions: state.night.blockedActions || {} });
+  const votingProgress = state.phase === "speeches"
+    ? {
+        label: hasDayVoting(state) ? "Голоса" : "Речи",
+        value: `${alivePlayers.filter((player) => hasDayVoting(state) ? Boolean(state.votes?.[player.id]) : Boolean(state.speechesDone?.[player.id])).length} / ${alivePlayers.length}`,
+        tone: speechesFlowComplete ? "done" : "pending",
+        detail: speechesFlowComplete ? "Готово к переходу" : "Есть незавершенные игроки"
+      }
+    : null;
+  const progress = state.phase === "night" ? nightProgress : votingProgress;
+  const focus = state.phase === "night"
+    ? window.MafiaUiFocus?.primaryFocus({ phase: state.phase, activeActionName: actionName(activeAction), targetId: state.targetId, canApply: actionsAvailable, nextMissingName: nextMissing?.[1] })
+    : window.MafiaUiFocus?.primaryFocus({ phase: state.phase, phaseName: phaseName(state), blockReason });
+  const drawerButtons = [
+    ["roles", "BadgeCheck", "Роли"],
+    ["marks", "Wand2", "Метки"]
+  ];
+  const isDrawerOpen = (drawer) => window.MafiaUiFocus?.isDrawerVisible(openDrawers, drawer);
+  const toggleDrawer = (drawer) => setOpenDrawers((drawers) => window.MafiaUiFocus?.toggleDrawerSet(drawers, drawer) || drawers);
 
   return h(
     "aside",
     { className: "panel action-panel" },
     h(
-      "div",
-      { className: "phase-card" },
-      h("h3", null, "Текущая фаза"),
-      h("strong", null, phaseName(state)),
-      h("p", null, state.phase === "introNight" ? "Первая ночь: ведущий знакомит роли, игровые действия закрыты." : state.phase === "discussion" ? "Балаган: свободный разговор за столом. Таймер задается ведущим." : state.phase === "speeches" ? votingOpen ? "Речи и голосование." : "Первый день: только речи игроков, без голосования." : state.phase === "voteResults" ? "Ведущий объявляет итог голосования перед ночью." : state.phase === "gameOver" ? "Партия завершена." : "Ночные действия доступны.")
-    ),
-    h(
-      "div",
-      { className: "mark-card" },
+      "section",
+      { className: "focus-shell" },
       h(
         "div",
-        { className: "panel-head compact" },
-        h("h3", null, "Метки ведущего"),
-        state.activeMark && h("button", { type: "button", className: "mark-clear", onClick: () => updateState((draft) => { draft.activeMark = null; }), title: "Снять режим метки" }, h(Icon, { name: "X", label: "Снять режим метки" }))
+        { className: `focus-primary phase-${state.phase}` },
+        h("span", null, focus?.eyebrow || "Текущая фаза"),
+        h("strong", null, focus?.title || phaseName(state)),
+        (focus?.detail || !blockReason) && h("p", null, focus?.detail || "Готово к следующему действию"),
+        focus?.nextMissing && h("small", { className: "next-missing-line" }, focus.nextMissing)
       ),
       h(
         "div",
-        { className: "mark-buttons", role: "group", "aria-label": "Метки ведущего" },
-        MARK_ACTIONS.map((mark) =>
+        { className: "audit-strip" },
+        progress && h(AuditChip, { icon: progress.tone === "done" ? "CheckCircle2" : "CircleDashed", label: progress.label, value: progress.value, detail: progress.detail, tone: progress.tone }),
+        h(AuditChip, { icon: "History", label: "Последнее", value: latestEvent, tone: "plain" }),
+        state.activeMark && h(AuditChip, { icon: "MousePointer2", label: "Метка", value: MARK_ACTIONS.find((mark) => mark.key === state.activeMark)?.label || state.activeMark, tone: "active" }),
+        blockReason && h(AuditChip, { icon: "Lock", label: "Блокер", value: blockReason, tone: "warning" })
+      ),
+      h(
+        "div",
+        { className: "drawer-grid", role: "group", "aria-label": "Дополнительные панели" },
+        drawerButtons.map(([key, icon, label]) =>
           h(
             "button",
-            {
-              key: mark.key,
-              type: "button",
-              className: state.activeMark === mark.key ? "active" : "",
-              disabled: state.phase === "gameOver",
-              onClick: () => updateState((draft) => {
-                draft.activeMark = draft.activeMark === mark.key ? null : mark.key;
-              }),
-              title: mark.label,
-              "aria-pressed": state.activeMark === mark.key
-            },
-            h(Icon, { name: mark.icon }),
-            h("span", null, mark.label)
+            { key, type: "button", className: isDrawerOpen(key) ? "active" : "", onClick: () => toggleDrawer(key), "aria-pressed": isDrawerOpen(key) },
+            h(Icon, { name: icon }),
+            h("span", null, label)
           )
         )
-      )
+      ),
+      isDrawerOpen("roles") &&
+        h(
+          "section",
+          { className: "role-strip role-strip-drawer cockpit-role-drawer collapsible-panel", "aria-label": "Роли" },
+          h("div", { className: "role-grid" }, activeRoleDefs(state.playerCount).map((role) => h(RolePill, { key: role.key, role, players: state.roles[role.key], state })))
+        )
     ),
+    (isDrawerOpen("marks") || state.activeMark) &&
+      h(
+        "div",
+        { className: "mark-card collapsible-panel" },
+        h(
+          "div",
+          { className: "panel-head compact" },
+          h("h3", null, "Метки ведущего"),
+          state.activeMark && h("button", { type: "button", className: "mark-clear", onClick: () => updateState((draft) => { draft.activeMark = null; }), title: "Снять режим метки" }, h(Icon, { name: "X", label: "Снять режим метки" }))
+        ),
+        h(
+          "div",
+          { className: "mark-buttons", role: "group", "aria-label": "Метки ведущего" },
+          MARK_ACTIONS.map((mark) =>
+            h(
+              "button",
+              {
+                key: mark.key,
+                type: "button",
+                className: state.activeMark === mark.key ? "active" : "",
+                disabled: state.phase === "gameOver",
+                onClick: () => updateState((draft) => {
+                  draft.activeMark = draft.activeMark === mark.key ? null : mark.key;
+                }),
+                title: mark.label,
+                "aria-pressed": state.activeMark === mark.key
+              },
+              h(Icon, { name: mark.icon }),
+              h("span", null, mark.label)
+            )
+          )
+        )
+      ),
     timerVisible &&
       h(
       "div",
@@ -2589,6 +3327,7 @@ function ActionPanel({ state, aliveOptions, updateState, applyAction, clearCurre
         activeAction === "bomb"
           ? h(BombTargetFields, { targets: bombTargets, options: aliveVoteOptions, disabled: !actionsAvailable || aliveVoteOptions.length < bombRequiredTargetCount(state), updateState })
           : h(PlayerSelectField, { label: "Цель", testId: "target-select", value: nightTargetOptions.some((option) => option.id === Number(state.targetId)) ? state.targetId : nightTargetOptions[0]?.id || "", options: nightTargetOptions, disabled: !actionsAvailable || !nightTargetOptions.length, onChange: (value) => updateState((draft) => { draft.targetId = Number(value); }) }),
+        hiddenByImmunityIds.length > 0 && h("p", { className: "immunity-action-note" }, h(Icon, { name: STATUS_ICONS.immunity }), `Защищены иммунитетом: ${formatPlayers(hiddenByImmunityIds)}`),
         h(
           "div",
           { className: "action-buttons two-actions" },
@@ -2599,25 +3338,25 @@ function ActionPanel({ state, aliveOptions, updateState, applyAction, clearCurre
     state.phase === "night" &&
       h(
         "div",
-        { className: "night-summary" },
-        h("h3", null, "Обязательные действия"),
-        h("div", { className: "night-summary-body" }, nightChecklist.map(([key, label, done]) => h(NightChecklistRow, { key, label, done, blocked: Boolean(state.night.blockedActions?.[key]) })))
+        { className: "night-ledger" },
+        h("h3", null, "Ночной журнал действий"),
+        h("div", { className: "night-ledger-body" }, ledgerRows.map((row) => h(NightLedgerRow, { key: row.key, row, flashKey: ledgerFlashKey })))
       ),
     null
   );
 }
 
-function NightChecklistRow({ label, done, blocked }) {
+function NightLedgerRow({ row, flashKey }) {
+  const icon = row.state === "blocked" ? "ShieldOff" : row.state === "done" ? "CheckCircle2" : "CircleDashed";
+  const flashClass = window.MafiaUiFocus?.rowFlashClass(row.key, flashKey) || "";
   return h(
     "div",
-    { className: `summary-line checklist-line ${done ? "done" : "pending"} ${blocked ? "blocked" : ""}` },
-    h("strong", null, label),
-    h(
-      "span",
-      { className: "summary-status" },
-      h(Icon, { name: done ? blocked ? "ShieldOff" : "CheckCircle2" : "CircleDashed" }),
-      blocked ? "заблокировано" : done ? "готово" : "ожидает"
-    )
+    { className: `night-ledger-row ${row.state} ${flashClass}` },
+    h("span", { className: "night-ledger-icon" }, h(Icon, { name: icon })),
+    h("strong", null, row.label),
+    h("span", null, row.actor),
+    h("span", null, row.target),
+    h("em", null, row.result)
   );
 }
 

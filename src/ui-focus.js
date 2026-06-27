@@ -33,14 +33,14 @@
         title: context.activeActionName || "Ход",
         detail: context.targetId ? `Цель: игрок ${context.targetId}` : "Выберите цель",
         actionLabel: context.canApply ? "Применить" : "Недоступно",
-        nextMissing: context.nextMissingName ? `Next missing: ${context.nextMissingName}` : ""
+        nextMissing: context.nextMissingName ? `Осталось: ${context.nextMissingName}` : ""
       };
     }
 
     return {
       eyebrow: "Текущая фаза",
       title: context?.phaseName || "",
-      detail: context?.blockReason || "",
+      detail: "",
       actionLabel: context?.blockReason ? "Заблокировано" : "Следующая фаза"
     };
   }
@@ -76,7 +76,11 @@
     const foulVotes = Number(context?.foulVotes) || 0;
     const targetId = Number(votes[playerId]);
     return {
-      choice: targetId ? `#${playerId} -> #${targetId}` : `#${playerId} -> -`,
+      choice: targetId ? `#${playerId}: #${targetId}` : `#${playerId}: -`,
+      compactChoice: targetId ? `-> #${targetId}` : "-> -",
+      compactReceived: `Получил ${receivedVotes}`,
+      compactFouls: `Фолы ${foulVotes}`,
+      compactTotal: `Итого ${receivedVotes + foulVotes}`,
       received: `Получил: ${receivedVotes}`,
       fouls: `Фолы: ${foulVotes}`,
       total: `Итого: ${receivedVotes + foulVotes}`
@@ -137,6 +141,10 @@
     return current.includes(drawer) ? current.filter((item) => item !== drawer) : [...current, drawer];
   }
 
+  function isDrawerVisible(openDrawers, drawer) {
+    return Array.isArray(openDrawers) && openDrawers.includes(drawer);
+  }
+
   function rowFlashClass(rowKey, flashKey) {
     return rowKey && flashKey && rowKey === flashKey ? "flash" : "";
   }
@@ -190,6 +198,7 @@
     filterInitialImmunityTargets,
     finalSpeechRequiredDeathIds,
     initialImmunityActiveIds,
+    isDrawerVisible,
     latestLogEntry,
     nightActionLedger,
     nextDaySpeaker,

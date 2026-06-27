@@ -8,6 +8,7 @@ const {
   finalSpeechRequiredDeathIds,
   filterInitialImmunityTargets,
   initialImmunityActiveIds,
+  isDrawerVisible,
   latestLogEntry,
   nightActionLedger,
   nextDaySpeaker,
@@ -86,7 +87,19 @@ test("primaryFocus keeps next missing night action visible when another action i
   });
 
   assert.equal(focus.detail, "Цель: игрок 7");
-  assert.equal(focus.nextMissing, "Next missing: Врач");
+  assert.equal(focus.nextMissing, "Осталось: Врач");
+});
+
+test("primaryFocus keeps phase blockers out of the current phase detail", () => {
+  const focus = primaryFocus({
+    phase: "speeches",
+    phaseName: "День 2: речи игроков",
+    blockReason: "Не все живые игроки проголосовали: #1, #2."
+  });
+
+  assert.equal(focus.title, "День 2: речи игроков");
+  assert.equal(focus.detail, "");
+  assert.equal(focus.actionLabel, "Заблокировано");
 });
 
 test("nightActionLedger returns one row per action with actor, target, result, and blocked state", () => {
@@ -111,7 +124,11 @@ test("nightActionLedger returns one row per action with actor, target, result, a
 
 test("voteAudit shows voter choice and target received totals", () => {
   assert.deepEqual(voteAudit({ playerId: 6, votes: { 6: 12, 7: 12 }, receivedVotes: 2, foulVotes: 1 }), {
-    choice: "#6 -> #12",
+    choice: "#6: #12",
+    compactChoice: "-> #12",
+    compactReceived: "Получил 2",
+    compactFouls: "Фолы 1",
+    compactTotal: "Итого 3",
     received: "Получил: 2",
     fouls: "Фолы: 1",
     total: "Итого: 3"
@@ -140,6 +157,12 @@ test("toggleDrawerSet toggles one drawer without closing the others", () => {
   assert.deepEqual(toggleDrawerSet(["roles"], "marks"), ["roles", "marks"]);
   assert.deepEqual(toggleDrawerSet(["roles", "marks", "details"], "marks"), ["roles", "details"]);
   assert.deepEqual(toggleDrawerSet(null, "log"), ["log"]);
+});
+
+test("roles drawer visibility follows the drawer state instead of the phase", () => {
+  assert.equal(isDrawerVisible([], "roles"), false);
+  assert.equal(isDrawerVisible(["roles"], "roles"), true);
+  assert.equal(isDrawerVisible(toggleDrawerSet(["roles"], "roles"), "roles"), false);
 });
 
 test("rowFlashClass marks only the recently changed row", () => {
