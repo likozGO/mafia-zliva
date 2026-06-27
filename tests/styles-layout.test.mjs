@@ -100,6 +100,12 @@ test("completed vote status uses a dedicated compact style instead of the dead p
   assert.doesNotMatch(APP, /dead-pill vote-done status-with-icon/);
 });
 
+test("night immunity action note keeps its icon compact", () => {
+  assert.match(APP, /className: "immunity-action-note"/);
+  assert.match(CSS, /\.immunity-action-note svg\s*\{[\s\S]*width:\s*18px[\s\S]*height:\s*18px/s);
+  assert.match(CSS, /\.immunity-action-note\s*\{[\s\S]*display:\s*inline-flex/s);
+});
+
 test("black theme is available as a persisted floating toggle", () => {
   const blackThemeCss = CSS.slice(CSS.indexOf(".theme-black {"), CSS.indexOf("@media", CSS.indexOf(".theme-black {")));
   assert.match(APP, /THEME_KEY/);

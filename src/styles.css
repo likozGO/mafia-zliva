@@ -1525,6 +1525,13 @@ h3 {
   margin-top: 8px;
 }
 
+.immunity-action-note svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  stroke-width: 2.5;
+}
+
 .day-result-details {
   display: grid;
   gap: 8px;
