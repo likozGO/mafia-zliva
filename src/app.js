@@ -893,9 +893,7 @@ window.MafiaGameEngine = Object.freeze({
 });
 
 async function fireGameOverConfetti(winner) {
-  const confetti = typeof window.confetti === "function"
-    ? window.confetti
-    : (await import("/node_modules/canvas-confetti/dist/confetti.module.mjs")).default;
+  const confetti = window.confetti;
   if (typeof confetti !== "function") return;
   const colors = winner === "Мирные" ? ["#facc15", "#22c55e", "#3b82f6"] : winner === "Маньяк" ? ["#7c3aed", "#ef4444", "#f97316"] : ["#111827", "#ef4444", "#facc15"];
   confetti({ particleCount: 160, spread: 90, origin: { y: 0.62 }, colors });
